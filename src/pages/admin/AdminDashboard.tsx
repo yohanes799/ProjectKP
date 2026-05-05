@@ -1,56 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Newspaper, Users, Building2, Trophy, TrendingUp, ArrowRight } from 'lucide-react';
+import {
+  Newspaper, Users, Building2, Trophy, TrendingUp, ArrowRight,
+  GraduationCap, Clock,
+} from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const AdminDashboard: React.FC = () => {
-  const { news, teachers, facilities, extracurriculars, currentUser } = useData();
+  const { news, teachers, facilities, extracurriculars, ppdbRegistrations, currentUser } = useData();
+
+  const pendingCount = ppdbRegistrations.filter((r) => r.status === 'Menunggu').length;
 
   const stats = [
-    {
-      label: 'Total Berita',
-      value: news.length,
-      icon: Newspaper,
-      color: 'bg-blue-500',
-      path: '/admin/berita',
-    },
-    {
-      label: 'Data Guru',
-      value: teachers.length,
-      icon: Users,
-      color: 'bg-green-500',
-      path: '/admin/guru',
-    },
-    {
-      label: 'Fasilitas',
-      value: facilities.length,
-      icon: Building2,
-      color: 'bg-purple-500',
-      path: '/admin/fasilitas',
-    },
-    {
-      label: 'Ekstrakulikuler',
-      value: extracurriculars.length,
-      icon: Trophy,
-      color: 'bg-orange-500',
-      path: '/admin/ekstrakulikuler',
-    },
+    { label: 'Total Berita', value: news.length, icon: Newspaper, color: 'bg-blue-500', path: '/admin/berita' },
+    { label: 'Data Guru', value: teachers.length, icon: Users, color: 'bg-green-500', path: '/admin/guru' },
+    { label: 'Fasilitas', value: facilities.length, icon: Building2, color: 'bg-purple-500', path: '/admin/fasilitas' },
+    { label: 'Ekstrakulikuler', value: extracurriculars.length, icon: Trophy, color: 'bg-orange-500', path: '/admin/ekstrakulikuler' },
+    { label: 'Pendaftar PPDB', value: ppdbRegistrations.length, icon: GraduationCap, color: 'bg-teal-500', path: '/admin/ppdb' },
   ];
 
-  const recentNews = news.slice(0, 5);
+  const recentNews = news.slice(0, 4);
+  const recentRegistrations = ppdbRegistrations.slice(0, 5);
 
   return (
     <div className="space-y-6">
       {/* Welcome */}
       <div className="bg-gradient-to-r from-primary-800 to-primary-700 text-white rounded-xl p-6">
         <h2 className="text-xl font-bold mb-1">Selamat Datang, {currentUser?.name}! 👋</h2>
-        <p className="text-primary-200 text-sm">
-          Kelola konten website sekolah dari panel admin ini.
-        </p>
+        <p className="text-primary-200 text-sm">Kelola konten website sekolah dari panel admin ini.</p>
+        {pendingCount > 0 && (
+          <div className="mt-3 inline-flex items-center space-x-2 bg-yellow-400/20 border border-yellow-400/40 text-yellow-200 px-3 py-1.5 rounded-lg text-sm">
+            <Clock className="h-4 w-4" />
+            <span>{pendingCount} pendaftar PPDB menunggu verifikasi</span>
+            <Link to="/admin/ppdb" className="underline font-medium">Lihat →</Link>
+          </div>
+        )}
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -70,16 +58,13 @@ const AdminDashboard: React.FC = () => {
         })}
       </div>
 
-      {/* Quick Actions */}
+      {/* Content Grid */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Recent News */}
         <div className="bg-white rounded-xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-bold text-gray-800">Berita Terbaru</h3>
-            <Link
-              to="/admin/berita"
-              className="text-sm text-primary-600 hover:text-primary-800 flex items-center space-x-1"
-            >
+            <Link to="/admin/berita" className="text-sm text-primary-600 hover:text-primary-800 flex items-center space-x-1">
               <span>Kelola</span>
               <ArrowRight className="h-3 w-3" />
             </Link>
@@ -90,58 +75,77 @@ const AdminDashboard: React.FC = () => {
             ) : (
               recentNews.map((item) => (
                 <div key={item.id} className="flex items-start space-x-3 py-2 border-b last:border-0">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                  />
+                  <img src={item.image} alt={item.title} className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-800 line-clamp-1">{item.title}</p>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      {new Date(item.date).toLocaleDateString('id-ID', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
+                      {new Date(item.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </p>
                   </div>
-                  <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded flex-shrink-0">
-                    {item.category}
-                  </span>
+                  <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded flex-shrink-0">{item.category}</span>
                 </div>
               ))
             )}
           </div>
         </div>
 
-        {/* Quick Links */}
+        {/* Recent PPDB Registrations */}
         <div className="bg-white rounded-xl shadow-sm p-5">
-          <h3 className="font-bold text-gray-800 mb-4">Aksi Cepat</h3>
-          <div className="space-y-3">
-            {[
-              { path: '/admin/berita', label: 'Tambah Berita Baru', icon: Newspaper, color: 'text-blue-600 bg-blue-50' },
-              { path: '/admin/guru', label: 'Tambah Data Guru', icon: Users, color: 'text-green-600 bg-green-50' },
-              { path: '/admin/fasilitas', label: 'Tambah Fasilitas', icon: Building2, color: 'text-purple-600 bg-purple-50' },
-              { path: '/admin/ekstrakulikuler', label: 'Tambah Ekstrakulikuler', icon: Trophy, color: 'text-orange-600 bg-orange-50' },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
-                >
-                  <div className={`p-2 rounded-lg ${item.color}`}>
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-primary-700">
-                    {item.label}
-                  </span>
-                  <ArrowRight className="h-4 w-4 text-gray-300 ml-auto group-hover:text-primary-600" />
-                </Link>
-              );
-            })}
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-gray-800">Pendaftar PPDB Terbaru</h3>
+            <Link to="/admin/ppdb" className="text-sm text-primary-600 hover:text-primary-800 flex items-center space-x-1">
+              <span>Lihat Semua</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
+          <div className="space-y-3">
+            {recentRegistrations.length === 0 ? (
+              <div className="text-center py-6 text-gray-400">
+                <GraduationCap className="h-8 w-8 mx-auto mb-2 opacity-40" />
+                <p className="text-sm">Belum ada pendaftar</p>
+              </div>
+            ) : (
+              recentRegistrations.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-3 py-2 border-b last:border-0">
+                    <div className="bg-teal-100 p-2 rounded-full flex-shrink-0">
+                      <GraduationCap className="h-4 w-4 text-teal-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-800 line-clamp-1">{item.fullName}</p>
+                      <p className="text-xs text-gray-400">{item.originSchool}</p>
+                    </div>
+                  </div>
+                ))
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white rounded-xl shadow-sm p-5">
+        <h3 className="font-bold text-gray-800 mb-4">Aksi Cepat</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+          {[
+            { path: '/admin/berita', label: 'Tambah Berita', icon: Newspaper, color: 'text-blue-600 bg-blue-50' },
+            { path: '/admin/guru', label: 'Tambah Guru', icon: Users, color: 'text-green-600 bg-green-50' },
+            { path: '/admin/fasilitas', label: 'Tambah Fasilitas', icon: Building2, color: 'text-purple-600 bg-purple-50' },
+            { path: '/admin/ekstrakulikuler', label: 'Tambah Ekskul', icon: Trophy, color: 'text-orange-600 bg-orange-50' },
+            { path: '/admin/ppdb', label: 'Data Pendaftar', icon: GraduationCap, color: 'text-teal-600 bg-teal-50' },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors group border border-gray-100"
+              >
+                <div className={`p-3 rounded-xl mb-2 ${item.color}`}>
+                  <Icon className="h-5 w-5" />
+                </div>
+                <span className="text-xs font-medium text-gray-600 group-hover:text-primary-700 text-center">{item.label}</span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

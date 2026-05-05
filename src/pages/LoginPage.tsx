@@ -9,10 +9,11 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, currentUser, profile } = useData();
+  const { login, currentUser, initialized, profile } = useData();
   const navigate = useNavigate();
 
-  if (currentUser) {
+  // Jika sudah ada sesi aktif (misal refresh dari admin), langsung ke admin
+  if (initialized && currentUser) {
     return <Navigate to="/admin" replace />;
   }
 
@@ -68,6 +69,8 @@ const LoginPage: React.FC = () => {
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    onBlur={(e) => setUsername(e.target.value.trim())}
+                    autoComplete="username"
                     className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                     placeholder="Masukkan username"
                   />

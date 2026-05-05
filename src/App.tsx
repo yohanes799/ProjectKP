@@ -28,13 +28,27 @@ import AdminNewsPage from './pages/admin/AdminNewsPage';
 import AdminTeacherPage from './pages/admin/AdminTeacherPage';
 import AdminFacilityPage from './pages/admin/AdminFacilityPage';
 import AdminExtracurricularPage from './pages/admin/AdminExtracurricularPage';
+import AdminPPDBPage from './pages/admin/AdminPPDBPage';
 
-// Protected Route
+// Protected Route — wajib login setiap akses
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { currentUser } = useData();
+  const { currentUser, initialized } = useData();
+
+  if (!initialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <p className="text-gray-500 text-sm">Memuat...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
+
   return <>{children}</>;
 };
 
@@ -72,6 +86,7 @@ const AppRoutes: React.FC = () => {
         <Route path="guru" element={<AdminTeacherPage />} />
         <Route path="fasilitas" element={<AdminFacilityPage />} />
         <Route path="ekstrakulikuler" element={<AdminExtracurricularPage />} />
+        <Route path="ppdb" element={<AdminPPDBPage />} />
       </Route>
 
       {/* Fallback */}

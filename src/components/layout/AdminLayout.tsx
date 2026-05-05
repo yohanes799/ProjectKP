@@ -6,10 +6,10 @@ import {
   Users,
   Building2,
   Trophy,
+  GraduationCap,
   LogOut,
   Menu,
   X,
-  GraduationCap,
   ChevronRight,
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
@@ -31,6 +31,7 @@ const AdminLayout: React.FC = () => {
     { path: '/admin/guru', label: 'Data Guru', icon: Users },
     { path: '/admin/fasilitas', label: 'Fasilitas', icon: Building2 },
     { path: '/admin/ekstrakulikuler', label: 'Ekstrakulikuler', icon: Trophy },
+    { path: '/admin/ppdb', label: 'Pendaftar PPDB', icon: GraduationCap },
   ];
 
   const isActive = (path: string, exact?: boolean) => {
@@ -119,7 +120,6 @@ const AdminLayout: React.FC = () => {
             </div>
             <Link
               to="/"
-              target="_blank"
               className="text-sm text-primary-600 hover:text-primary-800 font-medium"
             >
               Lihat Website →

@@ -6,17 +6,11 @@ import { useData } from '../../context/DataContext';
 const NewsPage: React.FC = () => {
   const { news } = useData();
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
 
-  const categories = Array.from(new Set(news.map((n) => n.category)));
-
-  const filtered = news.filter((item) => {
-    const matchSearch =
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.excerpt.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = selectedCategory === '' || item.category === selectedCategory;
-    return matchSearch && matchCategory;
-  });
+  const filtered = news.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase()) ||
+    item.excerpt.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -29,9 +23,9 @@ const NewsPage: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Filter */}
-        <div className="bg-white rounded-xl shadow-sm p-4 mb-8 flex flex-col md:flex-row gap-4">
-          <div className="flex-1 relative">
+        {/* Search only */}
+        <div className="bg-white rounded-xl shadow-sm p-4 mb-8">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
@@ -40,31 +34,6 @@ const NewsPage: React.FC = () => {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
             />
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            <button
-              onClick={() => setSelectedCategory('')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedCategory === ''
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              Semua
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  selectedCategory === cat
-                    ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
           </div>
         </div>
 

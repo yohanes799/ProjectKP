@@ -37,7 +37,14 @@ const AdminTeacherPage: React.FC = () => {
 
   const openEdit = (item: Teacher) => {
     setEditItem(item);
-    setForm({ name: item.name, subject: item.subject, education: item.education, photo: item.photo, nip: item.nip, position: item.position });
+    setForm({
+      name: item.name,
+      subject: item.subject,
+      education: item.education,
+      photo: item.photo,
+      nip: item.nip,
+      position: item.position,
+    });
     setModalOpen(true);
   };
 
@@ -88,14 +95,13 @@ const AdminTeacherPage: React.FC = () => {
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guru</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mata Pelajaran</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Jabatan</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">NIP</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-12 text-gray-400">
+                  <td colSpan={4} className="text-center py-12 text-gray-400">
                     <Users className="h-10 w-10 mx-auto mb-2 opacity-40" />
                     <p>Tidak ada guru ditemukan</p>
                   </td>
@@ -105,7 +111,11 @@ const AdminTeacherPage: React.FC = () => {
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-5 py-4">
                       <div className="flex items-center space-x-3">
-                        <img src={item.photo} alt={item.name} className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                        <img
+                          src={item.photo}
+                          alt={item.name}
+                          className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                        />
                         <div>
                           <p className="font-medium text-gray-800 text-sm">{item.name}</p>
                           <p className="text-gray-400 text-xs line-clamp-1">{item.education}</p>
@@ -118,13 +128,18 @@ const AdminTeacherPage: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-5 py-4 text-sm text-gray-600">{item.position}</td>
-                    <td className="px-5 py-4 text-sm text-gray-500 font-mono">{item.nip || '-'}</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-end space-x-2">
-                        <button onClick={() => openEdit(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                        <button
+                          onClick={() => openEdit(item)}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
                           <Pencil className="h-4 w-4" />
                         </button>
-                        <button onClick={() => setDeleteId(item.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                        <button
+                          onClick={() => setDeleteId(item.id)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -137,34 +152,58 @@ const AdminTeacherPage: React.FC = () => {
         </div>
       </div>
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editItem ? 'Edit Data Guru' : 'Tambah Guru Baru'}>
+      {/* Modal Form */}
+      <Modal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={editItem ? 'Edit Data Guru' : 'Tambah Guru Baru'}
+      >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
-            <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Nama lengkap guru" />
+            <input
+              type="text"
+              required
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              placeholder="Nama lengkap guru"
+            />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran *</label>
-              <input type="text" required value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Matematika" />
+              <input
+                type="text"
+                required
+                value={form.subject}
+                onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                placeholder="Matematika"
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Jabatan *</label>
-              <input type="text" required value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Guru / Kepala Sekolah" />
+              <input
+                type="text"
+                required
+                value={form.position}
+                onChange={(e) => setForm({ ...form, position: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                placeholder="Guru / Kepala Sekolah"
+              />
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Pendidikan Terakhir *</label>
-            <input type="text" required value={form.education} onChange={(e) => setForm({ ...form, education: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="S1 Pendidikan Matematika - Universitas..." />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">NIP</label>
-            <input type="text" value={form.nip} onChange={(e) => setForm({ ...form, nip: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Nomor Induk Pegawai" />
+            <input
+              type="text"
+              required
+              value={form.education}
+              onChange={(e) => setForm({ ...form, education: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              placeholder="S1 Pendidikan Matematika - Universitas..."
+            />
           </div>
           <ImageUpload
             label="Foto Guru"
@@ -172,19 +211,30 @@ const AdminTeacherPage: React.FC = () => {
             onChange={(val) => setForm({ ...form, photo: val })}
           />
           <div className="flex space-x-3 pt-2">
-            <button type="button" onClick={() => setModalOpen(false)}
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium">Batal</button>
-            <button type="submit"
-              className="flex-1 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors text-sm font-medium">
+            <button
+              type="button"
+              onClick={() => setModalOpen(false)}
+              className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors text-sm font-medium"
+            >
               {editItem ? 'Simpan Perubahan' : 'Tambah Guru'}
             </button>
           </div>
         </form>
       </Modal>
 
-      <ConfirmDialog isOpen={deleteId !== null} onClose={() => setDeleteId(null)}
+      <ConfirmDialog
+        isOpen={deleteId !== null}
+        onClose={() => setDeleteId(null)}
         onConfirm={() => deleteId && deleteTeacher(deleteId)}
-        title="Hapus Data Guru" message="Apakah Anda yakin ingin menghapus data guru ini?" />
+        title="Hapus Data Guru"
+        message="Apakah Anda yakin ingin menghapus data guru ini?"
+      />
     </div>
   );
 };

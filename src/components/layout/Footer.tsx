@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MapPin, Phone, Mail, Globe, ExternalLink } from 'lucide-react';
+import { GraduationCap, MapPin, Phone, Mail, Globe, ExternalLink, MessageCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const Footer: React.FC = () => {
@@ -36,24 +36,24 @@ const Footer: React.FC = () => {
                   <Globe className="h-4 w-4" />
                 </a>
               )}
+              {contact.socialMedia.whatsapp && (
+                <a
+                  href={contact.socialMedia.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-primary-700 hover:bg-green-600 p-2 rounded-full transition-colors"
+                  title="WhatsApp"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </a>
+              )}
               {contact.socialMedia.instagram && (
                 <a
                   href={contact.socialMedia.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-primary-700 hover:bg-primary-600 p-2 rounded-full transition-colors"
+                  className="bg-primary-700 hover:bg-pink-600 p-2 rounded-full transition-colors"
                   title="Instagram"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              )}
-              {contact.socialMedia.youtube && (
-                <a
-                  href={contact.socialMedia.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-primary-700 hover:bg-primary-600 p-2 rounded-full transition-colors"
-                  title="YouTube"
                 >
                   <ExternalLink className="h-4 w-4" />
                 </a>

@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Globe, ExternalLink, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, ExternalLink, Send, MessageCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const ContactPage: React.FC = () => {
   const { contact, profile } = useData();
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -19,8 +24,12 @@ const ContactPage: React.FC = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-primary-800 to-primary-700 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Kontak Sekolah</h1>
-          <p className="text-primary-200">Hubungi kami untuk informasi lebih lanjut</p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            Kontak Sekolah
+          </h1>
+          <p className="text-primary-200">
+            Hubungi kami untuk informasi lebih lanjut
+          </p>
         </div>
       </div>
 
@@ -29,7 +38,9 @@ const ContactPage: React.FC = () => {
           {/* Contact Info */}
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="font-bold text-gray-800 text-xl mb-5">Informasi Kontak</h2>
+              <h2 className="font-bold text-gray-800 text-xl mb-5">
+                Informasi Kontak
+              </h2>
               <div className="space-y-4">
                 <div className="flex items-start space-x-4">
                   <div className="bg-primary-100 p-3 rounded-full flex-shrink-0">
@@ -37,7 +48,9 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Alamat</p>
-                    <p className="text-gray-600 text-sm mt-1">{contact.address}</p>
+                    <p className="text-gray-600 text-sm mt-1">
+                      {contact.address}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -46,7 +59,9 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Telepon</p>
-                    <p className="text-gray-600 text-sm mt-1">{contact.phone}</p>
+                    <p className="text-gray-600 text-sm mt-1">
+                      {contact.phone}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -55,7 +70,9 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-medium text-gray-800">Email</p>
-                    <p className="text-gray-600 text-sm mt-1">{contact.email}</p>
+                    <p className="text-gray-600 text-sm mt-1">
+                      {contact.email}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -63,7 +80,9 @@ const ContactPage: React.FC = () => {
 
             {/* Social Media */}
             <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="font-bold text-gray-800 text-xl mb-4">Media Sosial</h2>
+              <h2 className="font-bold text-gray-800 text-xl mb-4">
+                Media Sosial
+              </h2>
               <div className="flex space-x-3">
                 {contact.socialMedia.facebook && (
                   <a
@@ -76,6 +95,17 @@ const ContactPage: React.FC = () => {
                     <span>Facebook</span>
                   </a>
                 )}
+                {contact.socialMedia.whatsapp && (
+                  <a
+                    href={contact.socialMedia.whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    <span>WhatsApp</span>
+                  </a>
+                )}
                 {contact.socialMedia.instagram && (
                   <a
                     href={contact.socialMedia.instagram}
@@ -85,17 +115,6 @@ const ContactPage: React.FC = () => {
                   >
                     <ExternalLink className="h-4 w-4" />
                     <span>Instagram</span>
-                  </a>
-                )}
-                {contact.socialMedia.youtube && (
-                  <a
-                    href={contact.socialMedia.youtube}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    <span>YouTube</span>
                   </a>
                 )}
               </div>
@@ -118,17 +137,23 @@ const ContactPage: React.FC = () => {
 
           {/* Contact Form */}
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="font-bold text-gray-800 text-xl mb-5">Kirim Pesan</h2>
+            <h2 className="font-bold text-gray-800 text-xl mb-5">
+              Kirim Pesan
+            </h2>
             {submitted && (
               <div className="bg-green-50 border border-green-200 text-green-700 rounded-lg p-4 mb-4 flex items-center space-x-2">
                 <Send className="h-4 w-4" />
-                <span>Pesan berhasil dikirim! Kami akan segera menghubungi Anda.</span>
+                <span>
+                  Pesan berhasil dikirim! Kami akan segera menghubungi Anda.
+                </span>
               </div>
             )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Lengkap
+                  </label>
                   <input
                     type="text"
                     required
@@ -139,35 +164,47 @@ const ContactPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
                   <input
                     type="email"
                     required
                     value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                     placeholder="email@contoh.com"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Subjek</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Subjek
+                </label>
                 <input
                   type="text"
                   required
                   value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, subject: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                   placeholder="Subjek pesan"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Pesan
+                </label>
                 <textarea
                   required
                   rows={6}
                   value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
                   placeholder="Tulis pesan Anda di sini..."
                 />

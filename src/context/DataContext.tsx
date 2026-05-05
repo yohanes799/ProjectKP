@@ -5,6 +5,7 @@ import type {
   Facility,
   Extracurricular,
   PPDBInfo,
+  PPDBRegistration,
   SchoolProfile,
   ContactInfo,
   User,
@@ -25,9 +26,11 @@ interface DataContextType {
   facilities: Facility[];
   extracurriculars: Extracurricular[];
   ppdb: PPDBInfo;
+  ppdbRegistrations: PPDBRegistration[];
   profile: SchoolProfile;
   contact: ContactInfo;
   currentUser: User | null;
+  initialized: boolean;
   addNews: (item: NewsItem) => void;
   updateNews: (id: string, item: NewsItem) => void;
   deleteNews: (id: string) => void;
@@ -40,6 +43,10 @@ interface DataContextType {
   addExtracurricular: (extra: Extracurricular) => void;
   updateExtracurricular: (id: string, extra: Extracurricular) => void;
   deleteExtracurricular: (id: string) => void;
+  addPPDBRegistration: (reg: PPDBRegistration) => void;
+  updatePPDBRegistrationStatus: (id: string, status: PPDBRegistration['status']) => void;
+  deletePPDBRegistration: (id: string) => void;
+  resetNewsToInitial: () => void;
   login: (username: string, password: string) => boolean;
   logout: () => void;
 }
@@ -47,9 +54,9 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'school_data';
-const USER_KEY = 'current_user';
+const DATA_VERSION = 'v2'; // Naikkan versi ini untuk reset data lama
+const SESSION_KEY = 'admin_session';
 
-// Default admin user
 const defaultUsers: User[] = [
   {
     id: '1',
@@ -65,14 +72,23 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [extracurriculars, setExtracurriculars] = useState<Extracurricular[]>([]);
+  const [ppdbRegistrations, setPpdbRegistrations] = useState<PPDBRegistration[]>([]);
   const [ppdb] = useState<PPDBInfo>(ppdbInfo);
   const [profile] = useState<SchoolProfile>(schoolProfile);
   const [contact] = useState<ContactInfo>(contactInfo);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [initialized, setInitialized] = useState(false);
 
-  // Load data from localStorage on mount
   useEffect(() => {
+    localStorage.removeItem('current_user');
+
+    // Cek versi data — jika versi lama, reset ke initial data
+    const savedVersion = localStorage.getItem('school_data_version');
+    if (savedVersion !== DATA_VERSION) {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem('school_data_version', DATA_VERSION);
+    }
+
     const savedData = localStorage.getItem(STORAGE_KEY);
     if (savedData) {
       const parsed = JSON.parse(savedData);
@@ -80,6 +96,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setTeachers(parsed.teachers || initialTeachers);
       setFacilities(parsed.facilities || initialFacilities);
       setExtracurriculars(parsed.extracurriculars || initialExtracurriculars);
+      setPpdbRegistrations(parsed.ppdbRegistrations || []);
     } else {
       setNews(initialNews);
       setTeachers(initialTeachers);
@@ -87,15 +104,18 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setExtracurriculars(initialExtracurriculars);
     }
 
-    const savedUser = localStorage.getItem(USER_KEY);
-    if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
+    const savedSession = sessionStorage.getItem(SESSION_KEY);
+    if (savedSession) {
+      try {
+        setCurrentUser(JSON.parse(savedSession));
+      } catch {
+        sessionStorage.removeItem(SESSION_KEY);
+      }
     }
 
     setInitialized(true);
   }, []);
 
-  // Save data to localStorage only after initial load is complete
   useEffect(() => {
     if (!initialized) return;
     const dataToSave = {
@@ -103,68 +123,59 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       teachers,
       facilities,
       extracurriculars,
+      ppdbRegistrations,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-  }, [initialized, news, teachers, facilities, extracurriculars]);
+  }, [initialized, news, teachers, facilities, extracurriculars, ppdbRegistrations]);
 
-  // News operations
-  const addNews = (item: NewsItem) => {
-    setNews((prev) => [item, ...prev]);
-  };
-
-  const updateNews = (id: string, item: NewsItem) => {
+  // News
+  const addNews = (item: NewsItem) => setNews((prev) => [item, ...prev]);
+  const updateNews = (id: string, item: NewsItem) =>
     setNews((prev) => prev.map((n) => (n.id === id ? item : n)));
-  };
+  const deleteNews = (id: string) => setNews((prev) => prev.filter((n) => n.id !== id));
 
-  const deleteNews = (id: string) => {
-    setNews((prev) => prev.filter((n) => n.id !== id));
-  };
-
-  // Teacher operations
-  const addTeacher = (teacher: Teacher) => {
-    setTeachers((prev) => [...prev, teacher]);
-  };
-
-  const updateTeacher = (id: string, teacher: Teacher) => {
+  // Teachers
+  const addTeacher = (teacher: Teacher) => setTeachers((prev) => [...prev, teacher]);
+  const updateTeacher = (id: string, teacher: Teacher) =>
     setTeachers((prev) => prev.map((t) => (t.id === id ? teacher : t)));
-  };
+  const deleteTeacher = (id: string) => setTeachers((prev) => prev.filter((t) => t.id !== id));
 
-  const deleteTeacher = (id: string) => {
-    setTeachers((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  // Facility operations
-  const addFacility = (facility: Facility) => {
-    setFacilities((prev) => [...prev, facility]);
-  };
-
-  const updateFacility = (id: string, facility: Facility) => {
+  // Facilities
+  const addFacility = (facility: Facility) => setFacilities((prev) => [...prev, facility]);
+  const updateFacility = (id: string, facility: Facility) =>
     setFacilities((prev) => prev.map((f) => (f.id === id ? facility : f)));
-  };
+  const deleteFacility = (id: string) => setFacilities((prev) => prev.filter((f) => f.id !== id));
 
-  const deleteFacility = (id: string) => {
-    setFacilities((prev) => prev.filter((f) => f.id !== id));
-  };
-
-  // Extracurricular operations
-  const addExtracurricular = (extra: Extracurricular) => {
+  // Extracurriculars
+  const addExtracurricular = (extra: Extracurricular) =>
     setExtracurriculars((prev) => [...prev, extra]);
-  };
-
-  const updateExtracurricular = (id: string, extra: Extracurricular) => {
+  const updateExtracurricular = (id: string, extra: Extracurricular) =>
     setExtracurriculars((prev) => prev.map((e) => (e.id === id ? extra : e)));
-  };
-
-  const deleteExtracurricular = (id: string) => {
+  const deleteExtracurricular = (id: string) =>
     setExtracurriculars((prev) => prev.filter((e) => e.id !== id));
-  };
 
-  // Auth operations
+  // PPDB Registrations
+  const addPPDBRegistration = (reg: PPDBRegistration) =>
+    setPpdbRegistrations((prev) => [reg, ...prev]);
+  const updatePPDBRegistrationStatus = (id: string, status: PPDBRegistration['status']) =>
+    setPpdbRegistrations((prev) =>
+      prev.map((r) => (r.id === id ? { ...r, status } : r))
+    );
+  const deletePPDBRegistration = (id: string) =>
+    setPpdbRegistrations((prev) => prev.filter((r) => r.id !== id));
+
+  const resetNewsToInitial = () => setNews(initialNews);
+
+  // Auth
   const login = (username: string, password: string): boolean => {
-    const user = defaultUsers.find((u) => u.username === username && u.password === password);
+    const trimmedUsername = username.trim();
+    const trimmedPassword = password.trim();
+    const user = defaultUsers.find(
+      (u) => u.username === trimmedUsername && u.password === trimmedPassword
+    );
     if (user) {
       setCurrentUser(user);
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(user));
       return true;
     }
     return false;
@@ -172,7 +183,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = () => {
     setCurrentUser(null);
-    localStorage.removeItem(USER_KEY);
+    sessionStorage.removeItem(SESSION_KEY);
   };
 
   return (
@@ -183,9 +194,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         facilities,
         extracurriculars,
         ppdb,
+        ppdbRegistrations,
         profile,
         contact,
         currentUser,
+        initialized,
         addNews,
         updateNews,
         deleteNews,
@@ -198,6 +211,10 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         addExtracurricular,
         updateExtracurricular,
         deleteExtracurricular,
+        addPPDBRegistration,
+        updatePPDBRegistrationStatus,
+        deletePPDBRegistration,
+        resetNewsToInitial,
         login,
         logout,
       }}

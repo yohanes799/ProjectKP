@@ -46,6 +46,22 @@ export interface PPDBInfo {
   quota: number;
 }
 
+export interface PPDBRegistration {
+  id: string;
+  fullName: string;
+  gender: 'Laki-laki' | 'Perempuan';
+  birthPlace: string;
+  birthDate: string;
+  address: string;
+  guardianName: string;
+  studentPhone: string;
+  guardianPhone: string;
+  originSchool: string;
+  originSchoolAddress: string;
+  registeredAt: string;
+  status: 'Menunggu' | 'Diterima' | 'Ditolak';
+}
+
 export interface SchoolProfile {
   name: string;
   address: string;
@@ -54,11 +70,14 @@ export interface SchoolProfile {
   website: string;
   accreditation: string;
   principalName: string;
+  foundationChairName: string;
   founded: string;
   description: string;
   vision: string;
   mission: string[];
   logo: string;
+  principalGreeting: string;
+  foundationGreeting: string;
 }
 
 export interface ContactInfo {
@@ -68,8 +87,8 @@ export interface ContactInfo {
   mapEmbed: string;
   socialMedia: {
     facebook?: string;
+    whatsapp?: string;
     instagram?: string;
-    youtube?: string;
     twitter?: string;
   };
 }

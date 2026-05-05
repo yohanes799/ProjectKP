@@ -1,5 +1,5 @@
 import React from 'react';
-import { GraduationCap, MapPin, Phone, Mail, Globe, Award, User, Calendar } from 'lucide-react';
+import { GraduationCap, MapPin, Phone, Mail, Globe, Award, User, Calendar, Quote } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const ProfilePage: React.FC = () => {
@@ -22,6 +22,7 @@ const ProfilePage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
+
           {/* Info Card */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white rounded-xl shadow-sm p-6">
@@ -72,6 +73,13 @@ const ProfilePage: React.FC = () => {
                   </div>
                 </li>
                 <li className="flex items-center space-x-3">
+                  <User className="h-5 w-5 text-primary-600 flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-gray-400 font-medium">Ketua Yayasan</p>
+                    <p className="text-gray-700 text-sm">{profile.foundationChairName}</p>
+                  </div>
+                </li>
+                <li className="flex items-center space-x-3">
                   <Calendar className="h-5 w-5 text-primary-600 flex-shrink-0" />
                   <div>
                     <p className="text-xs text-gray-400 font-medium">Tahun Berdiri</p>
@@ -82,33 +90,47 @@ const ProfilePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Description */}
+          {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
+
+            {/* Tentang Sekolah */}
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="font-bold text-gray-800 text-xl mb-4 border-b pb-2">Tentang Sekolah</h2>
               <p className="text-gray-700 leading-relaxed">{profile.description}</p>
             </div>
 
+            {/* Sambutan Kepala Sekolah */}
             <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="font-bold text-gray-800 text-xl mb-4 border-b pb-2">Visi Sekolah</h2>
-              <div className="bg-primary-50 border-l-4 border-primary-600 rounded-r-lg p-4">
-                <p className="text-gray-700 italic leading-relaxed text-lg">"{profile.vision}"</p>
+              <div className="flex items-center space-x-3 mb-5">
+                <div className="bg-primary-100 p-2 rounded-full">
+                  <Quote className="h-5 w-5 text-primary-700" />
+                </div>
+                <h2 className="font-bold text-gray-800 text-xl">Sambutan Kepala Sekolah</h2>
+              </div>
+              <div className="relative bg-primary-50 rounded-xl p-5 border-l-4 border-primary-600">
+                <Quote className="absolute top-3 right-3 h-8 w-8 text-primary-200" />
+                <p className="text-gray-700 leading-relaxed italic">
+                  {profile.principalGreeting}
+                </p>
               </div>
             </div>
 
+            {/* Sambutan Ketua Yayasan */}
             <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="font-bold text-gray-800 text-xl mb-4 border-b pb-2">Misi Sekolah</h2>
-              <ol className="space-y-3">
-                {profile.mission.map((m, i) => (
-                  <li key={i} className="flex items-start space-x-3">
-                    <span className="bg-primary-600 text-white text-sm font-bold w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      {i + 1}
-                    </span>
-                    <p className="text-gray-700 leading-relaxed">{m}</p>
-                  </li>
-                ))}
-              </ol>
+              <div className="flex items-center space-x-3 mb-5">
+                <div className="bg-amber-100 p-2 rounded-full">
+                  <Quote className="h-5 w-5 text-amber-700" />
+                </div>
+                <h2 className="font-bold text-gray-800 text-xl">Sambutan Ketua Yayasan</h2>
+              </div>
+              <div className="relative bg-amber-50 rounded-xl p-5 border-l-4 border-amber-500">
+                <Quote className="absolute top-3 right-3 h-8 w-8 text-amber-200" />
+                <p className="text-gray-700 leading-relaxed italic">
+                  {profile.foundationGreeting}
+                </p>
+              </div>
             </div>
+
           </div>
         </div>
       </div>

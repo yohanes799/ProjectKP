@@ -8,6 +8,7 @@ export const schoolProfile: SchoolProfile = {
   website: 'www.sman1nusantara.sch.id',
   accreditation: 'A',
   principalName: 'Dr. Budi Santoso, M.Pd.',
+  foundationChairName: 'H. Ahmad Wijaya, S.E., M.M.',
   founded: '1975',
   description:
     'SMA Negeri 1 Nusantara adalah sekolah menengah atas negeri unggulan yang telah berdiri sejak tahun 1975. Dengan pengalaman lebih dari 49 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
@@ -22,6 +23,10 @@ export const schoolProfile: SchoolProfile = {
     'Meningkatkan kompetensi tenaga pendidik dan kependidikan secara berkelanjutan.',
   ],
   logo: 'https://placehold.co/120x120/1e40af/ffffff?text=SMAN1',
+  principalGreeting:
+    'Assalamu\'alaikum Warahmatullahi Wabarakatuh. Puji syukur kehadirat Allah SWT atas segala limpahan rahmat dan karunia-Nya sehingga SMA Negeri 1 Nusantara terus berkembang menjadi lembaga pendidikan yang unggul dan terpercaya. Atas nama seluruh keluarga besar SMA Negeri 1 Nusantara, saya menyambut dengan hangat kehadiran Anda di website resmi kami. Kami berkomitmen untuk terus meningkatkan kualitas pendidikan, membentuk karakter siswa yang berakhlak mulia, serta mempersiapkan generasi penerus bangsa yang siap menghadapi tantangan global. Bersama seluruh tenaga pendidik yang profesional dan berdedikasi, kami yakin dapat mewujudkan cita-cita mulia tersebut. Semoga Allah SWT senantiasa membimbing langkah kita semua. Wassalamu\'alaikum Warahmatullahi Wabarakatuh.',
+  foundationGreeting:
+    'Assalamu\'alaikum Warahmatullahi Wabarakatuh. Dengan penuh rasa syukur dan kebanggaan, saya menyampaikan sambutan hangat kepada seluruh civitas akademika SMA Negeri 1 Nusantara. Yayasan Pendidikan Nusantara Jaya senantiasa berkomitmen untuk mendukung penuh pengembangan sekolah ini agar menjadi institusi pendidikan yang tidak hanya unggul secara akademis, tetapi juga mampu mencetak generasi yang berkarakter, berintegritas, dan berdaya saing tinggi. Kami percaya bahwa investasi terbaik adalah investasi di bidang pendidikan. Oleh karena itu, kami terus berupaya menyediakan sarana dan prasarana terbaik, mendukung pengembangan kompetensi guru, serta menciptakan lingkungan belajar yang kondusif dan inspiratif. Mari bersama-sama kita wujudkan pendidikan berkualitas untuk masa depan bangsa yang lebih cerah. Wassalamu\'alaikum Warahmatullahi Wabarakatuh.',
 };
 
 export const initialNews: NewsItem[] = [
@@ -250,7 +255,7 @@ export const contactInfo: ContactInfo = {
   mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613!3d-6.194741!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTEnNDEuMSJTIDEwNsKwNDknMTAuNCJF!5e0!3m2!1sen!2sid!4v1234567890',
   socialMedia: {
     facebook: 'https://facebook.com/sman1nusantara',
+    whatsapp: 'https://wa.me/6281234567890',
     instagram: 'https://instagram.com/sman1nusantara',
-    youtube: 'https://youtube.com/sman1nusantara',
   },
 };

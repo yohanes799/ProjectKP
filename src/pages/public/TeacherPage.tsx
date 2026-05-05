@@ -76,12 +76,6 @@ const TeacherPage: React.FC = () => {
                       <BookOpen className="h-4 w-4 text-primary-500 mt-0.5 flex-shrink-0" />
                       <span>{teacher.education}</span>
                     </div>
-                    {teacher.nip && (
-                      <div className="flex items-start space-x-2">
-                        <span className="text-xs text-gray-400 font-medium">NIP:</span>
-                        <span className="text-xs">{teacher.nip}</span>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
