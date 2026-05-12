@@ -1,26 +1,26 @@
 import type { NewsItem, Teacher, Facility, Extracurricular, PPDBInfo, SchoolProfile, ContactInfo } from '../types';
 
 export const schoolProfile: SchoolProfile = {
-  name: 'SMA Negeri 1 Nusantara',
-  address: 'Jl. Pendidikan No. 1, Kec. Maju, Kab. Sejahtera, Provinsi Nusantara 12345',
+  name: 'SMP SERUNI PUTIH',
+  address: 'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
   phone: '(021) 1234-5678',
-  email: 'info@sman1nusantara.sch.id',
-  website: 'www.sman1nusantara.sch.id',
+  email: 'smpseruniputih@gmail.com',
+  website: 'www.smpseruniputih.sch.id',
   accreditation: 'A',
-  principalName: 'Dr. Budi Santoso, M.Pd.',
-  foundationChairName: 'H. Ahmad Wijaya, S.E., M.M.',
+  principalName: 'Sarah Ginting S.Si',
+  foundationChairName: 'Lindah Ganda Saputra, SH',
   founded: '1975',
   description:
-    'SMA Negeri 1 Nusantara adalah sekolah menengah atas negeri unggulan yang telah berdiri sejak tahun 1975. Dengan pengalaman lebih dari 49 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
+    'SMP SERUNI PUTIH adalah sekolah menengah pertama unggulan yang telah berdiri sejak tahun 1975. Dengan pengalaman lebih dari 49 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
   vision:
-    'Menjadi sekolah unggulan yang menghasilkan lulusan beriman, berilmu, berkarakter, dan berdaya saing global.',
+    'Terlaksananya Proses Pendidikan Yang Memenuhi Standar Mutu, Berkarakter, Inovatif dan Berakar Pada Budaya Bangsa Sesusai Dengan Delapan Dimensi Profit Lulusan',
   mission: [
-    'Menyelenggarakan pembelajaran yang berkualitas, inovatif, dan berbasis teknologi.',
-    'Membentuk karakter siswa yang berakhlak mulia, disiplin, dan bertanggung jawab.',
-    'Mengembangkan potensi siswa melalui kegiatan akademik dan non-akademik.',
-    'Membangun lingkungan sekolah yang kondusif, aman, dan nyaman.',
-    'Menjalin kerjasama yang harmonis antara sekolah, orang tua, dan masyarakat.',
-    'Meningkatkan kompetensi tenaga pendidik dan kependidikan secara berkelanjutan.',
+    'Meningkatkan Tata Kelola Managerial Satuan Pendidikan Yang Adaptif, Berkarakter dan Menjamin Mutu.',
+    'Memvasilitasi Pemebelajaran Yang Menarik Menyenangkan dan Berkarakter Sesuai Bakat Dan Minat Murid.',
+    'Menciptakan Profil Lulusan Yang Bernalar Kritis dan kreatif Sehingga mampu Mengkreasi Ide dan Keterampilan Yang Inovatif.',
+    'Menciptakan Lingkungan Sekolah Sebagai Tempat Perkembangan Intelektual, Sosial, Emosional, Keterampilan dan Pengembangan Budaya Lokal Dalamm Kebhinnekaan Gombal.',
+    'Menjalin kemitraaan Dengan Orang Tua Masyarakat dan Pemerintah Dalam Keberagaman Yang Mewadahi Kreatifitas Murid Yang Berjiwa kompetitif.',
+    'Meningkatkan kompetensi GTK Melalui Pelatihan Mandiri Atau Yang diselenggarakan Oleh Pihak - Pihak Lain.',
   ],
   logo: 'https://placehold.co/120x120/1e40af/ffffff?text=SMAN1',
   principalGreeting:
@@ -85,6 +85,7 @@ export const initialTeachers: Teacher[] = [
     photo: 'https://placehold.co/300x300/1e40af/ffffff?text=BS',
     nip: '196501011990031001',
     position: 'Kepala Sekolah',
+    level: 'SMA',
   },
   {
     id: '2',
@@ -94,6 +95,7 @@ export const initialTeachers: Teacher[] = [
     photo: 'https://placehold.co/300x300/059669/ffffff?text=SR',
     nip: '197203151998022001',
     position: 'Guru Senior',
+    level: 'SMA',
   },
   {
     id: '3',
@@ -103,6 +105,7 @@ export const initialTeachers: Teacher[] = [
     photo: 'https://placehold.co/300x300/dc2626/ffffff?text=AF',
     nip: '198005202005011002',
     position: 'Guru',
+    level: 'SMA',
   },
   {
     id: '4',
@@ -112,6 +115,7 @@ export const initialTeachers: Teacher[] = [
     photo: 'https://placehold.co/300x300/d97706/ffffff?text=DL',
     nip: '197808122003122001',
     position: 'Guru Senior',
+    level: 'SMP',
   },
   {
     id: '5',
@@ -121,6 +125,7 @@ export const initialTeachers: Teacher[] = [
     photo: 'https://placehold.co/300x300/7c3aed/ffffff?text=RH',
     nip: '198212302006011003',
     position: 'Guru',
+    level: 'SMP',
   },
   {
     id: '6',
@@ -130,6 +135,7 @@ export const initialTeachers: Teacher[] = [
     photo: 'https://placehold.co/300x300/0891b2/ffffff?text=RK',
     nip: '198507142010012004',
     position: 'Guru',
+    level: 'SD',
   },
 ];
 

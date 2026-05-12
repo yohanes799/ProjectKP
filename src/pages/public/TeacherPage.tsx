@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { Users, Search, BookOpen, Award } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import type { Teacher } from '../../types';
+
+const levelColors: Record<Teacher['level'], string> = {
+  SD:   'bg-pink-100 text-pink-700',
+  SMP:  'bg-yellow-100 text-yellow-700',
+  SMA:  'bg-blue-100 text-blue-700',
+  SMK:  'bg-purple-100 text-purple-700',
+  Umum: 'bg-gray-100 text-gray-600',
+};
 
 const TeacherPage: React.FC = () => {
   const { teachers } = useData();
@@ -64,9 +73,16 @@ const TeacherPage: React.FC = () => {
                 </div>
                 <div className="p-5 text-center">
                   <h3 className="font-bold text-gray-800 text-lg mb-1">{teacher.name}</h3>
-                  <span className="inline-block bg-primary-100 text-primary-700 text-sm font-medium px-3 py-1 rounded-full mb-3">
-                    {teacher.subject}
-                  </span>
+                  <div className="flex items-center justify-center gap-2 mb-3 flex-wrap">
+                    <span className="inline-block bg-primary-100 text-primary-700 text-sm font-medium px-3 py-1 rounded-full">
+                      {teacher.subject}
+                    </span>
+                    {teacher.level && (
+                      <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full ${levelColors[teacher.level]}`}>
+                        {teacher.level}
+                      </span>
+                    )}
+                  </div>
                   <div className="space-y-2 text-sm text-gray-500 text-left border-t pt-3">
                     <div className="flex items-start space-x-2">
                       <Award className="h-4 w-4 text-primary-500 mt-0.5 flex-shrink-0" />

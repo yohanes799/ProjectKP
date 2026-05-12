@@ -6,6 +6,13 @@ import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import ImageUpload from '../../components/ui/ImageUpload';
 import type { Teacher } from '../../types';
 
+const LEVELS: Teacher['level'][] = ['SD', 'SMP'];
+
+const levelColors: Record<Teacher['level'], string> = {
+  SD:   'bg-pink-100 text-pink-700',
+  SMP:  'bg-yellow-100 text-yellow-700',
+};
+
 const emptyForm: Omit<Teacher, 'id'> = {
   name: '',
   subject: '',
@@ -13,6 +20,7 @@ const emptyForm: Omit<Teacher, 'id'> = {
   photo: '',
   nip: '',
   position: '',
+  level: 'SMA',
 };
 
 const AdminTeacherPage: React.FC = () => {
@@ -44,6 +52,7 @@ const AdminTeacherPage: React.FC = () => {
       photo: item.photo,
       nip: item.nip,
       position: item.position,
+      level: item.level ?? 'SMA',
     });
     setModalOpen(true);
   };
@@ -94,6 +103,7 @@ const AdminTeacherPage: React.FC = () => {
               <tr>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guru</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mata Pelajaran</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Kategori</th>
                 <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Jabatan</th>
                 <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
               </tr>
@@ -101,7 +111,7 @@ const AdminTeacherPage: React.FC = () => {
             <tbody className="divide-y divide-gray-100">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="text-center py-12 text-gray-400">
+                  <td colSpan={5} className="text-center py-12 text-gray-400">
                     <Users className="h-10 w-10 mx-auto mb-2 opacity-40" />
                     <p>Tidak ada guru ditemukan</p>
                   </td>
@@ -125,6 +135,11 @@ const AdminTeacherPage: React.FC = () => {
                     <td className="px-5 py-4">
                       <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">
                         {item.subject}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4">
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${levelColors[item.level ?? 'Umum']}`}>
+                        {item.level ?? 'Umum'}
                       </span>
                     </td>
                     <td className="px-5 py-4 text-sm text-gray-600">{item.position}</td>
@@ -170,6 +185,7 @@ const AdminTeacherPage: React.FC = () => {
               placeholder="Nama lengkap guru"
             />
           </div>
+
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran *</label>
@@ -194,6 +210,30 @@ const AdminTeacherPage: React.FC = () => {
               />
             </div>
           </div>
+
+          {/* Kategori Jenjang */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Kategori Jenjang *
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {LEVELS.map((lvl) => (
+                <button
+                  key={lvl}
+                  type="button"
+                  onClick={() => setForm({ ...form, level: lvl })}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium border-2 transition-colors ${
+                    form.level === lvl
+                      ? `${levelColors[lvl]} border-current`
+                      : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  {lvl}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Pendidikan Terakhir *</label>
             <input
@@ -205,11 +245,13 @@ const AdminTeacherPage: React.FC = () => {
               placeholder="S1 Pendidikan Matematika - Universitas..."
             />
           </div>
+
           <ImageUpload
             label="Foto Guru"
             value={form.photo}
             onChange={(val) => setForm({ ...form, photo: val })}
           />
+
           <div className="flex space-x-3 pt-2">
             <button
               type="button"
