@@ -1,6 +1,7 @@
 import React from 'react';
-import { GraduationCap, MapPin, Phone, Mail, Globe, Award, User, Calendar, Quote } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Award, User, Calendar, Quote } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import seruniLogo from '../../assets/serunilogo1.jpg';
 
 const ProfilePage: React.FC = () => {
   const { profile } = useData();
@@ -11,8 +12,12 @@ const ProfilePage: React.FC = () => {
       <div className="bg-gradient-to-r from-primary-800 to-primary-700 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex justify-center mb-4">
-            <div className="bg-white rounded-full p-4">
-              <GraduationCap className="h-12 w-12 text-primary-800" />
+            <div className="h-24 w-24 rounded-full border-4 border-white shadow-lg bg-white flex items-center justify-center overflow-hidden">
+              <img
+                src={seruniLogo}
+                alt="Logo Sekolah"
+                className="h-20 w-20 object-contain"
+              />
             </div>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2">{profile.name}</h1>

@@ -4,6 +4,7 @@ import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import ImageUpload from '../../components/ui/ImageUpload';
+import ErrorBoundary from '../../components/ui/ErrorBoundary';
 import type { Facility } from '../../types';
 
 const emptyForm: Omit<Facility, 'id'> = {
@@ -14,6 +15,14 @@ const emptyForm: Omit<Facility, 'id'> = {
 };
 
 const AdminFacilityPage: React.FC = () => {
+  return (
+    <ErrorBoundary>
+      <AdminFacilityContent />
+    </ErrorBoundary>
+  );
+};
+
+const AdminFacilityContent: React.FC = () => {
   const { facilities, addFacility, updateFacility, deleteFacility } = useData();
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

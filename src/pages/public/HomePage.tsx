@@ -11,6 +11,7 @@ import {
   Award,
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import panoramaSekolah from '../../assets/panoramaSekolah.jpg';
 
 const HomePage: React.FC = () => {
   const { news, profile, teachers, facilities } = useData();
@@ -26,11 +27,16 @@ const HomePage: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary-300 rounded-full blur-3xl"></div>
-        </div>
+      <section
+        className="relative text-white overflow-hidden"
+        style={{
+          backgroundImage: `url(${panoramaSekolah})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Overlay gelap agar teks tetap terbaca */}
+        <div className="absolute inset-0 bg-primary-900/70" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <div className="max-w-3xl">
             <div className="flex items-center space-x-2 mb-4">

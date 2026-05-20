@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { DataProvider } from './context/DataContext';
 import { useData } from './context/DataContext';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 
 // Layouts
 import PublicLayout from './components/layout/PublicLayout';
@@ -77,7 +78,9 @@ const AppRoutes: React.FC = () => {
         path="/admin"
         element={
           <ProtectedRoute>
-            <AdminLayout />
+            <ErrorBoundary>
+              <AdminLayout />
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       >
@@ -97,11 +100,13 @@ const AppRoutes: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <DataProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </DataProvider>
+    <ErrorBoundary>
+      <DataProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </DataProvider>
+    </ErrorBoundary>
   );
 };
 

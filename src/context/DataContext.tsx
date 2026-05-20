@@ -54,8 +54,38 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'school_data';
-const DATA_VERSION = 'v2'; // Naikkan versi ini untuk reset data lama
+const DATA_VERSION = 'v3'; // v3: pisah key per koleksi + kompres gambar
 const SESSION_KEY = 'admin_session';
+
+// Simpan tiap koleksi di key terpisah agar tidak ada satu key yang terlalu besar
+const KEYS = {
+  news: 'school_news',
+  teachers: 'school_teachers',
+  facilities: 'school_facilities',
+  extracurriculars: 'school_extracurriculars',
+  ppdbRegistrations: 'school_ppdb_registrations',
+  version: 'school_data_version',
+};
+
+function saveItem(key: string, data: unknown): boolean {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch {
+    console.warn(`localStorage penuh, gagal menyimpan "${key}"`);
+    return false;
+  }
+}
+
+function loadItem<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw) as T;
+  } catch {
+    return fallback;
+  }
+}
 
 const defaultUsers: User[] = [
   {
@@ -82,27 +112,33 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     localStorage.removeItem('current_user');
 
-    // Cek versi data — jika versi lama, reset ke initial data
-    const savedVersion = localStorage.getItem('school_data_version');
+    // Migrasi dari format lama (satu key) ke format baru (key terpisah)
+    const savedVersion = localStorage.getItem(KEYS.version);
     if (savedVersion !== DATA_VERSION) {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem('school_data_version', DATA_VERSION);
+      // Coba migrasi data lama jika ada
+      const oldData = localStorage.getItem(STORAGE_KEY);
+      if (oldData) {
+        try {
+          const parsed = JSON.parse(oldData);
+          if (parsed.news) saveItem(KEYS.news, parsed.news);
+          if (parsed.teachers) saveItem(KEYS.teachers, parsed.teachers);
+          if (parsed.facilities) saveItem(KEYS.facilities, parsed.facilities);
+          if (parsed.extracurriculars) saveItem(KEYS.extracurriculars, parsed.extracurriculars);
+          if (parsed.ppdbRegistrations) saveItem(KEYS.ppdbRegistrations, parsed.ppdbRegistrations);
+        } catch {
+          // Data lama corrupt, abaikan
+        }
+        localStorage.removeItem(STORAGE_KEY);
+      }
+      saveItem(KEYS.version, DATA_VERSION);
     }
 
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    if (savedData) {
-      const parsed = JSON.parse(savedData);
-      setNews(parsed.news || initialNews);
-      setTeachers(parsed.teachers || initialTeachers);
-      setFacilities(parsed.facilities || initialFacilities);
-      setExtracurriculars(parsed.extracurriculars || initialExtracurriculars);
-      setPpdbRegistrations(parsed.ppdbRegistrations || []);
-    } else {
-      setNews(initialNews);
-      setTeachers(initialTeachers);
-      setFacilities(initialFacilities);
-      setExtracurriculars(initialExtracurriculars);
-    }
+    // Load tiap koleksi dari key masing-masing
+    setNews(loadItem(KEYS.news, initialNews));
+    setTeachers(loadItem(KEYS.teachers, initialTeachers));
+    setFacilities(loadItem(KEYS.facilities, initialFacilities));
+    setExtracurriculars(loadItem(KEYS.extracurriculars, initialExtracurriculars));
+    setPpdbRegistrations(loadItem(KEYS.ppdbRegistrations, []));
 
     const savedSession = sessionStorage.getItem(SESSION_KEY);
     if (savedSession) {
@@ -116,17 +152,13 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setInitialized(true);
   }, []);
 
-  useEffect(() => {
-    if (!initialized) return;
-    const dataToSave = {
-      news,
-      teachers,
-      facilities,
-      extracurriculars,
-      ppdbRegistrations,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-  }, [initialized, news, teachers, facilities, extracurriculars, ppdbRegistrations]);
+  // Simpan tiap koleksi secara terpisah agar perubahan satu koleksi
+  // tidak mempengaruhi koleksi lain dan tidak melebihi batas localStorage
+  useEffect(() => { if (initialized) saveItem(KEYS.news, news); }, [initialized, news]);
+  useEffect(() => { if (initialized) saveItem(KEYS.teachers, teachers); }, [initialized, teachers]);
+  useEffect(() => { if (initialized) saveItem(KEYS.facilities, facilities); }, [initialized, facilities]);
+  useEffect(() => { if (initialized) saveItem(KEYS.extracurriculars, extracurriculars); }, [initialized, extracurriculars]);
+  useEffect(() => { if (initialized) saveItem(KEYS.ppdbRegistrations, ppdbRegistrations); }, [initialized, ppdbRegistrations]);
 
   // News
   const addNews = (item: NewsItem) => setNews((prev) => [item, ...prev]);

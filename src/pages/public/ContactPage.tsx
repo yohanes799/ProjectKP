@@ -122,16 +122,56 @@ const ContactPage: React.FC = () => {
 
             {/* Map */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="p-4 border-b">
+              <div className="p-4 border-b flex items-center justify-between">
                 <h2 className="font-bold text-gray-800">Lokasi Sekolah</h2>
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-1.5 text-sm text-primary-700 hover:text-primary-900 font-medium transition-colors"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  <span>Buka di Google Maps</span>
+                </a>
               </div>
-              <div className="h-64 bg-gray-200 flex items-center justify-center">
-                <div className="text-center text-gray-500">
-                  <MapPin className="h-10 w-10 mx-auto mb-2 text-primary-400" />
-                  <p className="text-sm font-medium">{profile.name}</p>
-                  <p className="text-xs">{contact.address}</p>
+              {contact.mapEmbed ? (
+                <div className="relative">
+                  <iframe
+                    src={contact.mapEmbed}
+                    width="100%"
+                    height="280"
+                    style={{ border: 0, display: 'block' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Lokasi Sekolah"
+                  />
+                  <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute bottom-3 right-3 flex items-center space-x-1.5 bg-white text-primary-700 border border-primary-200 px-3 py-1.5 rounded-lg shadow text-xs font-medium hover:bg-primary-50 transition-colors"
+                  >
+                    <MapPin className="h-3.5 w-3.5" />
+                    <span>Petunjuk Arah</span>
+                  </a>
                 </div>
-              </div>
+              ) : (
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="h-64 bg-gray-100 flex flex-col items-center justify-center hover:bg-primary-50 transition-colors group"
+                >
+                  <MapPin className="h-10 w-10 mb-2 text-primary-400 group-hover:text-primary-600 transition-colors" />
+                  <p className="text-sm font-medium text-gray-700 group-hover:text-primary-700">{profile.name}</p>
+                  <p className="text-xs text-gray-500 text-center px-6 mt-1">{contact.address}</p>
+                  <span className="mt-3 text-xs text-primary-600 font-medium flex items-center space-x-1">
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    <span>Klik untuk buka Google Maps</span>
+                  </span>
+                </a>
+              )}
             </div>
           </div>
 

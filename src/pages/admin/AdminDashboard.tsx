@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Newspaper, Users, Building2, Trophy, TrendingUp, ArrowRight,
-  GraduationCap, Clock,
+  GraduationCap, Bell,
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const AdminDashboard: React.FC = () => {
   const { news, teachers, facilities, extracurriculars, ppdbRegistrations, currentUser } = useData();
 
-  const pendingCount = ppdbRegistrations.filter((r) => r.status === 'Menunggu').length;
+  const newRegistrations = ppdbRegistrations.length;
 
   const stats = [
     { label: 'Total Berita', value: news.length, icon: Newspaper, color: 'bg-blue-500', path: '/admin/berita' },
@@ -31,10 +31,10 @@ const AdminDashboard: React.FC = () => {
           Selamat Datang, {currentUser?.name}! 👋
         </h2>
         <p className="text-primary-200 text-sm">Kelola konten website sekolah dari panel admin ini.</p>
-        {pendingCount > 0 && (
+        {newRegistrations > 0 && (
           <div className="mt-3 inline-flex flex-wrap items-center gap-2 bg-yellow-400/20 border border-yellow-400/40 text-yellow-200 px-3 py-1.5 rounded-lg text-xs sm:text-sm">
-            <Clock className="h-4 w-4 flex-shrink-0" />
-            <span>{pendingCount} pendaftar PPDB menunggu verifikasi</span>
+            <Bell className="h-4 w-4 flex-shrink-0" />
+            <span>{newRegistrations} pendaftar PPDB baru</span>
             <Link to="/admin/ppdb" className="underline font-medium">Lihat →</Link>
           </div>
         )}

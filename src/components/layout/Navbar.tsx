@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, GraduationCap, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import seruniLogo from '../../assets/serunilogo1.jpg';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,9 +41,11 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="bg-white rounded-full p-1.5">
-              <GraduationCap className="h-7 w-7 text-primary-800" />
-            </div>
+            <img
+              src={seruniLogo}
+              alt="Logo Sekolah"
+              className="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
+            />
             <div className="hidden sm:block">
               <p className="font-bold text-sm leading-tight">{profile.name}</p>
               <p className="text-primary-300 text-xs">Akreditasi {profile.accreditation}</p>

@@ -17,7 +17,7 @@ export interface Teacher {
   photo: string;
   nip: string;
   position: string;
-  level: 'SD' | 'SMP' | 'SMA' | 'SMK' | 'Umum';
+  level: 'SD' | 'SMP' | 'Staff';
 }
 
 export interface Facility {

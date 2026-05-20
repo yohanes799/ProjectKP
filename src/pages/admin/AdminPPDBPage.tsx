@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Search, GraduationCap, Trash2, Pencil, X, Eye } from 'lucide-react';
+import { Search, GraduationCap, Trash2, Pencil, X, Eye, Download } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import type { PPDBRegistration } from '../../types';
+import { generatePPDBPdf } from '../../utils/generatePPDBPdf';
 
 type EditForm = Omit<PPDBRegistration, 'id' | 'registeredAt' | 'status'>;
 
@@ -220,10 +221,17 @@ const AdminPPDBPage: React.FC = () => {
                 <p className="text-sm font-medium text-gray-800">{formatDate(detailItem.registeredAt)}</p>
               </div>
             </div>
-            <div className="p-4 border-t">
+            <div className="p-4 border-t flex gap-3">
+              <button
+                onClick={() => generatePPDBPdf(detailItem)}
+                className="flex-1 flex items-center justify-center space-x-2 py-2.5 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors text-sm font-medium"
+              >
+                <Download className="h-4 w-4" />
+                <span>Download PDF</span>
+              </button>
               <button
                 onClick={() => setDetailItem(null)}
-                className="w-full py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                className="flex-1 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
               >
                 Tutup
               </button>

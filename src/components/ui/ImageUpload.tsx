@@ -8,20 +8,64 @@ interface ImageUploadProps {
   required?: boolean;
 }
 
+// Kompres gambar ke JPEG dengan lebar maks 800px dan kualitas 0.75
+// Ini memastikan ukuran base64 tetap kecil (~100-200KB) agar tidak memenuhi localStorage
+const compressImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 600;
+        let { width, height } = img;
+
+        if (width > MAX_WIDTH) {
+          height = Math.round((height * MAX_WIDTH) / width);
+          width = MAX_WIDTH;
+        }
+        if (height > MAX_HEIGHT) {
+          width = Math.round((width * MAX_HEIGHT) / height);
+          height = MAX_HEIGHT;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.75));
+      };
+      img.onerror = reject;
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, label = 'Gambar', required = false }) => {
   const [mode, setMode] = useState<'url' | 'file'>('url');
   const [dragOver, setDragOver] = useState(false);
+  const [compressing, setCompressing] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (file: File) => {
+  const handleFileChange = async (file: File) => {
     if (!file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target?.result) {
-        onChange(e.target.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
+    setCompressing(true);
+    try {
+      const compressed = await compressImage(file);
+      onChange(compressed);
+    } catch {
+      // fallback ke FileReader biasa jika canvas gagal
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) onChange(e.target.result as string);
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setCompressing(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +129,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, label = 'Gam
       {/* URL Input */}
       {mode === 'url' && (
         <input
-          type={required ? 'url' : 'text'}
+          type="text"
           required={required && mode === 'url' && !value}
           value={value.startsWith('data:') ? '' : value}
           onChange={(e) => onChange(e.target.value)}
@@ -105,19 +149,30 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, label = 'Gam
             onChange={handleInputChange}
           />
           <div
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => !compressing && fileInputRef.current?.click()}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
-              dragOver
-                ? 'border-primary-500 bg-primary-50'
-                : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'
+            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+              compressing
+                ? 'border-primary-300 bg-primary-50 cursor-wait'
+                : dragOver
+                ? 'border-primary-500 bg-primary-50 cursor-pointer'
+                : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50 cursor-pointer'
             }`}
           >
-            <Image className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-            <p className="text-sm text-gray-600 font-medium">Klik atau drag & drop gambar</p>
-            <p className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP (maks. 5MB)</p>
+            {compressing ? (
+              <>
+                <div className="w-7 h-7 border-2 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                <p className="text-sm text-primary-600 font-medium">Mengompres gambar...</p>
+              </>
+            ) : (
+              <>
+                <Image className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                <p className="text-sm text-gray-600 font-medium">Klik atau drag & drop gambar</p>
+                <p className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP — dikompres otomatis</p>
+              </>
+            )}
           </div>
         </div>
       )}

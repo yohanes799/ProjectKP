@@ -3,14 +3,15 @@ import { Plus, Pencil, Trash2, Search, Users } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
-import ImageUpload from '../../components/ui/ImageUpload';
+import ImageCropUpload from '../../components/ui/ImageCropUpload';
 import type { Teacher } from '../../types';
 
-const LEVELS: Teacher['level'][] = ['SD', 'SMP'];
+const LEVELS: Teacher['level'][] = ['SD', 'SMP', 'Staff'];
 
 const levelColors: Record<Teacher['level'], string> = {
-  SD:   'bg-pink-100 text-pink-700',
-  SMP:  'bg-yellow-100 text-yellow-700',
+  SD:    'bg-pink-100 text-pink-700',
+  SMP:   'bg-yellow-100 text-yellow-700',
+  Staff: 'bg-teal-100 text-teal-700',
 };
 
 const emptyForm: Omit<Teacher, 'id'> = {
@@ -20,7 +21,7 @@ const emptyForm: Omit<Teacher, 'id'> = {
   photo: '',
   nip: '',
   position: '',
-  level: 'SMA',
+  level: 'SMP',
 };
 
 const AdminTeacherPage: React.FC = () => {
@@ -52,7 +53,7 @@ const AdminTeacherPage: React.FC = () => {
       photo: item.photo,
       nip: item.nip,
       position: item.position,
-      level: item.level ?? 'SMA',
+      level: item.level ?? 'SMP',
     });
     setModalOpen(true);
   };
@@ -69,6 +70,7 @@ const AdminTeacherPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-800">Manajemen Data Guru</h2>
@@ -83,6 +85,7 @@ const AdminTeacherPage: React.FC = () => {
         </button>
       </div>
 
+      {/* Search */}
       <div className="bg-white rounded-xl shadow-sm p-4">
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -96,6 +99,7 @@ const AdminTeacherPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -126,10 +130,7 @@ const AdminTeacherPage: React.FC = () => {
                           alt={item.name}
                           className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                         />
-                        <div>
-                          <p className="font-medium text-gray-800 text-sm">{item.name}</p>
-                          <p className="text-gray-400 text-xs line-clamp-1">{item.education}</p>
-                        </div>
+                        <p className="font-medium text-gray-800 text-sm">{item.name}</p>
                       </div>
                     </td>
                     <td className="px-5 py-4">
@@ -138,8 +139,8 @@ const AdminTeacherPage: React.FC = () => {
                       </span>
                     </td>
                     <td className="px-5 py-4">
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${levelColors[item.level ?? 'Umum']}`}>
-                        {item.level ?? 'Umum'}
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${levelColors[item.level ?? 'Staff']}`}>
+                        {item.level ?? 'Staff'}
                       </span>
                     </td>
                     <td className="px-5 py-4 text-sm text-gray-600">{item.position}</td>
@@ -174,6 +175,7 @@ const AdminTeacherPage: React.FC = () => {
         title={editItem ? 'Edit Data Guru' : 'Tambah Guru Baru'}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Nama */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
             <input
@@ -186,72 +188,76 @@ const AdminTeacherPage: React.FC = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran *</label>
-              <input
-                type="text"
-                required
-                value={form.subject}
-                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                placeholder="Matematika"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Jabatan *</label>
-              <input
-                type="text"
-                required
-                value={form.position}
-                onChange={(e) => setForm({ ...form, position: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                placeholder="Guru / Kepala Sekolah"
-              />
-            </div>
-          </div>
+          {/* Mata Pelajaran & Jabatan */}
+          {(() => {
+            const isKepala = form.position.toLowerCase().includes('kepala sekolah');
+            const isOptional = form.level === 'Staff' || isKepala;
+            return (
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Mata Pelajaran
+                    {!isOptional && <span className="text-red-500"> *</span>}
+                    {isOptional && <span className="text-gray-400 text-xs font-normal"> (opsional)</span>}
+                  </label>
+                  <input
+                    type="text"
+                    required={!isOptional}
+                    value={form.subject}
+                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                    placeholder={isOptional ? 'Kosongkan jika tidak ada' : 'Matematika'}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Jabatan *</label>
+                  <input
+                    type="text"
+                    required
+                    value={form.position}
+                    onChange={(e) => setForm({ ...form, position: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                    placeholder="Guru / Kepala Sekolah"
+                  />
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Kategori Jenjang */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Kategori Jenjang *
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Kategori Jenjang *</label>
             <div className="flex flex-wrap gap-2">
               {LEVELS.map((lvl) => (
                 <button
                   key={lvl}
                   type="button"
-                  onClick={() => setForm({ ...form, level: lvl })}
+                  onClick={() => setForm({
+                    ...form,
+                    level: lvl,
+                    // Kosongkan mata pelajaran saat beralih ke Staff
+                    subject: lvl === 'Staff' ? '' : form.subject,
+                  })}
                   className={`px-4 py-1.5 rounded-full text-sm font-medium border-2 transition-colors ${
                     form.level === lvl
                       ? `${levelColors[lvl]} border-current`
                       : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  {lvl}
+                  {lvl === 'Staff' ? 'Staff Sekolah' : `Guru ${lvl}`}
                 </button>
               ))}
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Pendidikan Terakhir *</label>
-            <input
-              type="text"
-              required
-              value={form.education}
-              onChange={(e) => setForm({ ...form, education: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-              placeholder="S1 Pendidikan Matematika - Universitas..."
-            />
-          </div>
-
-          <ImageUpload
+          {/* Foto */}
+          <ImageCropUpload
             label="Foto Guru"
             value={form.photo}
             onChange={(val) => setForm({ ...form, photo: val })}
           />
 
+          {/* Actions */}
           <div className="flex space-x-3 pt-2">
             <button
               type="button"

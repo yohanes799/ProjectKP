@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, MapPin, Phone, Mail, Globe, ExternalLink, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, ExternalLink, MessageCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import seruniLogo from '../../assets/serunilogo1.jpg';
 
 const Footer: React.FC = () => {
   const { profile, contact } = useData();
@@ -13,9 +14,11 @@ const Footer: React.FC = () => {
           {/* School Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="bg-white rounded-full p-2">
-                <GraduationCap className="h-8 w-8 text-primary-800" />
-              </div>
+              <img
+                src={seruniLogo}
+                alt="Logo Sekolah"
+                className="h-12 w-12 rounded-full object-cover border-2 border-primary-600 shadow"
+              />
               <div>
                 <h3 className="font-bold text-lg">{profile.name}</h3>
                 <p className="text-primary-300 text-sm">Akreditasi {profile.accreditation}</p>
