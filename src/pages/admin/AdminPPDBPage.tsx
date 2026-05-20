@@ -59,12 +59,11 @@ const AdminPPDBPage: React.FC = () => {
     });
   };
 
-  const handleEditSubmit = (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editItem || !editForm) return;
-    // Hapus data lama dan tambah data baru dengan id yang sama
-    deletePPDBRegistration(editItem.id);
-    addPPDBRegistration({
+    await deletePPDBRegistration(editItem.id);
+    await addPPDBRegistration({
       ...editForm,
       id: editItem.id,
       registeredAt: editItem.registeredAt,
