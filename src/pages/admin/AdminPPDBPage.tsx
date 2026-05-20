@@ -59,11 +59,11 @@ const AdminPPDBPage: React.FC = () => {
     });
   };
 
-  const handleEditSubmit = async (e: React.FormEvent) => {
+  const handleEditSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editItem || !editForm) return;
-    await deletePPDBRegistration(editItem.id);
-    await addPPDBRegistration({
+    deletePPDBRegistration(editItem.id);
+    addPPDBRegistration({
       ...editForm,
       id: editItem.id,
       registeredAt: editItem.registeredAt,
