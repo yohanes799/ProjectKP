@@ -2,8 +2,8 @@ import { jsPDF } from 'jspdf';
 import type { PPDBRegistration } from '../types';
 import { schoolProfile } from '../data/initialData';
 
-// Path logo relatif dari public — Vite akan resolve saat runtime
-const LOGO_PATH = '/src/assets/serunilogo1.jpg';
+// Logo dari folder public — bisa diakses di dev maupun production Vercel
+const LOGO_PATH = '/serunilogo1.jpg';
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString('id-ID', {
