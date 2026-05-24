@@ -189,7 +189,7 @@ const addNews = async (item: NewsItem) => {
     foto_url: item.image
   };
 
-  const { data, error } = await supabase.from('berita').insert([payload]).select();
+  const { error } = await supabase.from('berita').insert([payload]).select();
 
   if (error) {
     console.error("Gagal tambah berita:", error);
