@@ -53,6 +53,7 @@ interface DataContextType {
   logout: () => void;
   fetchFacilities: () => Promise<void>;
   fetchNews: () => Promise<void>;
+  fetchExtracurriculars: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -400,12 +401,54 @@ const fetchFacilities = async () => {
 };
 
   // Extracurriculars
-  const addExtracurricular = (extra: Extracurricular) =>
-    setExtracurriculars((prev) => [...prev, extra]);
-  const updateExtracurricular = (id: string, extra: Extracurricular) =>
-    setExtracurriculars((prev) => prev.map((e) => (e.id === id ? extra : e)));
-  const deleteExtracurricular = (id: string) =>
-    setExtracurriculars((prev) => prev.filter((e) => e.id !== id));
+  const fetchExtracurriculars = async () => {
+  const { data, error } = await supabase.from('ekstrakurikuler').select('*');
+  if (error) { console.error(error); return; }
+  
+  if (data) {
+    const formatted = data.map(item => ({
+      id: item.id,
+      name: item.nama_ekstrakurikuler,
+      description: item.deskripsi,
+      schedule: item.jadwal,
+      coach: item.pembina,
+      image: item.foto_url
+    }));
+    setExtracurriculars(formatted);
+  }
+};
+
+// 3. FUNGSI TAMBAH (Add)
+const addExtracurricular = async (item: Extracurricular) => {
+  const payload = {
+    nama_ekstrakurikuler: item.name,
+    deskripsi: item.description,
+    jadwal: item.schedule,
+    pembina: item.coach,
+    foto_url: item.image
+  };
+  const { error } = await supabase.from('ekstrakurikuler').insert([payload]);
+  if (!error) await fetchExtracurriculars();
+};
+
+// 4. FUNGSI UPDATE (Edit)
+const updateExtracurricular = async (id: string, item: Extracurricular) => {
+  const payload = {
+    nama_ekstrakurikuler: item.name,
+    deskripsi: item.description,
+    jadwal: item.schedule,
+    pembina: item.coach,
+    foto_url: item.image
+  };
+  const { error } = await supabase.from('ekstrakurikuler').update(payload).eq('id', id);
+  if (!error) await fetchExtracurriculars();
+};
+
+// 5. FUNGSI HAPUS (Delete)
+const deleteExtracurricular = async (id: string) => {
+  const { error } = await supabase.from('ekstrakurikuler').delete().eq('id', id);
+  if (!error) await fetchExtracurriculars();
+};
 
   // PPDB Registrations
   const addPPDBRegistration = (reg: PPDBRegistration) =>
@@ -463,6 +506,7 @@ const fetchFacilities = async () => {
         addExtracurricular,
         updateExtracurricular,
         deleteExtracurricular,
+        fetchExtracurriculars,
         addPPDBRegistration,
         updatePPDBRegistrationStatus,
         deletePPDBRegistration,

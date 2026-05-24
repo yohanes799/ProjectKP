@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { Plus, Pencil, Trash2, Search, Trophy } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
@@ -15,12 +15,17 @@ const emptyForm: Omit<Extracurricular, 'id'> = {
 };
 
 const AdminExtracurricularPage: React.FC = () => {
-  const { extracurriculars, addExtracurricular, updateExtracurricular, deleteExtracurricular } = useData();
+  const { extracurriculars, fetchExtracurriculars, addExtracurricular, updateExtracurricular, deleteExtracurricular } = useData();
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<Extracurricular | null>(null);
   const [form, setForm] = useState<Omit<Extracurricular, 'id'>>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  // FIX 1: Panggil data saat pertama kali load
+  useEffect(() => {
+    fetchExtracurriculars();
+  }, []);
 
   const filtered = extracurriculars.filter((e) =>
     e.name.toLowerCase().includes(search.toLowerCase())
@@ -38,14 +43,22 @@ const AdminExtracurricularPage: React.FC = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // FIX 2 & 3: Tambahkan async, await, dan reset form
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (editItem) {
-      updateExtracurricular(editItem.id, { ...form, id: editItem.id });
+      await updateExtracurricular(editItem.id, { ...form, id: editItem.id });
+      alert("Data berhasil diupdate!");
     } else {
-      addExtracurricular({ ...form, id: Date.now().toString() });
+      // Pastikan ID tidak perlu dikirim jika database yang generate
+      await addExtracurricular({ ...form, id: "" } as Extracurricular);
+      alert("Data berhasil ditambahkan!");
     }
+
     setModalOpen(false);
+    setForm(emptyForm); // Reset form
+    setEditItem(null);  // Reset state edit
   };
 
   return (
