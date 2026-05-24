@@ -48,19 +48,20 @@ export interface PPDBInfo {
 }
 
 export interface PPDBRegistration {
-  id: string;
-  fullName: string;
-  gender: 'Laki-laki' | 'Perempuan';
-  birthPlace: string;
-  birthDate: string;
-  address: string;
-  guardianName: string;
-  studentPhone: string;
-  guardianPhone: string;
-  originSchool: string;
-  originSchoolAddress: string;
-  registeredAt: string;
+  id?: string;
+  nama_lengkap: string;
+  jenis_kelamin: 'Laki-laki' | 'Perempuan';
+  tempat_lahir: string;
+  tanggal_lahir: string;
+  alamat_lengkap: string;
+  telepon_siswa: string;
+  nama_wali: string;
+  telepon_wali: string;
+  sekolah_asal: string;
+  alamat_sekolah: string;
   status: 'Menunggu' | 'Diterima' | 'Ditolak';
+  registeredAt: string;
+  created_at?: string;
 }
 
 export interface SchoolProfile {

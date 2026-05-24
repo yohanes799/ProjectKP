@@ -45,15 +45,15 @@ interface DataContextType {
   addExtracurricular: (extra: Extracurricular) => void;
   updateExtracurricular: (id: string, extra: Extracurricular) => void;
   deleteExtracurricular: (id: string) => void;
-  addPPDBRegistration: (reg: PPDBRegistration) => void;
+  addPPDBRegistration: (reg: PPDBRegistration) => Promise<boolean>;
   updatePPDBRegistrationStatus: (id: string, status: PPDBRegistration['status']) => void;
   deletePPDBRegistration: (id: string) => void;
-  resetNewsToInitial: () => void;
   login: (username: string, password: string) => boolean;
   logout: () => void;
   fetchFacilities: () => Promise<void>;
   fetchNews: () => Promise<void>;
   fetchExtracurriculars: () => Promise<void>;
+  fetchRegistrations: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -451,16 +451,64 @@ const deleteExtracurricular = async (id: string) => {
 };
 
   // PPDB Registrations
-  const addPPDBRegistration = (reg: PPDBRegistration) =>
-    setPpdbRegistrations((prev) => [reg, ...prev]);
-  const updatePPDBRegistrationStatus = (id: string, status: PPDBRegistration['status']) =>
+  // Pastikan fungsi ini async agar bisa menunggu respon dari Supabase
+// Tambahkan Promise<boolean> agar TypeScript tahu fungsi ini mengembalikan true/false
+const addPPDBRegistration = async (reg: PPDBRegistration): Promise<boolean> => {
+  try {
+    const { registeredAt, ...dataToInsert } = reg;
+
+    const { error } = await supabase // Hapus 'data' dari sini (fix error 1)
+      .from('pendaftar_ppdb')
+      .insert([dataToInsert]);
+
+    if (error) {
+      console.error("DEBUG ERROR SUPABASE:", error);
+      return false; // Kembalikan false jika gagal
+    }
+
+    return true; // Kembalikan true jika sukses
+  } catch (err) {
+    console.error("Gagal total:", err);
+    return false; // Kembalikan false jika error
+  }
+};
+
+const updatePPDBRegistrationStatus = async (id: string, status: 'Menunggu' | 'Diterima' | 'Ditolak') => {
+  try {
+    // 1. Update status di database
+    const { error } = await supabase
+      .from('pendaftar_ppdb')
+      .update({ status })
+      .eq('id', id);
+    if (error) throw error;
+
+    // 2. Update status di tampilan
     setPpdbRegistrations((prev) =>
       prev.map((r) => (r.id === id ? { ...r, status } : r))
     );
-  const deletePPDBRegistration = (id: string) =>
-    setPpdbRegistrations((prev) => prev.filter((r) => r.id !== id));
+  } catch (err) {
+    console.error("Error update status:", err);
+  }
+};
 
-  const resetNewsToInitial = () => setNews(initialNews);
+const deletePPDBRegistration = async (id: string) => {
+  try {
+    const { error } = await supabase
+      .from('pendaftar_ppdb')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+
+    setPpdbRegistrations((prev) => prev.filter((r) => r.id !== id));
+  } catch (err) {
+    console.error("Error menghapus data:", err);
+  }
+};
+
+const fetchRegistrations = async () => {
+  const { data } = await supabase.from('pendaftar_ppdb').select('*');
+  if (data) setPpdbRegistrations(data);
+};
 
   // Auth
   const login = (username: string, password: string): boolean => {
@@ -511,7 +559,7 @@ const deleteExtracurricular = async (id: string) => {
         updatePPDBRegistrationStatus,
         deletePPDBRegistration,
         fetchNews,
-        resetNewsToInitial,
+        fetchRegistrations,
         login,
         logout,
       }}
