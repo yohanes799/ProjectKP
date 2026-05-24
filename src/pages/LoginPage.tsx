@@ -105,12 +105,6 @@ const LoginPage: React.FC = () => {
                 {loading ? 'Memproses...' : 'Masuk'}
               </button>
             </form>
-
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg text-xs text-gray-500">
-              <p className="font-medium mb-1">Demo Credentials:</p>
-              <p>Username: <span className="font-mono text-gray-700">admin</span></p>
-              <p>Password: <span className="font-mono text-gray-700">admin123</span></p>
-            </div>
           </div>
         </div>
 
