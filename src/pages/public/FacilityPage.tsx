@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Building2, Users } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const FacilityPage: React.FC = () => {
-  const { facilities } = useData();
+  const { facilities, fetchFacilities } = useData();
+
+  // Tambahkan useEffect ini
+  useEffect(() => {
+    fetchFacilities();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
