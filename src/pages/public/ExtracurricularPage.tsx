@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Trophy, Clock, User } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const ExtracurricularPage: React.FC = () => {
-  const { extracurriculars } = useData();
+  const { extracurriculars, fetchExtracurriculars } = useData();
+  useEffect(() => {
+    fetchExtracurriculars();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
