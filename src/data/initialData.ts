@@ -287,8 +287,8 @@ export const contactInfo: ContactInfo = {
   mapEmbed:
     'https://maps.google.com/maps?q=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia&output=embed',
   socialMedia: {
-    facebook: 'https://facebook.com/sman1nusantara',
-    whatsapp: 'https://wa.me/6281234567890',
-    instagram: 'https://instagram.com/sman1nusantara',
+    facebook: 'https://www.facebook.com/Seruniputihedu',
+    whatsapp: 'https://wa.me/081282992568',
+    instagram: 'https://instagram.com/smpseruniputih',
   },
 };
