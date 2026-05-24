@@ -5,6 +5,7 @@ import Modal from '../../components/ui/Modal';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import ImageCropUpload from '../../components/ui/ImageCropUpload';
 import type { Teacher } from '../../types';
+import { supabase } from '../../utils/supabase';
 
 const LEVELS: Teacher['level'][] = ['SD', 'SMP', 'Staff'];
 
@@ -58,15 +59,71 @@ const AdminTeacherPage: React.FC = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editItem) {
-      updateTeacher(editItem.id, { ...form, id: editItem.id });
-    } else {
-      addTeacher({ ...form, id: Date.now().toString() });
+  // 1. Tambahkan kata 'async' di depan
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // 2. Siapkan penampung untuk URL foto
+  let finalPhotoUrl = form.photo; 
+
+  // Paksa TypeScript menganggap ini bisa berupa objek File
+  const photoData = form.photo as any;
+
+  // 3. FASE UPLOAD: Jika yang ada di state adalah File fisik
+  if (photoData instanceof File || typeof photoData === 'object') {
+    const fileExt = photoData.name ? photoData.name.split('.').pop() : 'jpg';
+    const fileName = `${Math.random()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('foto-guru')
+      .upload(fileName, photoData);
+
+    if (uploadError) {
+      alert("Gagal mengunggah foto ke server!");
+      return; 
     }
-    setModalOpen(false);
+
+    const { data: urlData } = supabase.storage
+      .from('foto-guru')
+      .getPublicUrl(fileName);
+
+    finalPhotoUrl = urlData.publicUrl;
+  }
+
+  // 4. FASE MAPPING SCHEMA (Menyesuaikan React ke Database)
+  const payload = {
+    nama_lengkap: form.name,
+    mata_pelajaran: form.subject,
+    jabatan: form.position,
+    kategori_jenjang: form.level || 'SMP', // fallback default
+    foto_url: finalPhotoUrl
+    // NIP dan Education kita abaikan karena belum ada di skema DB
   };
+
+  // 5. FASE EKSEKUSI DATABASE
+  if (editItem) {
+    // Mode Update
+    const { error } = await supabase
+      .from('guru')
+      .update(payload)
+      .eq('id', editItem.id); // Cari berdasarkan ID Supabase
+      
+    if (error) alert("Gagal memperbarui data!");
+  } else {
+    // Mode Insert
+    const { error } = await supabase
+      .from('guru')
+      .insert([payload]);
+      
+    if (error) alert("Gagal menyimpan guru baru!");
+  }
+
+  // 6. Tutup modal
+  setModalOpen(false);
+  
+  // WAJIB: Panggil ulang fungsi fetch data dari database di sini agar UI ter-update
+  // fetchGuruData(); 
+};
 
   return (
     <div className="space-y-6">

@@ -1,3 +1,5 @@
+import { supabase } from '../utils/supabase';
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import type {
   NewsItem,
@@ -155,9 +157,79 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Teachers
   const addTeacher = (teacher: Teacher) => setTeachers((prev) => [...prev, teacher]);
-  const updateTeacher = (id: string, teacher: Teacher) =>
-    setTeachers((prev) => prev.map((t) => (t.id === id ? teacher : t)));
-  const deleteTeacher = (id: string) => setTeachers((prev) => prev.filter((t) => t.id !== id));
+  const updateTeacher = async (id: string, teacher: Teacher) => {
+  // 1. Mapping Skema: Menerjemahkan bahasa UI ke bahasa Database
+  const payload = {
+    nama_lengkap: teacher.name,
+    mata_pelajaran: teacher.subject,
+    jabatan: teacher.position,
+    kategori_jenjang: teacher.level || 'SMP',
+    foto_url: teacher.photo
+  };
+
+  // 2. Eksekusi Backend: Timpa data lama dengan payload baru berdasarkan ID
+  const { error } = await supabase
+    .from('guru')
+    .update(payload)
+    .eq('id', id);
+
+  if (error) {
+    console.error("Gagal memperbarui data di server:", error);
+    alert("Gagal memperbarui data di database!");
+    return; // Hentikan eksekusi, jangan ubah layar jika server menolak
+  }
+
+  // 3. Eksekusi Frontend: Perbarui UI lokal HANYA JIKA langkah 2 berhasil
+  setTeachers((prev) => prev.map((t) => (t.id === id ? teacher : t)));
+};
+  const deleteTeacher = async (id: string) => {
+  // 1. Eksekusi hapus di Backend (Database Supabase)
+  const { error } = await supabase
+    .from('guru')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error("Gagal menghapus data di server:", error);
+    alert("Gagal menghapus data dari database!");
+    return; // Hentikan proses jika backend menolak/gagal
+  }
+
+  // 2. Eksekusi hapus di Frontend (Local State) 
+  // Ini dilakukan HANYA JIKA langkah 1 berhasil, agar layar ter-update tanpa perlu refresh
+  setTeachers((prev) => prev.filter((t) => t.id !== id));
+};
+  const fetchTeachersData = async () => {
+  const { data, error } = await supabase.from('guru').select('*');
+  
+  if (error) {
+    console.error("Gagal menarik data:", error);
+    return;
+  }
+
+  if (data) {
+    // Mapping dari skema Database (Indonesia) ke skema Frontend (Inggris)
+    const formattedData = data.map((item: any) => ({
+      id: item.id,
+      name: item.nama_lengkap,
+      subject: item.mata_pelajaran,
+      position: item.jabatan,
+      level: item.kategori_jenjang,
+      photo: item.foto_url,
+      education: '', // Tambahkan ini sebagai fallback
+      nip: ''        // Tambahkan ini sebagai fallback
+    }));
+
+    // Timpa dummy data lama dengan data asli dari database
+    setTeachers(formattedData); 
+  }
+};
+
+// Jalankan fungsi fetch sekali saat aplikasi pertama kali dimuat
+useEffect(() => {
+  fetchTeachersData();
+}, []);
+
 
   // Facilities
   const addFacility = (facility: Facility) => setFacilities((prev) => [...prev, facility]);
