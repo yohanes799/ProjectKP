@@ -26,7 +26,7 @@ const emptyForm: Omit<Teacher, 'id'> = {
 };
 
 const AdminTeacherPage: React.FC = () => {
-  const { teachers, addTeacher, updateTeacher, deleteTeacher } = useData();
+  const { teachers, deleteTeacher } = useData();
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<Teacher | null>(null);
