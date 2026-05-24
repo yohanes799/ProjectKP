@@ -320,57 +320,50 @@ onChange={(e) => setForm({ ...form, alamat_lengkap: e.target.value })}
                 </div>
 
                 {/* Asal Sekolah */}
-                <div>
-                  <div className="flex items-center space-x-2 mb-3">
-                    <School className="h-4 w-4 text-primary-600" />
-                    <h3 className="font-semibold text-gray-700 text-sm">Asal Sekolah</h3>
-                  </div>
-                  <div className="space-y-3 pl-6">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">
-                        Nama Sekolah Asal <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.sekolah_asal}
-                        onChange={(e) => setForm({ ...form, sekolah_asal: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                        placeholder="SD Negeri / Swasta..."
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">
-                        Alamat Sekolah Asal <span className="text-red-500">*</span>
-                      </label>
-                      {/* 1. Input untuk Nama Sekolah */}
-<div className="relative mb-3">
-  <School className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-  <input
-    required
-    type="text"
-    value={form.sekolah_asal}
-    onChange={(e) => setForm({ ...form, sekolah_asal: e.target.value })}
-    className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-    placeholder="Nama sekolah asal"
-  />
-</div>
+<div>
+  <div className="flex items-center space-x-2 mb-3">
+    <School className="h-4 w-4 text-primary-600" />
+    <h3 className="font-semibold text-gray-700 text-sm">Asal Sekolah</h3>
+  </div>
 
-{/* 2. Textarea untuk Alamat Sekolah */}
-<div className="relative">
-  <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-  <textarea
-    required
-    rows={2}
-    value={form.alamat_sekolah}
-    onChange={(e) => setForm({ ...form, alamat_sekolah: e.target.value })}
-    className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
-    placeholder="Alamat lengkap sekolah asal"
-  />
+  <div className="space-y-4 pl-6">
+    {/* 1. Nama Sekolah Asal */}
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">
+        Nama Sekolah Asal <span className="text-red-500">*</span>
+      </label>
+      <div className="relative">
+        <School className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+        <input
+          required
+          type="text"
+          value={form.sekolah_asal}
+          onChange={(e) => setForm({ ...form, sekolah_asal: e.target.value })}
+          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+          placeholder="Nama sekolah asal"
+        />
+      </div>
+    </div>
+
+    {/* 2. Alamat Sekolah Asal */}
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">
+        Alamat Sekolah Asal <span className="text-red-500">*</span>
+      </label>
+      <div className="relative">
+        <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+        <textarea
+          required
+          rows={2}
+          value={form.alamat_sekolah}
+          onChange={(e) => setForm({ ...form, alamat_sekolah: e.target.value })}
+          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
+          placeholder="Alamat lengkap sekolah asal"
+        />
+      </div>
+    </div>
+  </div>
 </div>
-                    </div>
-                  </div>
-                </div>
 
                 <button
                   type="submit"
