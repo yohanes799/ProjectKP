@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Calendar, User, Tag } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
 const NewsPage: React.FC = () => {
-  const { news } = useData();
+  const { news, fetchNews } = useData(); 
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
 
   const filtered = news.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase()) ||
