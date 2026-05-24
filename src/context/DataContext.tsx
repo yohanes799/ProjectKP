@@ -52,6 +52,7 @@ interface DataContextType {
   login: (username: string, password: string) => boolean;
   logout: () => void;
   fetchFacilities: () => Promise<void>;
+  fetchNews: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -151,10 +152,87 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => { if (initialized) saveItem(KEYS.ppdbRegistrations, ppdbRegistrations); }, [initialized, ppdbRegistrations]);
 
   // News
-  const addNews = (item: NewsItem) => setNews((prev) => [item, ...prev]);
-  const updateNews = (id: string, item: NewsItem) =>
-    setNews((prev) => prev.map((n) => (n.id === id ? item : n)));
-  const deleteNews = (id: string) => setNews((prev) => prev.filter((n) => n.id !== id));
+  // 1. FUNGSI FETCH (Membaca data)
+const fetchNews = async () => {
+  const { data, error } = await supabase.from('berita').select('*');
+
+  if (error) {
+    console.error("Gagal fetch berita:", error);
+    return;
+  }
+
+  if (data) {
+    // Mapping DB (Indonesia) -> Frontend Interface (Inggris)
+    const formattedData = data.map((item) => ({
+      id: item.id,
+      title: item.judul_berita,
+      category: item.kategori,
+      date: item.tanggal,
+      excerpt: item.ringkasan,
+      content: item.isi,
+      author: item.penulis,
+      image: item.foto_url
+    }));
+    setNews(formattedData);
+  }
+};
+
+// 2. FUNGSI TAMBAH (Create)
+const addNews = async (item: NewsItem) => {
+  const payload = {
+    judul_berita: item.title,
+    kategori: item.category,
+    tanggal: item.date,
+    ringkasan: item.excerpt,
+    isi: item.content,
+    penulis: item.author,
+    foto_url: item.image
+  };
+
+  const { data, error } = await supabase.from('berita').insert([payload]).select();
+
+  if (error) {
+    console.error("Gagal tambah berita:", error);
+    alert("Gagal simpan berita");
+    return;
+  }
+
+  await fetchNews();
+};
+
+// 3. FUNGSI UPDATE (Edit)
+const updateNews = async (id: string, item: NewsItem) => {
+  const payload = {
+    judul_berita: item.title,
+    kategori: item.category,
+    tanggal: item.date,
+    ringkasan: item.excerpt,
+    isi: item.content,
+    penulis: item.author,
+    foto_url: item.image
+  };
+
+  const { error } = await supabase.from('berita').update(payload).eq('id', id);
+
+  if (error) {
+    console.error("Gagal update berita:", error);
+    return;
+  }
+
+  await fetchNews();
+};
+
+// 4. FUNGSI HAPUS (Delete)
+const deleteNews = async (id: string) => {
+  const { error } = await supabase.from('berita').delete().eq('id', id);
+
+  if (error) {
+    console.error("Gagal hapus berita:", error);
+    return;
+  }
+
+  setNews((prev) => prev.filter((n) => n.id !== id));
+};
 
   // Teachers
   const addTeacher = (teacher: Teacher) => setTeachers((prev) => [...prev, teacher]);
@@ -388,6 +466,7 @@ const fetchFacilities = async () => {
         addPPDBRegistration,
         updatePPDBRegistrationStatus,
         deletePPDBRegistration,
+        fetchNews,
         resetNewsToInitial,
         login,
         logout,
