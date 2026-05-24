@@ -234,21 +234,36 @@ useEffect(() => {
   // Facilities
   // Contoh fungsi addFacility yang benar (terhubung ke Database)
   const addFacility = async (facility: Omit<Facility, 'id'>) => {
-  // 1. Simpan ke Supabase
+  const payload = {
+    nama_fasilitas: facility.name,
+    deskripsi: facility.description,
+    kapasitas: facility.capacity,
+    foto_url: facility.image
+  };
+
   const { data, error } = await supabase
     .from('fasilitas')
-    .insert([facility])
-    .select() // Penting: kembalikan data agar dapat ID dari DB
-    .single();
+    .insert([payload])
+    .select();
 
   if (error) {
-    console.error("Gagal menyimpan ke database:", error);
+    console.error("ERROR SUPABASE:", error);
+    alert("Gagal simpan: " + error.message);
     return;
   }
 
-  // 2. Hanya update state JIKA database berhasil menyimpan
-  if (data) {
-    setFacilities((prev) => [...prev, data]);
+  // DATA (array dari Supabase) di-map, BUKAN 'facility' (objek input)
+  if (data && Array.isArray(data)) {
+    const newData = data.map((item) => ({
+      id: item.id,
+      name: item.nama_fasilitas,
+      description: item.deskripsi,
+      capacity: item.kapasitas,
+      image: item.foto_url
+    }));
+    
+    // Update state dengan data baru
+    setFacilities((prev) => [...prev, ...newData]);
   }
 };
   const updateFacility = async (id: string, facility: Facility) => {
@@ -286,22 +301,25 @@ useEffect(() => {
   setFacilities((prev) => prev.filter((f) => f.id !== id));
 };
 const fetchFacilities = async () => {
-  const { data, error } = await supabase
-    .from('fasilitas')
-    .select('*');
+  const { data, error } = await supabase.from('fasilitas').select('*');
 
   if (error) {
-    console.error("Gagal mengambil data fasilitas:", error);
+    console.error("Gagal fetch:", error);
     return;
   }
 
   if (data) {
-    setFacilities(data);
+    // Mapping data DB ke format interface Facility
+    const formattedData = data.map((item) => ({
+      id: item.id,
+      name: item.nama_fasilitas,
+      description: item.deskripsi,
+      capacity: item.kapasitas,
+      image: item.foto_url
+    }));
+    setFacilities(formattedData);
   }
 };
-useEffect(() => {
-  fetchFacilities();
-}, []);
 
   // Extracurriculars
   const addExtracurricular = (extra: Extracurricular) =>
