@@ -39,7 +39,7 @@ interface DataContextType {
   addTeacher: (teacher: Teacher) => void;
   updateTeacher: (id: string, teacher: Teacher) => void;
   deleteTeacher: (id: string) => void;
-  addFacility: (facility: Facility) => void;
+  addFacility: (facility: Omit<Facility, 'id'>) => Promise<void>;
   updateFacility: (id: string, facility: Facility) => void;
   deleteFacility: (id: string) => void;
   addExtracurricular: (extra: Extracurricular) => void;
@@ -51,6 +51,7 @@ interface DataContextType {
   resetNewsToInitial: () => void;
   login: (username: string, password: string) => boolean;
   logout: () => void;
+  fetchFacilities: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -230,12 +231,77 @@ useEffect(() => {
   fetchTeachersData();
 }, []);
 
-
   // Facilities
-  const addFacility = (facility: Facility) => setFacilities((prev) => [...prev, facility]);
-  const updateFacility = (id: string, facility: Facility) =>
-    setFacilities((prev) => prev.map((f) => (f.id === id ? facility : f)));
-  const deleteFacility = (id: string) => setFacilities((prev) => prev.filter((f) => f.id !== id));
+  // Contoh fungsi addFacility yang benar (terhubung ke Database)
+  const addFacility = async (facility: Omit<Facility, 'id'>) => {
+  // 1. Simpan ke Supabase
+  const { data, error } = await supabase
+    .from('fasilitas')
+    .insert([facility])
+    .select() // Penting: kembalikan data agar dapat ID dari DB
+    .single();
+
+  if (error) {
+    console.error("Gagal menyimpan ke database:", error);
+    return;
+  }
+
+  // 2. Hanya update state JIKA database berhasil menyimpan
+  if (data) {
+    setFacilities((prev) => [...prev, data]);
+  }
+};
+  const updateFacility = async (id: string, facility: Facility) => {
+  // 1. Update ke Supabase
+  const { data, error } = await supabase
+    .from('fasilitas')
+    .update(facility)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Gagal memperbarui database:", error);
+    return;
+  }
+
+  // 2. Update state setelah database berhasil
+  if (data) {
+    setFacilities((prev) => prev.map((f) => (f.id === id ? data : f)));
+  }
+};
+  const deleteFacility = async (id: string) => {
+  // 1. Hapus dari Supabase
+  const { error } = await supabase
+    .from('fasilitas')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error("Gagal menghapus dari database:", error);
+    return;
+  }
+
+  // 2. Jika database berhasil, baru hapus dari state
+  setFacilities((prev) => prev.filter((f) => f.id !== id));
+};
+const fetchFacilities = async () => {
+  const { data, error } = await supabase
+    .from('fasilitas')
+    .select('*');
+
+  if (error) {
+    console.error("Gagal mengambil data fasilitas:", error);
+    return;
+  }
+
+  if (data) {
+    setFacilities(data);
+  }
+};
+useEffect(() => {
+  fetchFacilities();
+}, []);
 
   // Extracurriculars
   const addExtracurricular = (extra: Extracurricular) =>
@@ -297,6 +363,7 @@ useEffect(() => {
         addFacility,
         updateFacility,
         deleteFacility,
+        fetchFacilities,
         addExtracurricular,
         updateExtracurricular,
         deleteExtracurricular,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2, Search, Building2 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
@@ -23,7 +23,10 @@ const AdminFacilityPage: React.FC = () => {
 };
 
 const AdminFacilityContent: React.FC = () => {
-  const { facilities, addFacility, updateFacility, deleteFacility } = useData();
+  const { facilities, addFacility, updateFacility, deleteFacility, fetchFacilities } = useData();
+  useEffect(() => {
+  fetchFacilities();
+}, []); // Array kosong [] memastikan ini hanya jalan 1x saat halaman dibuka
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<Facility | null>(null);
@@ -46,15 +49,22 @@ const AdminFacilityContent: React.FC = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editItem) {
-      updateFacility(editItem.id, { ...form, id: editItem.id });
-    } else {
-      addFacility({ ...form, id: Date.now().toString() });
-    }
-    setModalOpen(false);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // 1. Jika ada editItem, berarti kita sedang UPDATE
+  if (editItem) {
+    await updateFacility(editItem.id, form as Facility);
+  } else {
+    // 2. Jika tidak ada, berarti kita sedang ADD (tambah baru)
+    await addFacility(form as Omit<Facility, 'id'>);
+  }
+
+  // 3. Reset form dan tutup modal setelah database selesai memproses
+  setModalOpen(false);
+  setEditItem(null);
+  setForm(emptyForm);
+};
 
   return (
     <div className="space-y-6">
