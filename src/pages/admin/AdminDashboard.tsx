@@ -129,8 +129,8 @@ const AdminDashboard: React.FC = () => {
                     <GraduationCap className="h-4 w-4 text-teal-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-gray-800 line-clamp-1">{item.fullName}</p>
-                    <p className="text-xs text-gray-400 line-clamp-1">{item.originSchool}</p>
+                    <p className="text-xs sm:text-sm font-medium text-gray-800 line-clamp-1">{item.nama_lengkap}</p>
+                    <p className="text-xs text-gray-400 line-clamp-1">{item.sekolah_asal}</p>
                   </div>
                 </div>
               ))
