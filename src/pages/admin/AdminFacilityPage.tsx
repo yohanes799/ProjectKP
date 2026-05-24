@@ -33,10 +33,9 @@ const AdminFacilityContent: React.FC = () => {
   const [form, setForm] = useState<Omit<Facility, 'id'>>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const filtered = facilities.filter((f) =>
-    f.name.toLowerCase().includes(search.toLowerCase())
-  );
-
+const filtered = facilities.filter((f) =>
+  (f?.name || "").toLowerCase().includes((search || "").toLowerCase())
+);
   const openAdd = () => {
     setEditItem(null);
     setForm(emptyForm);

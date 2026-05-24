@@ -33,12 +33,11 @@ const AdminTeacherPage: React.FC = () => {
   const [form, setForm] = useState<Omit<Teacher, 'id'>>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const filtered = teachers.filter(
-    (t) =>
-      t.name.toLowerCase().includes(search.toLowerCase()) ||
-      t.subject.toLowerCase().includes(search.toLowerCase())
-  );
-
+const filtered = teachers.filter(
+  (t) =>
+    (t?.name || "").toLowerCase().includes((search || "").toLowerCase()) ||
+    (t?.subject || "").toLowerCase().includes((search || "").toLowerCase())
+);
   const openAdd = () => {
     setEditItem(null);
     setForm(emptyForm);

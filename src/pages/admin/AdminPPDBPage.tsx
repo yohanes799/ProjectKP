@@ -24,11 +24,10 @@ useEffect(() => {
   const { addPPDBRegistration } = useData();
 
 const filtered = ppdbRegistrations.filter((r) =>
-  r.nama_lengkap.toLowerCase().includes(search.toLowerCase()) ||
-  r.sekolah_asal.toLowerCase().includes(search.toLowerCase()) ||
-  r.id?.toLowerCase().includes(search.toLowerCase())
+  (r?.nama_lengkap || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (r?.sekolah_asal || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (r?.id || "").toLowerCase().includes((search || "").toLowerCase())
 );
-
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString('id-ID', {
       day: 'numeric',

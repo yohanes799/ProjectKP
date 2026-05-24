@@ -28,8 +28,8 @@ const AdminExtracurricularPage: React.FC = () => {
   }, []);
 
   const filtered = extracurriculars.filter((e) =>
-    e.name.toLowerCase().includes(search.toLowerCase())
-  );
+  (e?.name || "").toLowerCase().includes((search || "").toLowerCase())
+);
 
   const openAdd = () => {
     setEditItem(null);

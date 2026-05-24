@@ -35,13 +35,11 @@ const TeacherPage: React.FC = () => {
   const levelOrder: Teacher['level'][] = ['SD', 'SMP', 'Staff'];
   const sortedLevels = levelOrder.filter((l) => availableLevels.includes(l));
 
-  // Filter berdasarkan search
-  const searchFiltered = teachers.filter(
-    (t) =>
-      t.name.toLowerCase().includes(search.toLowerCase()) ||
-      t.subject.toLowerCase().includes(search.toLowerCase())
-  );
-
+const searchFiltered = teachers.filter(
+  (t) =>
+    (t?.name || "").toLowerCase().includes((search || "").toLowerCase()) ||
+    (t?.subject || "").toLowerCase().includes((search || "").toLowerCase())
+);
   // Kelompokkan per level
   const grouped: Record<string, Teacher[]> = {};
   if (activeLevel === 'Semua') {

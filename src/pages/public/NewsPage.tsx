@@ -11,11 +11,10 @@ const NewsPage: React.FC = () => {
     fetchNews();
   }, []);
 
-  const filtered = news.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase()) ||
-    item.excerpt.toLowerCase().includes(search.toLowerCase())
-  );
-
+const filtered = news.filter((item) =>
+  (item?.title || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (item?.excerpt || "").toLowerCase().includes((search || "").toLowerCase())
+);
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

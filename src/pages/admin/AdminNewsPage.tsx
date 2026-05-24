@@ -27,11 +27,10 @@ const AdminNewsPage: React.FC = () => {
   const [form, setForm] = useState<Omit<NewsItem, 'id'>>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const filtered = news.filter(
-    (n) =>
-      n.title.toLowerCase().includes(search.toLowerCase()) ||
-      n.category.toLowerCase().includes(search.toLowerCase())
-  );
+const filtered = news.filter((n) =>
+  (n?.title || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (n?.category || "").toLowerCase().includes((search || "").toLowerCase())
+);
 
   const openAdd = () => {
     setEditItem(null);
