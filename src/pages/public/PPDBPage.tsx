@@ -14,17 +14,19 @@ import {
 import { useData } from '../../context/DataContext';
 import type { PPDBRegistration } from '../../types';
 
-const emptyForm = {
-  fullName: '',
-  gender: '' as 'Laki-laki' | 'Perempuan' | '',
-  birthPlace: '',
-  birthDate: '',
-  address: '',
-  guardianName: '',
-  studentPhone: '',
-  guardianPhone: '',
-  originSchool: '',
-  originSchoolAddress: '',
+const emptyForm: PPDBRegistration = {
+  nama_lengkap: '',
+  jenis_kelamin: 'Laki-laki', // Beri nilai default
+  tempat_lahir: '',
+  tanggal_lahir: '',
+  alamat_lengkap: '',
+  telepon_siswa: '',
+  nama_wali: '',
+  telepon_wali: '',
+  sekolah_asal: '',
+  alamat_sekolah: '',
+  registeredAt: new Date().toISOString(),
+  status: 'Menunggu'
 };
 
 const PPDBPage: React.FC = () => {
@@ -40,30 +42,41 @@ const PPDBPage: React.FC = () => {
       year: 'numeric',
     });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const id = `PPDB-${Date.now()}`;
-    const registration: PPDBRegistration = {
-      id,
-      fullName: form.fullName,
-      gender: form.gender as 'Laki-laki' | 'Perempuan',
-      birthPlace: form.birthPlace,
-      birthDate: form.birthDate,
-      address: form.address,
-      guardianName: form.guardianName,
-      studentPhone: form.studentPhone,
-      guardianPhone: form.guardianPhone,
-      originSchool: form.originSchool,
-      originSchoolAddress: form.originSchoolAddress,
-      registeredAt: new Date().toISOString(),
-      status: 'Menunggu',
-    };
-    addPPDBRegistration(registration);
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  const id = `PPDB-${Date.now()}`;
+  const registration: PPDBRegistration = {
+    id,
+    nama_lengkap: form.nama_lengkap,
+    jenis_kelamin: form.jenis_kelamin as 'Laki-laki' | 'Perempuan',
+    tempat_lahir: form.tempat_lahir,
+    tanggal_lahir: form.tanggal_lahir,
+    alamat_lengkap: form.alamat_lengkap,
+    telepon_siswa: form.telepon_siswa,
+    nama_wali: form.nama_wali,
+    telepon_wali: form.telepon_wali,
+    sekolah_asal: form.sekolah_asal,
+    alamat_sekolah: form.alamat_sekolah,
+    registeredAt: new Date().toISOString(),
+    status: 'Menunggu',
+  };
+
+  try {
+    // Tambahkan await di sini
+    const success = await addPPDBRegistration(registration);
+    
+    if (!success) throw new Error("Gagal menyimpan data");
+
     setRegistrationId(id);
     setSubmitted(true);
     setForm(emptyForm);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  } catch (error) {
+    alert("Gagal menyimpan data. Silakan coba lagi.");
+    console.error(error);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -183,8 +196,8 @@ const PPDBPage: React.FC = () => {
                       <input
                         type="text"
                         required
-                        value={form.fullName}
-                        onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                        value={form.nama_lengkap}
+                        onChange={(e) => setForm({ ...form, nama_lengkap: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                         placeholder="Nama lengkap sesuai akta kelahiran"
                       />
@@ -196,8 +209,8 @@ const PPDBPage: React.FC = () => {
                       </label>
                       <select
                         required
-                        value={form.gender}
-                        onChange={(e) => setForm({ ...form, gender: e.target.value as 'Laki-laki' | 'Perempuan' })}
+                        value={form.jenis_kelamin}
+                        onChange={(e) => setForm({ ...form, jenis_kelamin: e.target.value as 'Laki-laki' | 'Perempuan' })}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm bg-white"
                       >
                         <option value="">-- Pilih Jenis Kelamin --</option>
@@ -214,8 +227,8 @@ const PPDBPage: React.FC = () => {
                         <input
                           type="text"
                           required
-                          value={form.birthPlace}
-                          onChange={(e) => setForm({ ...form, birthPlace: e.target.value })}
+                          value={form.tempat_lahir}
+                          onChange={(e) => setForm({ ...form, tempat_lahir: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                           placeholder="Kota lahir"
                         />
@@ -227,8 +240,8 @@ const PPDBPage: React.FC = () => {
                         <input
                           type="date"
                           required
-                          value={form.birthDate}
-                          onChange={(e) => setForm({ ...form, birthDate: e.target.value })}
+                          value={form.tanggal_lahir}
+                          onChange={(e) => setForm({ ...form, tanggal_lahir: e.target.value })}
                           className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                         />
                       </div>
@@ -241,8 +254,8 @@ const PPDBPage: React.FC = () => {
                       <textarea
                         required
                         rows={2}
-                        value={form.address}
-                        onChange={(e) => setForm({ ...form, address: e.target.value })}
+                        value={form.alamat_lengkap}
+onChange={(e) => setForm({ ...form, alamat_lengkap: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
                         placeholder="Jl. Nama Jalan No. X, Kelurahan, Kecamatan, Kota"
                       />
@@ -257,8 +270,8 @@ const PPDBPage: React.FC = () => {
                         <input
                           type="tel"
                           required
-                          value={form.studentPhone}
-                          onChange={(e) => setForm({ ...form, studentPhone: e.target.value })}
+                          value={form.telepon_siswa}
+                          onChange={(e) => setForm({ ...form, telepon_siswa: e.target.value })}
                           className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                           placeholder="08xxxxxxxxxx"
                         />
@@ -281,8 +294,8 @@ const PPDBPage: React.FC = () => {
                       <input
                         type="text"
                         required
-                        value={form.guardianName}
-                        onChange={(e) => setForm({ ...form, guardianName: e.target.value })}
+                        value={form.nama_wali}
+                        onChange={(e) => setForm({ ...form, nama_wali: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                         placeholder="Nama orang tua / wali"
                       />
@@ -296,8 +309,8 @@ const PPDBPage: React.FC = () => {
                         <input
                           type="tel"
                           required
-                          value={form.guardianPhone}
-                          onChange={(e) => setForm({ ...form, guardianPhone: e.target.value })}
+                          value={form.telepon_wali}
+                          onChange={(e) => setForm({ ...form, telepon_wali: e.target.value })}
                           className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                           placeholder="08xxxxxxxxxx"
                         />
@@ -307,43 +320,50 @@ const PPDBPage: React.FC = () => {
                 </div>
 
                 {/* Asal Sekolah */}
-                <div>
-                  <div className="flex items-center space-x-2 mb-3">
-                    <School className="h-4 w-4 text-primary-600" />
-                    <h3 className="font-semibold text-gray-700 text-sm">Asal Sekolah</h3>
-                  </div>
-                  <div className="space-y-3 pl-6">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">
-                        Nama Sekolah Asal <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={form.originSchool}
-                        onChange={(e) => setForm({ ...form, originSchool: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                        placeholder="SD Negeri / Swasta..."
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">
-                        Alamat Sekolah Asal <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <textarea
-                          required
-                          rows={2}
-                          value={form.originSchoolAddress}
-                          onChange={(e) => setForm({ ...form, originSchoolAddress: e.target.value })}
-                          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
-                          placeholder="Alamat lengkap sekolah asal"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+<div>
+  <div className="flex items-center space-x-2 mb-3">
+    <School className="h-4 w-4 text-primary-600" />
+    <h3 className="font-semibold text-gray-700 text-sm">Asal Sekolah</h3>
+  </div>
+
+  <div className="space-y-4 pl-6">
+    {/* 1. Nama Sekolah Asal */}
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">
+        Nama Sekolah Asal <span className="text-red-500">*</span>
+      </label>
+      <div className="relative">
+        <School className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+        <input
+          required
+          type="text"
+          value={form.sekolah_asal}
+          onChange={(e) => setForm({ ...form, sekolah_asal: e.target.value })}
+          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+          placeholder="Nama sekolah asal"
+        />
+      </div>
+    </div>
+
+    {/* 2. Alamat Sekolah Asal */}
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">
+        Alamat Sekolah Asal <span className="text-red-500">*</span>
+      </label>
+      <div className="relative">
+        <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+        <textarea
+          required
+          rows={2}
+          value={form.alamat_sekolah}
+          onChange={(e) => setForm({ ...form, alamat_sekolah: e.target.value })}
+          className="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
+          placeholder="Alamat lengkap sekolah asal"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 
                 <button
                   type="submit"

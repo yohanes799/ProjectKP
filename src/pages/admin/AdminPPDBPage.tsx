@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, GraduationCap, Trash2, Pencil, X, Eye, Download } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
@@ -9,7 +9,10 @@ import { generatePPDBPdf } from '../../utils/generatePPDBPdf';
 type EditForm = Omit<PPDBRegistration, 'id' | 'registeredAt' | 'status'>;
 
 const AdminPPDBPage: React.FC = () => {
-  const { ppdbRegistrations, deletePPDBRegistration } = useData();
+  const { ppdbRegistrations, fetchRegistrations, deletePPDBRegistration } = useData();
+useEffect(() => {
+  fetchRegistrations();
+}, []); // [] agar hanya dijalankan sekali saat page load
   const [search, setSearch] = useState('');
   const [detailItem, setDetailItem] = useState<PPDBRegistration | null>(null);
   const [editItem, setEditItem] = useState<PPDBRegistration | null>(null);
@@ -20,13 +23,11 @@ const AdminPPDBPage: React.FC = () => {
   // Tambahkan fungsi update data di context jika belum ada
   const { addPPDBRegistration } = useData();
 
-  const filtered = ppdbRegistrations.filter(
-    (r) =>
-      r.fullName.toLowerCase().includes(search.toLowerCase()) ||
-      r.originSchool.toLowerCase().includes(search.toLowerCase()) ||
-      r.id.toLowerCase().includes(search.toLowerCase())
-  );
-
+const filtered = ppdbRegistrations.filter((r) =>
+  (r?.nama_lengkap || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (r?.sekolah_asal || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (r?.id || "").toLowerCase().includes((search || "").toLowerCase())
+);
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString('id-ID', {
       day: 'numeric',
@@ -36,7 +37,7 @@ const AdminPPDBPage: React.FC = () => {
       minute: '2-digit',
     });
 
-  const formatBirthDate = (dateStr: string) =>
+  const formattanggal_lahir = (dateStr: string) =>
     new Date(dateStr).toLocaleDateString('id-ID', {
       day: 'numeric',
       month: 'long',
@@ -46,33 +47,44 @@ const AdminPPDBPage: React.FC = () => {
   const openEdit = (item: PPDBRegistration) => {
     setEditItem(item);
     setEditForm({
-      fullName: item.fullName,
-      gender: item.gender,
-      birthPlace: item.birthPlace,
-      birthDate: item.birthDate,
-      address: item.address,
-      guardianName: item.guardianName,
-      studentPhone: item.studentPhone,
-      guardianPhone: item.guardianPhone,
-      originSchool: item.originSchool,
-      originSchoolAddress: item.originSchoolAddress,
+      nama_lengkap: item.nama_lengkap,
+      jenis_kelamin: item.jenis_kelamin,
+      tempat_lahir: item.tempat_lahir,
+      tanggal_lahir: item.tanggal_lahir,
+      alamat_lengkap: item.alamat_lengkap,
+      telepon_siswa: item.telepon_siswa,
+      nama_wali: item.nama_wali,
+      telepon_wali: item.telepon_wali,
+      sekolah_asal: item.sekolah_asal,
+      alamat_sekolah: item.alamat_sekolah,
     });
   };
 
   const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editItem || !editForm) return;
-    deletePPDBRegistration(editItem.id);
-    addPPDBRegistration({
-      ...editForm,
-      id: editItem.id,
-      registeredAt: editItem.registeredAt,
-      status: editItem.status,
-    });
-    setEditItem(null);
-    setEditForm(null);
+  e.preventDefault();
+  if (!editItem || !editForm) return;
+
+  // Kita paksa semua field menjadi string (|| "") untuk menenangkan TypeScript
+  const updatedRegistration: PPDBRegistration = {
+    id: editItem.id,
+    nama_lengkap: editForm.nama_lengkap || "",
+    jenis_kelamin: editForm.jenis_kelamin as 'Laki-laki' | 'Perempuan',
+    tempat_lahir: editForm.tempat_lahir || "",
+    tanggal_lahir: editForm.tanggal_lahir || "",
+    alamat_lengkap: editForm.alamat_lengkap || "",
+    telepon_siswa: editForm.telepon_siswa || "",
+    nama_wali: editForm.nama_wali || "",
+    telepon_wali: editForm.telepon_wali || "",
+    sekolah_asal: editForm.sekolah_asal || "",
+    alamat_sekolah: editForm.alamat_sekolah || "",
+    registeredAt: editItem.registeredAt,
+    status: editItem.status,
   };
 
+  addPPDBRegistration(updatedRegistration);
+  setEditItem(null);
+  setEditForm(null);
+};
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -130,12 +142,16 @@ const AdminPPDBPage: React.FC = () => {
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-5 py-4 text-xs font-mono text-gray-500">{item.id}</td>
                     <td className="px-5 py-4">
-                      <p className="font-medium text-gray-800 text-sm">{item.fullName}</p>
-                      <p className="text-xs text-gray-400">{item.birthPlace}, {formatBirthDate(item.birthDate)}</p>
+                      <p className="font-medium text-gray-800 text-sm">{item.nama_lengkap}</p>
+                      <p className="text-xs text-gray-400">{item.tempat_lahir}, {formattanggal_lahir(item.tanggal_lahir)}</p>
                     </td>
-                    <td className="px-5 py-4 text-sm text-gray-600">{item.gender}</td>
-                    <td className="px-5 py-4 text-sm text-gray-700">{item.originSchool}</td>
-                    <td className="px-5 py-4 text-xs text-gray-500">{formatDate(item.registeredAt)}</td>
+                    <td className="px-5 py-4 text-sm text-gray-600">{item.jenis_kelamin}</td>
+                    <td className="px-5 py-4 text-sm text-gray-700">{item.sekolah_asal}</td>
+                    <td className="px-5 py-4 text-xs text-gray-500">
+  {item.created_at && !isNaN(Date.parse(item.created_at)) 
+    ? formatDate(item.created_at) 
+    : "Data Tidak Lengkap"}
+</td>
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-end space-x-2">
                         {/* Detail */}
@@ -156,7 +172,7 @@ const AdminPPDBPage: React.FC = () => {
                         </button>
                         {/* Hapus */}
                         <button
-                          onClick={() => setDeleteId(item.id)}
+                          onClick={() => setDeleteId(item.id || null)}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                           title="Hapus"
                         >
@@ -192,14 +208,14 @@ const AdminPPDBPage: React.FC = () => {
             <div className="overflow-y-auto flex-1 p-5 space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: 'Nama Lengkap', value: detailItem.fullName },
-                  { label: 'Jenis Kelamin', value: detailItem.gender },
-                  { label: 'Tempat Lahir', value: detailItem.birthPlace },
-                  { label: 'Tanggal Lahir', value: formatBirthDate(detailItem.birthDate) },
-                  { label: 'No. Telepon Siswa', value: detailItem.studentPhone },
-                  { label: 'Nama Wali', value: detailItem.guardianName },
-                  { label: 'No. Telepon Wali', value: detailItem.guardianPhone },
-                  { label: 'Asal Sekolah', value: detailItem.originSchool },
+                  { label: 'Nama Lengkap', value: detailItem.nama_lengkap },
+                  { label: 'Jenis Kelamin', value: detailItem.jenis_kelamin },
+                  { label: 'Tempat Lahir', value: detailItem.tempat_lahir },
+                  { label: 'Tanggal Lahir', value: formattanggal_lahir(detailItem.tanggal_lahir) },
+                  { label: 'No. Telepon Siswa', value: detailItem.telepon_siswa },
+                  { label: 'Nama Wali', value: detailItem.nama_wali },
+                  { label: 'No. Telepon Wali', value: detailItem.telepon_wali },
+                  { label: 'Asal Sekolah', value: detailItem.sekolah_asal },
                 ].map((field) => (
                   <div key={field.label} className="bg-gray-50 rounded-lg p-3">
                     <p className="text-xs text-gray-400 mb-0.5">{field.label}</p>
@@ -209,16 +225,20 @@ const AdminPPDBPage: React.FC = () => {
               </div>
               <div className="bg-gray-50 rounded-lg p-3">
                 <p className="text-xs text-gray-400 mb-0.5">Alamat Lengkap</p>
-                <p className="text-sm font-medium text-gray-800">{detailItem.address}</p>
+                <p className="text-sm font-medium text-gray-800">{detailItem.alamat_lengkap}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-3">
                 <p className="text-xs text-gray-400 mb-0.5">Alamat Sekolah Asal</p>
-                <p className="text-sm font-medium text-gray-800">{detailItem.originSchoolAddress}</p>
+                <p className="text-sm font-medium text-gray-800">{detailItem.alamat_sekolah}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-3">
-                <p className="text-xs text-gray-400 mb-0.5">Tanggal Mendaftar</p>
-                <p className="text-sm font-medium text-gray-800">{formatDate(detailItem.registeredAt)}</p>
-              </div>
+  <p className="text-xs text-gray-400 mb-0.5">Tanggal Mendaftar</p>
+  <p className="text-sm font-medium text-gray-800">
+    {detailItem?.created_at && !isNaN(Date.parse(detailItem.created_at)) 
+      ? formatDate(detailItem.created_at) 
+      : "Data tanggal tidak tersedia"}
+  </p>
+</div>
             </div>
             <div className="p-4 border-t flex gap-3">
               <button
@@ -250,15 +270,15 @@ const AdminPPDBPage: React.FC = () => {
           <form onSubmit={handleEditSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
-              <input type="text" required value={editForm.fullName}
-                onChange={(e) => setEditForm({ ...editForm, fullName: e.target.value })}
+              <input type="text" required value={editForm.nama_lengkap}
+                onChange={(e) => setEditForm({ ...editForm, nama_lengkap: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin *</label>
-                <select required value={editForm.gender}
-                  onChange={(e) => setEditForm({ ...editForm, gender: e.target.value as 'Laki-laki' | 'Perempuan' })}
+                <select required value={editForm.jenis_kelamin}
+                  onChange={(e) => setEditForm({ ...editForm, jenis_kelamin: e.target.value as 'Laki-laki' | 'Perempuan' })}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm bg-white">
                   <option value="Laki-laki">Laki-laki</option>
                   <option value="Perempuan">Perempuan</option>
@@ -266,55 +286,66 @@ const AdminPPDBPage: React.FC = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir *</label>
-                <input type="text" required value={editForm.birthPlace}
-                  onChange={(e) => setEditForm({ ...editForm, birthPlace: e.target.value })}
+                <input type="text" required value={editForm.tempat_lahir}
+                  onChange={(e) => setEditForm({ ...editForm, tempat_lahir: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir *</label>
-              <input type="date" required value={editForm.birthDate}
-                onChange={(e) => setEditForm({ ...editForm, birthDate: e.target.value })}
+              <input type="date" required value={editForm.tanggal_lahir}
+                onChange={(e) => setEditForm({ ...editForm, tanggal_lahir: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap *</label>
-              <textarea required rows={2} value={editForm.address}
-                onChange={(e) => setEditForm({ ...editForm, address: e.target.value })}
+              <textarea required rows={2} value={editForm.alamat_lengkap}
+                onChange={(e) => setEditForm({ ...editForm, alamat_lengkap: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Nama Wali *</label>
-                <input type="text" required value={editForm.guardianName}
-                  onChange={(e) => setEditForm({ ...editForm, guardianName: e.target.value })}
+                <input type="text" required value={editForm.nama_wali}
+                  onChange={(e) => setEditForm({ ...editForm, nama_wali: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">No. Telepon Siswa *</label>
-                <input type="tel" required value={editForm.studentPhone}
-                  onChange={(e) => setEditForm({ ...editForm, studentPhone: e.target.value })}
+                <input type="tel" required value={editForm.telepon_siswa}
+                  onChange={(e) => setEditForm({ ...editForm, telepon_siswa: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">No. Telepon Wali *</label>
-              <input type="tel" required value={editForm.guardianPhone}
-                onChange={(e) => setEditForm({ ...editForm, guardianPhone: e.target.value })}
+              <input type="tel" required value={editForm.telepon_wali}
+                onChange={(e) => setEditForm({ ...editForm, telepon_wali: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Asal Sekolah *</label>
-              <input type="text" required value={editForm.originSchool}
-                onChange={(e) => setEditForm({ ...editForm, originSchool: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Sekolah Asal *</label>
-              <textarea required rows={2} value={editForm.originSchoolAddress}
-                onChange={(e) => setEditForm({ ...editForm, originSchoolAddress: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none" />
-            </div>
+           {/* Input untuk Nama Sekolah Asal */}
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700 mb-1">Nama Sekolah Asal *</label>
+  <input 
+    required 
+    type="text"
+    value={editForm.sekolah_asal}
+    onChange={(e) => setEditForm({ ...editForm, sekolah_asal: e.target.value })}
+    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" 
+  />
+</div>
+
+{/* Input untuk Alamat Sekolah Asal */}
+<div className="mb-4">
+  <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Sekolah Asal *</label>
+  <textarea 
+    required 
+    rows={2} 
+    value={editForm.alamat_sekolah}
+    onChange={(e) => setEditForm({ ...editForm, alamat_sekolah: e.target.value })}
+    className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none" 
+  />
+</div>
             <div className="flex space-x-3 pt-2">
               <button type="button"
                 onClick={() => { setEditItem(null); setEditForm(null); }}

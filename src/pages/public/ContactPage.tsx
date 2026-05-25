@@ -8,11 +8,16 @@ const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setSubmitted(false), 4000);
-  };
+  e.preventDefault();
+  const { name, email, subject, message } = form;
+  if (!name || !message) return alert("Nama dan Pesan wajib diisi!");
+  const textWa = `Halo admin SMP Seruni Putih, saya ${name} (${email}).%0A%0ASubjek: ${subject}%0A%0A${message}`;
+  const noWaSekolah = "6285217026367"; 
+  window.open(`https://wa.me/${noWaSekolah}?text=${textWa}`, '_blank');
+  setSubmitted(true);
+  setForm({ name: '', email: '', subject: '', message: '' });
+  setTimeout(() => setSubmitted(false), 4000);
+};
 
   const MAPS_URL =
     'https://www.google.com/maps/dir/?api=1&destination=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia';

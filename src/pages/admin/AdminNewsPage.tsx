@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus, Pencil, Trash2, Search, Newspaper } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import Modal from '../../components/ui/Modal';
@@ -17,18 +17,20 @@ const emptyForm: Omit<NewsItem, 'id'> = {
 };
 
 const AdminNewsPage: React.FC = () => {
-  const { news, addNews, updateNews, deleteNews } = useData();
+  const { news, fetchNews, addNews, updateNews, deleteNews } = useData();
+  useEffect(() => {
+    fetchNews();
+  }, []);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState<NewsItem | null>(null);
   const [form, setForm] = useState<Omit<NewsItem, 'id'>>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const filtered = news.filter(
-    (n) =>
-      n.title.toLowerCase().includes(search.toLowerCase()) ||
-      n.category.toLowerCase().includes(search.toLowerCase())
-  );
+const filtered = news.filter((n) =>
+  (n?.title || "").toLowerCase().includes((search || "").toLowerCase()) ||
+  (n?.category || "").toLowerCase().includes((search || "").toLowerCase())
+);
 
   const openAdd = () => {
     setEditItem(null);
@@ -42,14 +44,29 @@ const AdminNewsPage: React.FC = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const newItem = {
+    ...form,
+    date: new Date().toISOString(),
+  } as NewsItem; 
+
+    // FIX 2: Cek apakah sedang edit atau tambah
     if (editItem) {
-      updateNews(editItem.id, { ...form, id: editItem.id });
+      // Jika sedang edit, panggil updateNews
+      await updateNews(editItem.id!, newItem);
+      alert("Berita berhasil diupdate!");
     } else {
-      addNews({ ...form, id: Date.now().toString() });
+      // Jika tambah baru, panggil addNews
+      await addNews(newItem);
+      alert("Berita berhasil ditambahkan!");
     }
+
+    // Reset form
+    setForm(emptyForm);
     setModalOpen(false);
+    setEditItem(null); // Penting: reset editItem
   };
 
   return (

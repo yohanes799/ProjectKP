@@ -12,14 +12,21 @@ const formatDate = (iso: string) =>
     year: 'numeric',
   });
 
-const formatDateTime = (iso: string) =>
-  new Date(iso).toLocaleDateString('id-ID', {
+const formatDateTime = (iso: string) => {
+  const date = new Date(iso);
+  // Cek apakah tanggal valid
+  if (isNaN(date.getTime())) {
+    return "Tanggal Tidak Valid"; // Atau biarkan kosong
+  }
+  
+  return date.toLocaleDateString('id-ID', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
     hour: '2-digit',
-    minute: '2-digit',
+    minute: '2-digit'
   });
+};
 
 // Load gambar sebagai base64 dari URL
 const loadImageAsBase64 = (src: string): Promise<string> =>
@@ -128,7 +135,7 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   doc.setTextColor(...BLACK);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
-  doc.text(data.id, margin + 3, y + 9.5);
+  doc.text(data.id ?? 'ID Tidak Tersedia', margin + 3, y + 9.5);
   y += 15;
 
   // ── Helper: section title ────────────────────────────────
@@ -168,29 +175,29 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
 
   // ── DATA SISWA ───────────────────────────────────────────
   sectionTitle('DATA CALON SISWA');
-  row('Nama Lengkap', data.fullName);
-  row('Jenis Kelamin', data.gender, true, true);
-  row('Tempat Lahir', data.birthPlace, true, false);
-  row('Tanggal Lahir', formatDate(data.birthDate), true, true);
-  row('No. Telepon Siswa', data.studentPhone, true, false);
-  row('Alamat Lengkap', data.address);
+  row('Nama Lengkap', data.nama_lengkap);
+  row('Jenis Kelamin', data.jenis_kelamin, true, true);
+  row('Tempat Lahir', data.tempat_lahir, true, false);
+  row('Tanggal Lahir', formatDate(data.tanggal_lahir), true, true);
+  row('No. Telepon Siswa', data.telepon_siswa, true, false);
+  row('Alamat Lengkap', data.alamat_lengkap);
   y += 3;
 
   // ── DATA WALI ────────────────────────────────────────────
   sectionTitle('DATA ORANG TUA / WALI');
-  row('Nama Wali', data.guardianName, true, true);
-  row('No. Telepon Wali', data.guardianPhone, true, false);
+  row('Nama Wali', data.nama_wali, true, true);
+  row('No. Telepon Wali', data.telepon_wali, true, false);
   y += 3;
 
   // ── ASAL SEKOLAH ─────────────────────────────────────────
   sectionTitle('ASAL SEKOLAH');
-  row('Nama Sekolah Asal', data.originSchool);
-  row('Alamat Sekolah Asal', data.originSchoolAddress);
+  row('Nama Sekolah Asal', data.sekolah_asal);
+  row('Alamat Sekolah Asal', data.alamat_sekolah);
   y += 3;
 
   // ── INFO PENDAFTARAN ─────────────────────────────────────
   sectionTitle('INFORMASI PENDAFTARAN');
-  row('Tanggal Mendaftar', formatDateTime(data.registeredAt));
+  row('Tanggal Mendaftar', formatDateTime(data.created_at || new Date().toISOString()));
   y += 6;
 
   // ── Tanda Tangan ─────────────────────────────────────────
@@ -206,7 +213,7 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   doc.setDrawColor(...BLACK);
   doc.line(margin, y + 28, margin + sigW, y + 28);
   doc.setFontSize(8);
-  doc.text(`( ${data.guardianName} )`, margin + sigW / 2, y + 33, { align: 'center' });
+  doc.text(`( ${data.nama_wali} )`, margin + sigW / 2, y + 33, { align: 'center' });
 
   // Kanan
   const rightX = pageW - margin - sigW;
@@ -215,7 +222,7 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   doc.text('Calon Siswa', rightX, y + 5);
   doc.line(rightX, y + 28, rightX + sigW, y + 28);
   doc.setFontSize(8);
-  doc.text(`( ${data.fullName} )`, rightX + sigW / 2, y + 33, { align: 'center' });
+  doc.text(`( ${data.nama_lengkap} )`, rightX + sigW / 2, y + 33, { align: 'center' });
 
   y += 40;
 
@@ -233,6 +240,7 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   );
 
   // ── Save ─────────────────────────────────────────────────
-  const fileName = `Biodata_PPDB_${data.fullName.replace(/\s+/g, '_')}_${data.id}.pdf`;
+  const fileName = `PPDB_${data.nama_lengkap.replace(/\s+/g, '_')}.pdf`;
+  doc.text(data.created_at?.replace(/-/g, '/') || 'Tanggal tidak tersedia', 10, 10);
   doc.save(fileName);
 };
