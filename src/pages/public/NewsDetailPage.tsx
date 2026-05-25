@@ -68,7 +68,15 @@ const NewsDetailPage: React.FC = () => {
                 </div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">{item.title}</h1>
                 <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 leading-relaxed text-lg">{item.content}</p>
+                  {item.content.split('\n').map((paragraph, i) =>
+                    paragraph.trim() === '' ? (
+                      <div key={i} className="h-3" />
+                    ) : (
+                      <p key={i} className="text-gray-700 leading-relaxed text-base mb-4">
+                        {paragraph}
+                      </p>
+                    )
+                  )}
                 </div>
               </div>
             </div>
