@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { GraduationCap, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import {
+  GraduationCap,
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  AlertCircle,
+} from 'lucide-react';
 import { useData } from '../context/DataContext';
 
 const LoginPage: React.FC = () => {
@@ -50,7 +57,9 @@ const LoginPage: React.FC = () => {
           {/* Form */}
           <div className="p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-1">Masuk</h2>
-            <p className="text-gray-500 text-sm mb-6">Masukkan kredensial Anda untuk melanjutkan</p>
+            <p className="text-gray-500 text-sm mb-6">
+              Masukkan kredensial Anda untuk melanjutkan
+            </p>
 
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 mb-4 flex items-center space-x-2 text-sm">
@@ -61,7 +70,9 @@ const LoginPage: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
@@ -77,7 +88,9 @@ const LoginPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
@@ -93,7 +106,11 @@ const LoginPage: React.FC = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>

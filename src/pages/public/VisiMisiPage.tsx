@@ -22,7 +22,9 @@ const VisiMisiPage: React.FC = () => {
             <div className="bg-primary-100 p-3 rounded-full">
               <Eye className="h-7 w-7 text-primary-700" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Visi</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+              Visi
+            </h2>
           </div>
           <div className="bg-white rounded-2xl shadow-sm p-8 border-l-4 border-primary-600">
             <p className="text-xl md:text-2xl text-gray-700 italic leading-relaxed font-medium text-center">
@@ -37,7 +39,9 @@ const VisiMisiPage: React.FC = () => {
             <div className="bg-green-100 p-3 rounded-full">
               <Target className="h-7 w-7 text-green-700" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Misi</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+              Misi
+            </h2>
           </div>
           <div className="space-y-4">
             {profile.mission.map((m, i) => (
@@ -63,8 +67,9 @@ const VisiMisiPage: React.FC = () => {
         <div className="mt-12 bg-primary-800 text-white rounded-2xl p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Komitmen Kami</h3>
           <p className="text-primary-200 leading-relaxed">
-            Kami berkomitmen untuk terus meningkatkan kualitas pendidikan dan membentuk generasi
-            penerus bangsa yang unggul, berkarakter, dan siap menghadapi tantangan global.
+            Kami berkomitmen untuk terus meningkatkan kualitas pendidikan dan
+            membentuk generasi penerus bangsa yang unggul, berkarakter, dan siap
+            menghadapi tantangan global.
           </p>
         </div>
       </div>

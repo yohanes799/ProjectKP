@@ -10,8 +10,8 @@ import { supabase } from '../../utils/supabase';
 const LEVELS: Teacher['level'][] = ['SD', 'SMP', 'Staff'];
 
 const levelColors: Record<Teacher['level'], string> = {
-  SD:    'bg-pink-100 text-pink-700',
-  SMP:   'bg-yellow-100 text-yellow-700',
+  SD: 'bg-pink-100 text-pink-700',
+  SMP: 'bg-yellow-100 text-yellow-700',
   Staff: 'bg-teal-100 text-teal-700',
 };
 
@@ -33,11 +33,11 @@ const AdminTeacherPage: React.FC = () => {
   const [form, setForm] = useState<Omit<Teacher, 'id'>>(emptyForm);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-const filtered = teachers.filter(
-  (t) =>
-    (t?.name || "").toLowerCase().includes((search || "").toLowerCase()) ||
-    (t?.subject || "").toLowerCase().includes((search || "").toLowerCase())
-);
+  const filtered = teachers.filter(
+    (t) =>
+      (t?.name || '').toLowerCase().includes((search || '').toLowerCase()) ||
+      (t?.subject || '').toLowerCase().includes((search || '').toLowerCase())
+  );
   const openAdd = () => {
     setEditItem(null);
     setForm(emptyForm);
@@ -59,78 +59,80 @@ const filtered = teachers.filter(
   };
 
   // 1. Tambahkan kata 'async' di depan
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // 2. Siapkan penampung untuk URL foto
-  let finalPhotoUrl = form.photo; 
+    // 2. Siapkan penampung untuk URL foto
+    let finalPhotoUrl = form.photo;
 
-  // Paksa TypeScript menganggap ini bisa berupa objek File
-  const photoData = form.photo as any;
+    // Paksa TypeScript menganggap ini bisa berupa objek File
+    const photoData = form.photo as any;
 
-  // 3. FASE UPLOAD: Jika yang ada di state adalah File fisik
-  if (photoData instanceof File || typeof photoData === 'object') {
-    const fileExt = photoData.name ? photoData.name.split('.').pop() : 'jpg';
-    const fileName = `${Math.random()}.${fileExt}`;
+    // 3. FASE UPLOAD: Jika yang ada di state adalah File fisik
+    if (photoData instanceof File || typeof photoData === 'object') {
+      const fileExt = photoData.name ? photoData.name.split('.').pop() : 'jpg';
+      const fileName = `${Math.random()}.${fileExt}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('foto-guru')
-      .upload(fileName, photoData);
+      const { error: uploadError } = await supabase.storage
+        .from('foto-guru')
+        .upload(fileName, photoData);
 
-    if (uploadError) {
-      alert("Gagal mengunggah foto ke server!");
-      return; 
+      if (uploadError) {
+        alert('Gagal mengunggah foto ke server!');
+        return;
+      }
+
+      const { data: urlData } = supabase.storage
+        .from('foto-guru')
+        .getPublicUrl(fileName);
+
+      finalPhotoUrl = urlData.publicUrl;
     }
 
-    const { data: urlData } = supabase.storage
-      .from('foto-guru')
-      .getPublicUrl(fileName);
+    // 4. FASE MAPPING SCHEMA (Menyesuaikan React ke Database)
+    const payload = {
+      nama_lengkap: form.name,
+      mata_pelajaran: form.subject,
+      jabatan: form.position,
+      kategori_jenjang: form.level || 'SMP', // fallback default
+      foto_url: finalPhotoUrl,
+      // NIP dan Education kita abaikan karena belum ada di skema DB
+    };
 
-    finalPhotoUrl = urlData.publicUrl;
-  }
+    // 5. FASE EKSEKUSI DATABASE
+    if (editItem) {
+      // Mode Update
+      const { error } = await supabase
+        .from('guru')
+        .update(payload)
+        .eq('id', editItem.id); // Cari berdasarkan ID Supabase
 
-  // 4. FASE MAPPING SCHEMA (Menyesuaikan React ke Database)
-  const payload = {
-    nama_lengkap: form.name,
-    mata_pelajaran: form.subject,
-    jabatan: form.position,
-    kategori_jenjang: form.level || 'SMP', // fallback default
-    foto_url: finalPhotoUrl
-    // NIP dan Education kita abaikan karena belum ada di skema DB
+      if (error) alert('Gagal memperbarui data!');
+    } else {
+      // Mode Insert
+      const { error } = await supabase.from('guru').insert([payload]);
+
+      if (error) alert('Gagal menyimpan guru baru!');
+    }
+
+    // 6. Tutup modal
+    setModalOpen(false);
+
+    // WAJIB: Panggil ulang fungsi fetch data dari database di sini agar UI ter-update
+    // fetchGuruData();
   };
-
-  // 5. FASE EKSEKUSI DATABASE
-  if (editItem) {
-    // Mode Update
-    const { error } = await supabase
-      .from('guru')
-      .update(payload)
-      .eq('id', editItem.id); // Cari berdasarkan ID Supabase
-      
-    if (error) alert("Gagal memperbarui data!");
-  } else {
-    // Mode Insert
-    const { error } = await supabase
-      .from('guru')
-      .insert([payload]);
-      
-    if (error) alert("Gagal menyimpan guru baru!");
-  }
-
-  // 6. Tutup modal
-  setModalOpen(false);
-  
-  // WAJIB: Panggil ulang fungsi fetch data dari database di sini agar UI ter-update
-  // fetchGuruData(); 
-};
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-gray-800">Manajemen Data Guru</h2>
-          <p className="text-gray-500 text-sm">{teachers.length} guru terdaftar</p>
+          <h2 className="text-xl font-bold text-gray-800">
+            Manajemen Data Guru
+          </h2>
+          <p className="text-gray-500 text-sm">
+            {teachers.length} guru terdaftar
+          </p>
         </div>
         <button
           onClick={openAdd}
@@ -161,11 +163,21 @@ const handleSubmit = async (e: React.FormEvent) => {
           <table className="w-full">
             <thead className="bg-gray-50 border-b">
               <tr>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Guru</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Mata Pelajaran</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Kategori</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Jabatan</th>
-                <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Guru
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Mata Pelajaran
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Kategori
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Jabatan
+                </th>
+                <th className="text-right px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Aksi
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -186,7 +198,9 @@ const handleSubmit = async (e: React.FormEvent) => {
                           alt={item.name}
                           className="w-10 h-10 rounded-full object-cover flex-shrink-0"
                         />
-                        <p className="font-medium text-gray-800 text-sm">{item.name}</p>
+                        <p className="font-medium text-gray-800 text-sm">
+                          {item.name}
+                        </p>
                       </div>
                     </td>
                     <td className="px-5 py-4">
@@ -195,11 +209,15 @@ const handleSubmit = async (e: React.FormEvent) => {
                       </span>
                     </td>
                     <td className="px-5 py-4">
-                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${levelColors[item.level ?? 'Staff']}`}>
+                      <span
+                        className={`text-xs font-semibold px-2.5 py-1 rounded-full ${levelColors[item.level ?? 'Staff']}`}
+                      >
                         {item.level ?? 'Staff'}
                       </span>
                     </td>
-                    <td className="px-5 py-4 text-sm text-gray-600">{item.position}</td>
+                    <td className="px-5 py-4 text-sm text-gray-600">
+                      {item.position}
+                    </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center justify-end space-x-2">
                         <button
@@ -233,7 +251,9 @@ const handleSubmit = async (e: React.FormEvent) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Nama */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nama Lengkap *
+            </label>
             <input
               type="text"
               required
@@ -246,7 +266,9 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           {/* Mata Pelajaran & Jabatan */}
           {(() => {
-            const isKepala = form.position.toLowerCase().includes('kepala sekolah');
+            const isKepala = form.position
+              .toLowerCase()
+              .includes('kepala sekolah');
             const isOptional = form.level === 'Staff' || isKepala;
             return (
               <div className="grid grid-cols-2 gap-4">
@@ -254,24 +276,37 @@ const handleSubmit = async (e: React.FormEvent) => {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Mata Pelajaran
                     {!isOptional && <span className="text-red-500"> *</span>}
-                    {isOptional && <span className="text-gray-400 text-xs font-normal"> (opsional)</span>}
+                    {isOptional && (
+                      <span className="text-gray-400 text-xs font-normal">
+                        {' '}
+                        (opsional)
+                      </span>
+                    )}
                   </label>
                   <input
                     type="text"
                     required={!isOptional}
                     value={form.subject}
-                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, subject: e.target.value })
+                    }
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                    placeholder={isOptional ? 'Kosongkan jika tidak ada' : 'Matematika'}
+                    placeholder={
+                      isOptional ? 'Kosongkan jika tidak ada' : 'Matematika'
+                    }
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Jabatan *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Jabatan *
+                  </label>
                   <input
                     type="text"
                     required
                     value={form.position}
-                    onChange={(e) => setForm({ ...form, position: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, position: e.target.value })
+                    }
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                     placeholder="Guru / Kepala Sekolah"
                   />
@@ -282,18 +317,22 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           {/* Kategori Jenjang */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Kategori Jenjang *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Kategori Jenjang *
+            </label>
             <div className="flex flex-wrap gap-2">
               {LEVELS.map((lvl) => (
                 <button
                   key={lvl}
                   type="button"
-                  onClick={() => setForm({
-                    ...form,
-                    level: lvl,
-                    // Kosongkan mata pelajaran saat beralih ke Staff
-                    subject: lvl === 'Staff' ? '' : form.subject,
-                  })}
+                  onClick={() =>
+                    setForm({
+                      ...form,
+                      level: lvl,
+                      // Kosongkan mata pelajaran saat beralih ke Staff
+                      subject: lvl === 'Staff' ? '' : form.subject,
+                    })
+                  }
                   className={`px-4 py-1.5 rounded-full text-sm font-medium border-2 transition-colors ${
                     form.level === lvl
                       ? `${levelColors[lvl]} border-current`

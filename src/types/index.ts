@@ -72,6 +72,7 @@ export interface SchoolProfile {
   website: string;
   accreditation: string;
   principalName: string;
+  principalName2?: string;
   foundationChairName: string;
   founded: string;
   description: string;
