@@ -17,6 +17,7 @@ export const schoolProfile: SchoolProfile = {
   website: 'www.smpseruniputih.sch.id',
   accreditation: 'A',
   principalName: 'Sarah Ginting S.Si',
+  principalName2: 'Sensiana Paga, S.S',
   foundationChairName: 'Sarah Ginting S.Si',
   founded: '1998',
   description:
@@ -33,7 +34,7 @@ export const schoolProfile: SchoolProfile = {
   ],
   logo: 'https://placehold.co/120x120/1e40af/ffffff?text=SMAN1',
   principalGreeting:
-    "Assalamu'alaikum Warahmatullahi Wabarakatuh. Puji syukur kehadirat Allah SWT atas segala limpahan rahmat dan karunia-Nya sehingga SMA Negeri 1 Nusantara terus berkembang menjadi lembaga pendidikan yang unggul dan terpercaya. Atas nama seluruh keluarga besar SMA Negeri 1 Nusantara, saya menyambut dengan hangat kehadiran Anda di website resmi kami. Kami berkomitmen untuk terus meningkatkan kualitas pendidikan, membentuk karakter siswa yang berakhlak mulia, serta mempersiapkan generasi penerus bangsa yang siap menghadapi tantangan global. Bersama seluruh tenaga pendidik yang profesional dan berdedikasi, kami yakin dapat mewujudkan cita-cita mulia tersebut. Semoga Allah SWT senantiasa membimbing langkah kita semua. Wassalamu'alaikum Warahmatullahi Wabarakatuh.",
+    'Salam sehat,Selamat datang dan selamat bergabung Bapak/Ibu  dan  Peserta didik SD Seruni Putih Pamulang pada Tahun Pembelajaran 2026/2027.Sebagai sekolah yang ramah anak, Seruni Putih hadir memberikan fasilitas pendidikan bagi putra/putri penerus bangsa. Kami hadir untuk meningkatkan kemampuan para peserta didik di bidang akademik ataupun non akademik. Dengan semangat kebersamaan, kami berkomitmen untuk turut membangun bangsa dan negara di tengah keanekaragaman yang ada.Bapak Ibu dan anak – anak yang terkasih, mengawali Tahun Pembelajaran 2025/2026 ini saya mengajak kita semua untuk tetap semangat dan lebih rajin belajar meningkatkan kemampuan di semua bidang.Mari kita belajar lebih sungguh untuk menyongsong masa depan bangsa yang lebih cerah.Trimakasih',
   foundationGreeting:
     "Assalamu'alaikum Warahmatullahi Wabarakatuh. Dengan penuh rasa syukur dan kebanggaan, saya menyampaikan sambutan hangat kepada seluruh civitas akademika SMA Negeri 1 Nusantara. Yayasan Pendidikan Nusantara Jaya senantiasa berkomitmen untuk mendukung penuh pengembangan sekolah ini agar menjadi institusi pendidikan yang tidak hanya unggul secara akademis, tetapi juga mampu mencetak generasi yang berkarakter, berintegritas, dan berdaya saing tinggi. Kami percaya bahwa investasi terbaik adalah investasi di bidang pendidikan. Oleh karena itu, kami terus berupaya menyediakan sarana dan prasarana terbaik, mendukung pengembangan kompetensi guru, serta menciptakan lingkungan belajar yang kondusif dan inspiratif. Mari bersama-sama kita wujudkan pendidikan berkualitas untuk masa depan bangsa yang lebih cerah. Wassalamu'alaikum Warahmatullahi Wabarakatuh.",
 };
@@ -264,17 +265,16 @@ export const ppdbInfo: PPDBInfo = {
   id: '1',
   title: 'PPDB Tahun Ajaran 2026/2027',
   content:
-    'SMA Negeri 1 Nusantara membuka Penerimaan Peserta Didik Baru (PPDB) untuk tahun ajaran 2026/2027. Proses seleksi dilakukan secara transparan dan akuntabel berdasarkan nilai rapor, prestasi, dan zonasi.',
+    'SMP Seruni Putih membuka Penerimaan Peserta Didik Baru (PPDB) untuk tahun ajaran 2026/2027. Proses seleksi dilakukan secara transparan dan akuntabel berdasarkan nilai rapor, prestasi, dan zonasi.',
   startDate: '2026-06-01',
   endDate: '2026-06-30',
   requirements: [
-    'Ijazah/Surat Keterangan Lulus SMP/MTs atau sederajat',
-    'Kartu Keluarga (KK) yang masih berlaku',
-    'Akta Kelahiran',
-    'Pas foto terbaru ukuran 3x4 (4 lembar)',
-    'Surat Keterangan Sehat dari dokter',
-    'Nilai rapor semester 1-5 SMP/MTs',
-    'Piagam/sertifikat prestasi (jika ada)',
+    'Membeli Formulir Pendaftaran',
+    'Foto copy Akte Kelahiran',
+    'Foto copy KTP Orang Tua',
+    'Foto copy Kartu Keluarga',
+    'Foto copy Surat Kelulusaan SD',
+    'Foto copy Ijazah SD Dilegalisir (Menyusul)',
   ],
   quota: 360,
 };
