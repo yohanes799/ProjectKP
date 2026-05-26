@@ -52,7 +52,7 @@ const HomePage: React.FC = () => {
               <span className="text-primary-300">{profile.name}</span>
             </h1>
             <p className="text-lg md:text-xl text-primary-200 mb-8 leading-relaxed">
-              {profile.description.substring(0, 200)}...
+              {profile.description}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
