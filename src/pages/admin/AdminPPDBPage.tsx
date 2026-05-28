@@ -48,12 +48,16 @@ const filtered = ppdbRegistrations.filter((r) =>
     setEditItem(item);
     setEditForm({
       nama_lengkap: item.nama_lengkap,
+      nisn: item.nisn,
+      nik: item.nik,
+      agama: item.agama,
       jenis_kelamin: item.jenis_kelamin,
       tempat_lahir: item.tempat_lahir,
       tanggal_lahir: item.tanggal_lahir,
       alamat_lengkap: item.alamat_lengkap,
       telepon_siswa: item.telepon_siswa,
       nama_wali: item.nama_wali,
+      pekerjaan_wali: item.pekerjaan_wali,
       telepon_wali: item.telepon_wali,
       sekolah_asal: item.sekolah_asal,
       alamat_sekolah: item.alamat_sekolah,
@@ -64,16 +68,19 @@ const filtered = ppdbRegistrations.filter((r) =>
   e.preventDefault();
   if (!editItem || !editForm) return;
 
-  // Kita paksa semua field menjadi string (|| "") untuk menenangkan TypeScript
   const updatedRegistration: PPDBRegistration = {
     id: editItem.id,
     nama_lengkap: editForm.nama_lengkap || "",
+    nisn: editForm.nisn || "",
+    nik: editForm.nik || "",
+    agama: editForm.agama || "",
     jenis_kelamin: editForm.jenis_kelamin as 'Laki-laki' | 'Perempuan',
     tempat_lahir: editForm.tempat_lahir || "",
     tanggal_lahir: editForm.tanggal_lahir || "",
     alamat_lengkap: editForm.alamat_lengkap || "",
     telepon_siswa: editForm.telepon_siswa || "",
     nama_wali: editForm.nama_wali || "",
+    pekerjaan_wali: editForm.pekerjaan_wali || "",
     telepon_wali: editForm.telepon_wali || "",
     sekolah_asal: editForm.sekolah_asal || "",
     alamat_sekolah: editForm.alamat_sekolah || "",
@@ -210,10 +217,14 @@ const filtered = ppdbRegistrations.filter((r) =>
                 {[
                   { label: 'Nama Lengkap', value: detailItem.nama_lengkap },
                   { label: 'Jenis Kelamin', value: detailItem.jenis_kelamin },
+                  { label: 'NISN', value: detailItem.nisn },
+                  { label: 'NIK', value: detailItem.nik },
+                  { label: 'Agama', value: detailItem.agama },
                   { label: 'Tempat Lahir', value: detailItem.tempat_lahir },
                   { label: 'Tanggal Lahir', value: formattanggal_lahir(detailItem.tanggal_lahir) },
                   { label: 'No. Telepon Siswa', value: detailItem.telepon_siswa },
                   { label: 'Nama Wali', value: detailItem.nama_wali },
+                  { label: 'Pekerjaan Wali', value: detailItem.pekerjaan_wali },
                   { label: 'No. Telepon Wali', value: detailItem.telepon_wali },
                   { label: 'Asal Sekolah', value: detailItem.sekolah_asal },
                 ].map((field) => (
@@ -276,6 +287,36 @@ const filtered = ppdbRegistrations.filter((r) =>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">NISN *</label>
+                <input type="text" required value={editForm.nisn}
+                  onChange={(e) => setEditForm({ ...editForm, nisn: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                  maxLength={10} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">NIK *</label>
+                <input type="text" required value={editForm.nik}
+                  onChange={(e) => setEditForm({ ...editForm, nik: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                  maxLength={16} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Agama *</label>
+                <select required value={editForm.agama}
+                  onChange={(e) => setEditForm({ ...editForm, agama: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm bg-white">
+                  <option value="">-- Pilih Agama --</option>
+                  <option value="Islam">Islam</option>
+                  <option value="Kristen">Kristen</option>
+                  <option value="Katolik">Katolik</option>
+                  <option value="Hindu">Hindu</option>
+                  <option value="Buddha">Buddha</option>
+                  <option value="Konghucu">Konghucu</option>
+                </select>
+              </div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin *</label>
                 <select required value={editForm.jenis_kelamin}
                   onChange={(e) => setEditForm({ ...editForm, jenis_kelamin: e.target.value as 'Laki-laki' | 'Perempuan' })}
@@ -284,24 +325,32 @@ const filtered = ppdbRegistrations.filter((r) =>
                   <option value="Perempuan">Perempuan</option>
                 </select>
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir *</label>
                 <input type="text" required value={editForm.tempat_lahir}
                   onChange={(e) => setEditForm({ ...editForm, tempat_lahir: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
               </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir *</label>
-              <input type="date" required value={editForm.tanggal_lahir}
-                onChange={(e) => setEditForm({ ...editForm, tanggal_lahir: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir *</label>
+                <input type="date" required value={editForm.tanggal_lahir}
+                  onChange={(e) => setEditForm({ ...editForm, tanggal_lahir: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap *</label>
               <textarea required rows={2} value={editForm.alamat_lengkap}
                 onChange={(e) => setEditForm({ ...editForm, alamat_lengkap: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">No. Telepon Siswa *</label>
+              <input type="tel" required value={editForm.telepon_siswa}
+                onChange={(e) => setEditForm({ ...editForm, telepon_siswa: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
@@ -311,9 +360,9 @@ const filtered = ppdbRegistrations.filter((r) =>
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">No. Telepon Siswa *</label>
-                <input type="tel" required value={editForm.telepon_siswa}
-                  onChange={(e) => setEditForm({ ...editForm, telepon_siswa: e.target.value })}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pekerjaan Wali *</label>
+                <input type="text" required value={editForm.pekerjaan_wali}
+                  onChange={(e) => setEditForm({ ...editForm, pekerjaan_wali: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
               </div>
             </div>

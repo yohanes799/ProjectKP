@@ -274,7 +274,7 @@ export const ppdbInfo: PPDBInfo = {
     'Foto copy KTP Orang Tua',
     'Foto copy Kartu Keluarga',
     'Foto copy Surat Kelulusaan SD',
-    'Foto copy Ijazah SD Dilegalisir (Menyusul)',
+    'Foto copy Ijazah SD Dilegalisir (Bisa Menyusul)',
   ],
   quota: 360,
 };

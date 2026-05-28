@@ -176,17 +176,21 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   // ── DATA SISWA ───────────────────────────────────────────
   sectionTitle('DATA CALON SISWA');
   row('Nama Lengkap', data.nama_lengkap);
-  row('Jenis Kelamin', data.jenis_kelamin, true, true);
-  row('Tempat Lahir', data.tempat_lahir, true, false);
-  row('Tanggal Lahir', formatDate(data.tanggal_lahir), true, true);
-  row('No. Telepon Siswa', data.telepon_siswa, true, false);
+  row('NISN', data.nisn, true, true);
+  row('NIK', data.nik, true, false);
+  row('Agama', data.agama, true, true);
+  row('Jenis Kelamin', data.jenis_kelamin, true, false);
+  row('Tempat Lahir', data.tempat_lahir, true, true);
+  row('Tanggal Lahir', formatDate(data.tanggal_lahir), true, false);
+  row('No. Telepon Siswa', data.telepon_siswa, true, true);
   row('Alamat Lengkap', data.alamat_lengkap);
   y += 3;
 
   // ── DATA WALI ────────────────────────────────────────────
   sectionTitle('DATA ORANG TUA / WALI');
   row('Nama Wali', data.nama_wali, true, true);
-  row('No. Telepon Wali', data.telepon_wali, true, false);
+  row('Pekerjaan Wali', data.pekerjaan_wali, true, false);
+  row('No. Telepon Wali', data.telepon_wali);
   y += 3;
 
   // ── ASAL SEKOLAH ─────────────────────────────────────────

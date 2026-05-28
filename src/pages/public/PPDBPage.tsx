@@ -16,12 +16,16 @@ import type { PPDBRegistration } from '../../types';
 
 const emptyForm: PPDBRegistration = {
   nama_lengkap: '',
-  jenis_kelamin: 'Laki-laki', // Beri nilai default
+  nisn: '',
+  nik: '',
+  agama: '',
+  jenis_kelamin: 'Laki-laki',
   tempat_lahir: '',
   tanggal_lahir: '',
   alamat_lengkap: '',
   telepon_siswa: '',
   nama_wali: '',
+  pekerjaan_wali: '',
   telepon_wali: '',
   sekolah_asal: '',
   alamat_sekolah: '',
@@ -49,12 +53,16 @@ const PPDBPage: React.FC = () => {
     const registration: PPDBRegistration = {
       id,
       nama_lengkap: form.nama_lengkap,
+      nisn: form.nisn,
+      nik: form.nik,
+      agama: form.agama,
       jenis_kelamin: form.jenis_kelamin as 'Laki-laki' | 'Perempuan',
       tempat_lahir: form.tempat_lahir,
       tanggal_lahir: form.tanggal_lahir,
       alamat_lengkap: form.alamat_lengkap,
       telepon_siswa: form.telepon_siswa,
       nama_wali: form.nama_wali,
+      pekerjaan_wali: form.pekerjaan_wali,
       telepon_wali: form.telepon_wali,
       sekolah_asal: form.sekolah_asal,
       alamat_sekolah: form.alamat_sekolah,
@@ -221,27 +229,85 @@ const PPDBPage: React.FC = () => {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">
-                        Jenis Kelamin <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        required
-                        value={form.jenis_kelamin}
-                        onChange={(e) =>
-                          setForm({
-                            ...form,
-                            jenis_kelamin: e.target.value as
-                              | 'Laki-laki'
-                              | 'Perempuan',
-                          })
-                        }
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm bg-white"
-                      >
-                        <option value="">-- Pilih Jenis Kelamin --</option>
-                        <option value="Laki-laki">Laki-laki</option>
-                        <option value="Perempuan">Perempuan</option>
-                      </select>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          NISN <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.nisn}
+                          onChange={(e) =>
+                            setForm({ ...form, nisn: e.target.value })
+                          }
+                          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                          placeholder="10 digit NISN"
+                          maxLength={10}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          NIK <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={form.nik}
+                          onChange={(e) =>
+                            setForm({ ...form, nik: e.target.value })
+                          }
+                          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                          placeholder="16 digit NIK"
+                          maxLength={16}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          Agama <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          required
+                          value={form.agama}
+                          onChange={(e) =>
+                            setForm({ ...form, agama: e.target.value })
+                          }
+                          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm bg-white"
+                        >
+                          <option value="">-- Pilih Agama --</option>
+                          <option value="Islam">Islam</option>
+                          <option value="Kristen">Kristen</option>
+                          <option value="Katolik">Katolik</option>
+                          <option value="Hindu">Hindu</option>
+                          <option value="Buddha">Buddha</option>
+                          <option value="Konghucu">Konghucu</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-600 mb-1">
+                          Jenis Kelamin <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          required
+                          value={form.jenis_kelamin}
+                          onChange={(e) =>
+                            setForm({
+                              ...form,
+                              jenis_kelamin: e.target.value as
+                                | 'Laki-laki'
+                                | 'Perempuan',
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm bg-white"
+                        >
+                          <option value="">-- Pilih Jenis Kelamin --</option>
+                          <option value="Laki-laki">Laki-laki</option>
+                          <option value="Perempuan">Perempuan</option>
+                        </select>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
@@ -336,6 +402,21 @@ const PPDBPage: React.FC = () => {
                         }
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                         placeholder="Nama orang tua / wali"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        Pekerjaan Wali <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={form.pekerjaan_wali}
+                        onChange={(e) =>
+                          setForm({ ...form, pekerjaan_wali: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                        placeholder="Pekerjaan orang tua / wali"
                       />
                     </div>
                     <div>
