@@ -11,7 +11,7 @@ const ContactPage: React.FC = () => {
   e.preventDefault();
   const { name, email, subject, message } = form;
   if (!name || !message) return alert("Nama dan Pesan wajib diisi!");
-  const textWa = `Halo admin SMP Seruni Putih, saya ${name} (${email}).%0A%0ASubjek: ${subject}%0A%0A${message}`;
+  const textWa = `Halo admin YAYASAN SERUNI PUTIH, saya ${name} (${email}).%0A%0ASubjek: ${subject}%0A%0A${message}`;
   const noWaSekolah = "6285217026367"; 
   window.open(`https://wa.me/${noWaSekolah}?text=${textWa}`, '_blank');
   setSubmitted(true);

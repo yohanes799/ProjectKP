@@ -9,7 +9,7 @@ import type {
 } from '../types';
 
 export const schoolProfile: SchoolProfile = {
-  name: 'SMP SERUNI PUTIH',
+  name: 'YAYASAN SERUNI PUTIH',
   address:
     'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
   phone: '081282992568',
@@ -21,7 +21,7 @@ export const schoolProfile: SchoolProfile = {
   foundationChairName: 'Sarah Ginting S.Si',
   founded: '1998',
   description:
-    'SMP SERUNI PUTIH adalah sekolah menengah pertama unggulan yang telah berdiri sejak tahun 1998. Dengan pengalaman lebih dari 28 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
+    'SMP Seruni Putih adalah sekolah menengah pertama unggulan yang telah berdiri sejak tahun 1998. Dengan pengalaman lebih dari 28 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
   vision:
     'Terlaksananya Proses Pendidikan Yang Memenuhi Standar Mutu, Berkarakter, Inovatif dan Berakar Pada Budaya Bangsa Sesusai Dengan Delapan Dimensi Profit Lulusan',
   mission: [

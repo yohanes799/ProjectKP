@@ -204,6 +204,14 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   row('Tanggal Mendaftar', formatDateTime(data.created_at || new Date().toISOString()));
   y += 6;
 
+  // ── PROTEKSI HALAMAN Penuh (Auto Page Break) ─────────────
+  // Tinggi kertas A4 adalah 297mm. Jika posisi y sudah lewat dari 240mm,
+  // paksa jsPDF untuk membuat halaman baru agar tanda tangan tidak terpotong.
+  if (y > 240) {
+    doc.addPage();
+    y = 20; // Reset y ke atas untuk halaman kedua
+  }
+
   // ── Tanda Tangan ─────────────────────────────────────────
   const sigW = 60;
   doc.setTextColor(...BLACK);
@@ -217,7 +225,8 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   doc.setDrawColor(...BLACK);
   doc.line(margin, y + 28, margin + sigW, y + 28);
   doc.setFontSize(8);
-  doc.text(`( ${data.nama_wali} )`, margin + sigW / 2, y + 33, { align: 'center' });
+  // Gunakan fallback titik-titik jika nama belum terisi
+  doc.text(`( ${data.nama_wali || '.......................................'} )`, margin + sigW / 2, y + 33, { align: 'center' });
 
   // Kanan
   const rightX = pageW - margin - sigW;
@@ -226,11 +235,17 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
   doc.text('Calon Siswa', rightX, y + 5);
   doc.line(rightX, y + 28, rightX + sigW, y + 28);
   doc.setFontSize(8);
-  doc.text(`( ${data.nama_lengkap} )`, rightX + sigW / 2, y + 33, { align: 'center' });
+  doc.text(`( ${data.nama_lengkap || '.......................................'} )`, rightX + sigW / 2, y + 33, { align: 'center' });
 
-  y += 40;
+  y += 45;
 
   // ── Footer ───────────────────────────────────────────────
+  // Pastikan footer juga tidak keluar batas bawah halaman
+  if (y > 280) {
+    doc.addPage();
+    y = 20;
+  }
+  
   doc.setLineWidth(0.3);
   doc.setDrawColor(...GRAY_BD);
   doc.line(margin, y, pageW - margin, y);
@@ -245,6 +260,5 @@ export const generatePPDBPdf = async (data: PPDBRegistration) => {
 
   // ── Save ─────────────────────────────────────────────────
   const fileName = `PPDB_${data.nama_lengkap.replace(/\s+/g, '_')}.pdf`;
-  doc.text(data.created_at?.replace(/-/g, '/') || 'Tanggal tidak tersedia', 10, 10);
   doc.save(fileName);
 };
