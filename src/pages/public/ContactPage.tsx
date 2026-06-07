@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Globe, ExternalLink, Send, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, ExternalLink, Send } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import { FaFacebook, FaWhatsapp, FaInstagram } from 'react-icons/fa';
 
