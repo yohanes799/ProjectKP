@@ -47,18 +47,16 @@ const filtered = news.filter((n) =>
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Hapus pemaksaan new Date(). Langsung pakai data form.
     const newItem = {
-    ...form,
-    date: new Date().toISOString(),
-  } as NewsItem; 
+      ...form,
+    } as NewsItem; 
 
     // FIX 2: Cek apakah sedang edit atau tambah
     if (editItem) {
-      // Jika sedang edit, panggil updateNews
       await updateNews(editItem.id!, newItem);
       alert("Berita berhasil diupdate!");
     } else {
-      // Jika tambah baru, panggil addNews
       await addNews(newItem);
       alert("Berita berhasil ditambahkan!");
     }
@@ -66,7 +64,7 @@ const filtered = news.filter((n) =>
     // Reset form
     setForm(emptyForm);
     setModalOpen(false);
-    setEditItem(null); // Penting: reset editItem
+    setEditItem(null); 
   };
 
   return (
