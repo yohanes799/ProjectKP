@@ -52,6 +52,7 @@ interface DataContextType {
   updateExtracurricular: (id: string, extra: Extracurricular) => void;
   deleteExtracurricular: (id: string) => void;
   addPPDBRegistration: (reg: PPDBRegistration) => Promise<boolean>;
+  updatePPDBRegistration: (id: string, updatedData: Partial<PPDBRegistration>) => Promise<void>;
   updatePPDBRegistrationStatus: (
     id: string,
     status: PPDBRegistration['status']
@@ -513,6 +514,36 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  const updatePPDBRegistration = async (
+    id: string,
+    updatedData: Partial<PPDBRegistration>
+  ) => {
+    try {
+      // Buang properti id dan waktu agar tidak menabrak aturan database saat di-update
+      const { id: _id, registeredAt, created_at, ...payload } = updatedData as any;
+
+      const { error } = await supabase
+        .from('pendaftar_ppdb')
+        .update(payload)
+        .eq('id', id);
+
+      if (error) {
+        console.error('Gagal update data PPDB:', error);
+        alert('Gagal memperbarui data: ' + error.message);
+        return;
+      }
+
+      // Update UI langsung tanpa refresh
+      setPpdbRegistrations((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, ...updatedData } : item))
+      );
+      
+      alert('Data pendaftar berhasil diperbarui!');
+    } catch (err) {
+      console.error('Error sistem update:', err);
+    }
+  };
+
   const updatePPDBRegistrationStatus = async (
     id: string,
     status: 'Menunggu' | 'Diterima' | 'Ditolak'
@@ -599,6 +630,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
         deleteExtracurricular,
         fetchExtracurriculars,
         addPPDBRegistration,
+        updatePPDBRegistration,
         updatePPDBRegistrationStatus,
         deletePPDBRegistration,
         fetchNews,

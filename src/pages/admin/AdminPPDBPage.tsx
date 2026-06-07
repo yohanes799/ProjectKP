@@ -21,7 +21,7 @@ useEffect(() => {
 
   // Gunakan updatePPDBRegistrationStatus untuk update data lengkap via workaround
   // Tambahkan fungsi update data di context jika belum ada
-  const { addPPDBRegistration } = useData();
+  const { updatePPDBRegistration } = useData();
 
 const filtered = ppdbRegistrations.filter((r) =>
   (r?.nama_lengkap || "").toLowerCase().includes((search || "").toLowerCase()) ||
@@ -88,7 +88,7 @@ const filtered = ppdbRegistrations.filter((r) =>
     status: editItem.status,
   };
 
-  addPPDBRegistration(updatedRegistration);
+  updatePPDBRegistration(editItem.id!, updatedRegistration);
   setEditItem(null);
   setEditForm(null);
 };
