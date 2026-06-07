@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Globe, ExternalLink, Send, MessageCircle } from 'lucide-react';
 import { useData } from '../../context/DataContext';
+import { FaFacebook, FaWhatsapp, FaInstagram } from 'react-icons/fa';
 
 const ContactPage: React.FC = () => {
   const { contact, profile } = useData();
@@ -98,7 +99,7 @@ const ContactPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
                   >
-                    <Globe className="h-4 w-4" />
+                    <FaFacebook className="h-4 w-4" />
                     <span>Facebook</span>
                   </a>
                 )}
@@ -109,7 +110,7 @@ const ContactPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm"
                   >
-                    <MessageCircle className="h-4 w-4" />
+                    <FaWhatsapp className="h-4 w-4" />
                     <span>WhatsApp</span>
                   </a>
                 )}
@@ -120,7 +121,7 @@ const ContactPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="flex items-center space-x-2 bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition-colors text-sm"
                   >
-                    <ExternalLink className="h-4 w-4" />
+                    <FaInstagram className="h-4 w-4" />
                     <span>Instagram</span>
                   </a>
                 )}
