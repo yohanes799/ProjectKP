@@ -143,7 +143,7 @@ const ProfilePage: React.FC = () => {
               </p>
             </div>
 
-            {/* Sambutan Kepala Sekolah */}
+            {/* Sambutan Kepala Sekolah Dasar */}
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center space-x-3 mb-5">
                 <div className="bg-primary-100 p-2 rounded-full">
@@ -161,14 +161,14 @@ const ProfilePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Sambutan Ketua Yayasan */}
+            {/* Sambutan Kepala Sekolah Menengah Pertama */}
             <div className="bg-white rounded-xl shadow-sm p-6">
               <div className="flex items-center space-x-3 mb-5">
                 <div className="bg-amber-100 p-2 rounded-full">
                   <Quote className="h-5 w-5 text-amber-700" />
                 </div>
                 <h2 className="font-bold text-gray-800 text-xl">
-                  Sambutan Ketua Yayasan
+                  Sambutan Kepala Sekolah Menengah Pertama
                 </h2>
               </div>
               <div className="relative bg-amber-50 rounded-xl p-5 border-l-4 border-amber-500">
