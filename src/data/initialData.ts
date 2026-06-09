@@ -75,6 +75,6 @@ export const contactInfo: ContactInfo = {
   socialMedia: {
     facebook: 'https://www.facebook.com/Seruniputihedu',
     whatsapp: 'https://wa.me/+6281282992568',
-    instagram: 'https://instagram.com/smpseruniputih',
+    instagram: 'https://instagram.com/seruniputihedu',
   },
 };
