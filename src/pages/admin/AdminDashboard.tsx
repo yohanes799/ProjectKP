@@ -15,7 +15,7 @@ const AdminDashboard: React.FC = () => {
     { label: 'Total Berita', value: news.length, icon: Newspaper, color: 'bg-blue-500', path: '/admin/berita' },
     { label: 'Data Guru', value: teachers.length, icon: Users, color: 'bg-green-500', path: '/admin/guru' },
     { label: 'Fasilitas', value: facilities.length, icon: Building2, color: 'bg-purple-500', path: '/admin/fasilitas' },
-    { label: 'Ekstrakulikuler', value: extracurriculars.length, icon: Trophy, color: 'bg-orange-500', path: '/admin/ekstrakulikuler' },
+    { label: 'Ekstrakurikuler', value: extracurriculars.length, icon: Trophy, color: 'bg-orange-500', path: '/admin/ekstrakulikuler' },
     { label: 'Pendaftar PPDB', value: ppdbRegistrations.length, icon: GraduationCap, color: 'bg-teal-500', path: '/admin/ppdb' },
   ];
 

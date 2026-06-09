@@ -211,7 +211,7 @@ const HomePage: React.FC = () => {
               },
               {
                 path: '/ekstrakulikuler',
-                title: 'Ekstrakulikuler',
+                title: 'Ekstrakurikuler',
                 desc: 'Berbagai kegiatan ekstrakurikuler untuk mengembangkan bakat dan minat siswa.',
                 icon: Trophy,
                 color: 'bg-green-500',

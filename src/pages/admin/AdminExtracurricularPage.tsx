@@ -65,20 +65,20 @@ const AdminExtracurricularPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-gray-800">Manajemen Ekstrakulikuler</h2>
-          <p className="text-gray-500 text-sm">{extracurriculars.length} ekstrakulikuler tersedia</p>
+          <h2 className="text-xl font-bold text-gray-800">Manajemen Ekstrakurikuler</h2>
+          <p className="text-gray-500 text-sm">{extracurriculars.length} ekstrakurikuler tersedia</p>
         </div>
         <button onClick={openAdd}
           className="flex items-center space-x-2 bg-primary-700 text-white px-4 py-2 rounded-lg hover:bg-primary-800 transition-colors text-sm font-medium">
           <Plus className="h-4 w-4" />
-          <span>Tambah Ekstrakulikuler</span>
+          <span>Tambah Ekstrakurikuler</span>
         </button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm p-4">
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <input type="text" placeholder="Cari ekstrakulikuler..." value={search} onChange={(e) => setSearch(e.target.value)}
+          <input type="text" placeholder="Cari ekstrakurikuler..." value={search} onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" />
         </div>
       </div>
@@ -86,7 +86,7 @@ const AdminExtracurricularPage: React.FC = () => {
       {filtered.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm text-center py-16 text-gray-400">
           <Trophy className="h-10 w-10 mx-auto mb-2 opacity-40" />
-          <p>Tidak ada ekstrakulikuler ditemukan</p>
+          <p>Tidak ada ekstrakurikuler ditemukan</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -120,12 +120,12 @@ const AdminExtracurricularPage: React.FC = () => {
         </div>
       )}
 
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editItem ? 'Edit Ekstrakulikuler' : 'Tambah Ekstrakulikuler Baru'}>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editItem ? 'Edit Ekstrakurikuler' : 'Tambah Ekstrakurikuler Baru'}>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Ekstrakulikuler *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Ekstrakurikuler *</label>
             <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Nama ekstrakulikuler" />
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Nama ekstrakurikuler" />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi *</label>
@@ -143,7 +143,7 @@ const AdminExtracurricularPage: React.FC = () => {
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm" placeholder="Nama pembina" />
           </div>
           <ImageUpload
-            label="Gambar Ekstrakulikuler"
+            label="Gambar Ekstrakurikuler"
             required
             value={form.image}
             onChange={(val) => setForm({ ...form, image: val })}
@@ -153,7 +153,7 @@ const AdminExtracurricularPage: React.FC = () => {
               className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium">Batal</button>
             <button type="submit"
               className="flex-1 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors text-sm font-medium">
-              {editItem ? 'Simpan Perubahan' : 'Tambah Ekstrakulikuler'}
+              {editItem ? 'Simpan Perubahan' : 'Tambah Ekstrakurikuler'}
             </button>
           </div>
         </form>
@@ -161,7 +161,7 @@ const AdminExtracurricularPage: React.FC = () => {
 
       <ConfirmDialog isOpen={deleteId !== null} onClose={() => setDeleteId(null)}
         onConfirm={() => deleteId && deleteExtracurricular(deleteId)}
-        title="Hapus Ekstrakulikuler" message="Apakah Anda yakin ingin menghapus ekstrakulikuler ini?" />
+        title="Hapus Ekstrakurikuler" message="Apakah Anda yakin ingin menghapus ekstrakurikuler ini?" />
     </div>
   );
 };

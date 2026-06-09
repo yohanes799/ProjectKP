@@ -74,7 +74,7 @@ const Footer: React.FC = () => {
                 { path: '/visi-misi', label: 'Visi & Misi' },
                 { path: '/berita', label: 'Berita' },
                 { path: '/fasilitas', label: 'Fasilitas' },
-                { path: '/ekstrakulikuler', label: 'Ekstrakulikuler' },
+                { path: '/ekstrakulikuler', label: 'Ekstrakurikuler' },
                 { path: '/ppdb', label: 'PPDB' },
                 { path: '/guru', label: 'Data Guru' },
                 { path: '/kontak', label: 'Kontak' },

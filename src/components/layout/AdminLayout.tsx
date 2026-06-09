@@ -47,7 +47,7 @@ const AdminLayout: React.FC = () => {
     { path: '/admin/berita', label: 'Berita', icon: Newspaper },
     { path: '/admin/guru', label: 'Data Guru', icon: Users },
     { path: '/admin/fasilitas', label: 'Fasilitas', icon: Building2 },
-    { path: '/admin/ekstrakulikuler', label: 'Ekstrakulikuler', icon: Trophy },
+    { path: '/admin/ekstrakulikuler', label: 'Ekstrakurikuler', icon: Trophy },
     { path: '/admin/ppdb', label: 'Pendaftar PPDB', icon: GraduationCap },
   ];
 

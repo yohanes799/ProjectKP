@@ -13,7 +13,7 @@ export const schoolProfile: SchoolProfile = {
   address:
     'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
   phone: '081282992568',
-  email: 'smpseruniputih@gmail.com',
+  email: 'seruniputih01@gmail.com',
   website: 'www.smpseruniputih.sch.id',
   accreditation: 'A',
   principalName: 'Sarah Ginting S.Si',
@@ -21,22 +21,22 @@ export const schoolProfile: SchoolProfile = {
   foundationChairName: 'Sarah Ginting S.Si',
   founded: '1998',
   description:
-    'SMP Seruni Putih adalah sekolah menengah pertama unggulan yang telah berdiri sejak tahun 1998. Dengan pengalaman lebih dari 28 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
+    'Yayasan Seruni Putih adalah sekolah unggulan yang telah berdiri sejak tahun 1998. Dengan pengalaman lebih dari 28 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
   vision:
     'Terlaksananya Proses Pendidikan Yang Memenuhi Standar Mutu, Berkarakter, Inovatif dan Berakar Pada Budaya Bangsa Sesusai Dengan Delapan Dimensi Profit Lulusan',
   mission: [
-    'Meningkatkan Tata Kelola Managerial Satuan Pendidikan Yang Adaptif, Berkarakter dan Menjamin Mutu.',
-    'Memvasilitasi Pemebelajaran Yang Menarik Menyenangkan dan Berkarakter Sesuai Bakat Dan Minat Murid.',
-    'Menciptakan Profil Lulusan Yang Bernalar Kritis dan kreatif Sehingga mampu Mengkreasi Ide dan Keterampilan Yang Inovatif.',
-    'Menciptakan Lingkungan Sekolah Sebagai Tempat Perkembangan Intelektual, Sosial, Emosional, Keterampilan dan Pengembangan Budaya Lokal Dalamm Kebhinnekaan Gombal.',
-    'Menjalin kemitraaan Dengan Orang Tua Masyarakat dan Pemerintah Dalam Keberagaman Yang Mewadahi Kreatifitas Murid Yang Berjiwa kompetitif.',
+    'Meningkatkan Tata Kelola Managerial Satuan Pendidikan Yang Adaptif, Berkarakter Dan Menjamin Mutu.',
+    'Memvasilitasi Pemebelajaran Yang Menarik Menyenangkan Dan Berkarakter Sesuai Bakat Dan Minat Murid.',
+    'Menciptakan Profil Lulusan Yang Bernalar Kritis Dan kreatif Sehingga Mampu Mengkreasi Ide Dan Keterampilan Yang Inovatif.',
+    'Menciptakan Lingkungan Sekolah Sebagai Tempat Perkembangan Intelektual, Sosial, Emosional, Keterampilan Dan Pengembangan Budaya Lokal Dalamm Kebhinekaan Global.',
+    'Menjalin kemitraaan Dengan Orang Tua Masyarakat Dan Pemerintah Dalam Keberagaman Yang Mewadahi Kreatifitas Murid Yang Berjiwa kompetitif.',
     'Meningkatkan kompetensi GTK Melalui Pelatihan Mandiri Atau Yang diselenggarakan Oleh Pihak - Pihak Lain.',
   ],
   logo: 'https://placehold.co/120x120/1e40af/ffffff?text=SMAN1',
   principalGreeting:
     'Salam sehat,Selamat datang dan selamat bergabung Bapak/Ibu  dan  Peserta didik SD Seruni Putih Pamulang pada Tahun Pembelajaran 2026/2027.Sebagai sekolah yang ramah anak, Seruni Putih hadir memberikan fasilitas pendidikan bagi putra/putri penerus bangsa. Kami hadir untuk meningkatkan kemampuan para peserta didik di bidang akademik ataupun non akademik. Dengan semangat kebersamaan, kami berkomitmen untuk turut membangun bangsa dan negara di tengah keanekaragaman yang ada.Bapak Ibu dan anak – anak yang terkasih, mengawali Tahun Pembelajaran 2025/2026 ini saya mengajak kita semua untuk tetap semangat dan lebih rajin belajar meningkatkan kemampuan di semua bidang.Mari kita belajar lebih sungguh untuk menyongsong masa depan bangsa yang lebih cerah.Trimakasih',
   foundationGreeting:
-    "Assalamualaikum Warahmatullahi Wabarakatuh,Salam Sejahtera untuk kita semua. Selamat datang di website resmi SMP Seruni Putih. Syukur kita panjatkan ke hadirat Tuhan, berkat rahmat dan karunia-Nya kita dapat terus berinovasi dan menghadirkan informasi yang transparan bagi Murid, Orang tua, dan Masyarakat luas. Di era digital saat ini, website menjadi jendela informasi utama sekolah. Kami berharap platform ini dapat memudahkan akses terhadap perkembangan terbaru di SMP Seruni Putih, baik dari segi akademik, kegiatan ekstrakurikuler, maupun prestasi sekolah. Sebagai institusi pendidikan, kami berkomitmen untuk terus mencetak generasi yang cerdas, berkarakter, dan berakhlak mulia. Semua ini tentu tidak lepas dari dukungan seluruh warga sekolah, komite, dan para orang tua murid. Mari kita bersama-sama bersinergi untuk memajukan pendidikan anak-anak kita. Terima kasih atas kunjungan dan perhatian Anda. Kritik dan saran yang membangun sangat kami harapkan untuk pengembangan sekolah ke depan. Wabillahi taufiq wal hidayah, Wassalamualaikum Warahmatullahi Wabarakatuh.",
+    'Assalamualaikum Warahmatullahi Wabarakatuh,Salam Sejahtera untuk kita semua. Selamat datang di website resmi SMP Seruni Putih. Syukur kita panjatkan ke hadirat Tuhan, berkat rahmat dan karunia-Nya kita dapat terus berinovasi dan menghadirkan informasi yang transparan bagi Murid, Orang tua, dan Masyarakat luas. Di era digital saat ini, website menjadi jendela informasi utama sekolah. Kami berharap platform ini dapat memudahkan akses terhadap perkembangan terbaru di SMP Seruni Putih, baik dari segi akademik, kegiatan ekstrakurikuler, maupun prestasi sekolah. Sebagai institusi pendidikan, kami berkomitmen untuk terus mencetak generasi yang cerdas, berkarakter, dan berakhlak mulia. Semua ini tentu tidak lepas dari dukungan seluruh warga sekolah, komite, dan para orang tua murid. Mari kita bersama-sama bersinergi untuk memajukan pendidikan anak-anak kita. Terima kasih atas kunjungan dan perhatian Anda. Kritik dan saran yang membangun sangat kami harapkan untuk pengembangan sekolah ke depan. Wabillahi taufiq wal hidayah, Wassalamualaikum Warahmatullahi Wabarakatuh.',
 };
 
 export const initialNews: NewsItem[] = [
@@ -283,7 +283,7 @@ export const contactInfo: ContactInfo = {
   address:
     'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
   phone: '081282992568',
-  email: 'smpseruniputih@gmail.com',
+  email: 'seruniputih01@gmail.com',
   mapEmbed:
     'https://maps.google.com/maps?q=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia&output=embed',
   socialMedia: {

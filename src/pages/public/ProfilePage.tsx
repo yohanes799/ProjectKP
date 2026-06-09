@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import seruniLogo from '../../assets/serunilogo1.jpg';
+import kepsekSD from '../../assets/kepsekSD.jpg';
+import kepsekSMP from '../../assets/kepsekSMP.jpeg';
 
 const ProfilePage: React.FC = () => {
   const { profile } = useData();
@@ -86,7 +88,7 @@ const ProfilePage: React.FC = () => {
                 </li>
                 <li className="flex items-center space-x-3">
                   <User className="h-5 w-5 text-primary-600 flex-shrink-0" />
-                  <div>
+                  <div className="w-full">
                     <p className="text-xs text-gray-400 font-medium">
                       Kepala Sekolah Dasar
                     </p>
@@ -138,7 +140,7 @@ const ProfilePage: React.FC = () => {
               <h2 className="font-bold text-gray-800 text-xl mb-4 border-b pb-2">
                 Tentang Sekolah
               </h2>
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 {profile.description}
               </p>
             </div>
@@ -153,9 +155,21 @@ const ProfilePage: React.FC = () => {
                   Sambutan Kepala Sekolah Dasar
                 </h2>
               </div>
+              {/* Foto Kepala Sekolah Dasar */}
+              <div className="flex flex-col items-center mb-5">
+                <div className="h-28 w-28 rounded-full border-4 border-primary-600 shadow-md overflow-hidden">
+                  <img
+                    src={kepsekSD}
+                    alt="Kepala Sekolah Dasar"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <p className="mt-2 font-semibold text-gray-800 text-sm">Sensiana Paga, S.S</p>
+                <p className="text-xs text-primary-600">Kepala Sekolah Dasar</p>
+              </div>
               <div className="relative bg-primary-50 rounded-xl p-5 border-l-4 border-primary-600">
                 <Quote className="absolute top-3 right-3 h-8 w-8 text-primary-200" />
-                <p className="text-gray-700 leading-relaxed italic">
+                <p className="text-gray-700 leading-relaxed italic text-justify">
                   {profile.principalGreeting}
                 </p>
               </div>
@@ -171,9 +185,21 @@ const ProfilePage: React.FC = () => {
                   Sambutan Kepala Sekolah Menengah Pertama
                 </h2>
               </div>
+              {/* Foto Kepala Sekolah Menengah Pertama */}
+              <div className="flex flex-col items-center mb-5">
+                <div className="h-28 w-28 rounded-full border-4 border-amber-500 shadow-md overflow-hidden">
+                  <img
+                    src={kepsekSMP}
+                    alt="Kepala Sekolah Menengah Pertama"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <p className="mt-2 font-semibold text-gray-800 text-sm">Sarah Ginting S.Si</p>
+                <p className="text-xs text-amber-600">Kepala Sekolah Menengah Pertama</p>
+              </div>
               <div className="relative bg-amber-50 rounded-xl p-5 border-l-4 border-amber-500">
                 <Quote className="absolute top-3 right-3 h-8 w-8 text-amber-200" />
-                <p className="text-gray-700 leading-relaxed italic">
+                <p className="text-gray-700 leading-relaxed italic text-justify">
                   {profile.foundationGreeting}
                 </p>
               </div>

@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
 
   const categoryLinks = [
     { path: '/fasilitas', label: 'Fasilitas' },
-    { path: '/ekstrakulikuler', label: 'Ekstrakulikuler' },
+    { path: '/ekstrakulikuler', label: 'Ekstrakurikuler' },
     { path: '/ppdb', label: 'PPDB' },
   ];
 

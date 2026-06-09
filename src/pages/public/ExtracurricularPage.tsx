@@ -18,7 +18,7 @@ const ExtracurricularPage: React.FC = () => {
               <Trophy className="h-8 w-8" />
             </div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Ekstrakulikuler</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">Ekstrakurikuler</h1>
           <p className="text-primary-200">Kembangkan bakat dan minat Anda bersama kami</p>
         </div>
       </div>
@@ -58,7 +58,7 @@ const ExtracurricularPage: React.FC = () => {
         {extracurriculars.length === 0 && (
           <div className="text-center py-16 text-gray-400">
             <Trophy className="h-12 w-12 mx-auto mb-3 opacity-50" />
-            <p>Belum ada data ekstrakulikuler</p>
+            <p>Belum ada data ekstrakurikuler</p>
           </div>
         )}
       </div>
