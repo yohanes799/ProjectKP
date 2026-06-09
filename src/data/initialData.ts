@@ -53,7 +53,7 @@ export const ppdbInfo: PPDBInfo = {
   content:
     'SMP Seruni Putih membuka Penerimaan Peserta Didik Baru (PPDB) untuk tahun ajaran 2026/2027. Proses seleksi dilakukan secara transparan dan akuntabel berdasarkan nilai rapor, prestasi, dan zonasi.',
   startDate: '2026-06-01',
-  endDate: '2026-06-30',
+  endDate: '2026-07-30',
   requirements: [
     'Membeli Formulir Pendaftaran',
     'Foto copy Akte Kelahiran',
@@ -62,7 +62,7 @@ export const ppdbInfo: PPDBInfo = {
     'Foto copy Surat Kelulusaan SD',
     'Foto copy Ijazah SD Dilegalisir (Bisa Menyusul)',
   ],
-  quota: 360,
+  quota: 100,
 };
 
 export const contactInfo: ContactInfo = {
