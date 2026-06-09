@@ -202,7 +202,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
       const formattedData = data.map((item) => ({
         id: item.id,
         title: item.judul_berita,
-        category: item.kategori,
+        category: item.kategori_jenjang,
         date: item.tanggal,
         excerpt: item.ringkasan,
         content: item.isi,
@@ -217,7 +217,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
   const addNews = async (item: NewsItem) => {
     const payload = {
       judul_berita: item.title,
-      kategori: item.category,
+      kategori_jenjang: item.category,
       tanggal: item.date,
       ringkasan: item.excerpt,
       isi: item.content,
@@ -240,7 +240,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
   const updateNews = async (id: string, item: NewsItem) => {
     const payload = {
       judul_berita: item.title,
-      kategori: item.category,
+      kategori_jenjang: item.category,
       tanggal: item.date,
       ringkasan: item.excerpt,
       isi: item.content,
@@ -281,7 +281,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
       nama_lengkap: teacher.name,
       mata_pelajaran: teacher.subject,
       jabatan: teacher.position,
-      kategori: teacher.level || 'SMP', // DIPERBAIKI: Menggunakan 'kategori' sesuai DB
+      kategori_jenjang: teacher.level || 'SMP', // DIPERBAIKI: Menggunakan 'kategori_jenjang' sesuai DB
       foto_url: teacher.photo,
     };
 
@@ -310,7 +310,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
       nama_lengkap: teacher.name,
       mata_pelajaran: teacher.subject,
       jabatan: teacher.position,
-      kategori: teacher.level || 'SMP', // GANTI DI SINI: kategori_jenjang -> kategori
+      kategori_jenjang: teacher.level || 'SMP', // GANTI DI SINI: kategori_jenjang -> kategori
       foto_url: teacher.photo,
     };
 
@@ -354,7 +354,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
         name: item.nama_lengkap,
         subject: item.mata_pelajaran,
         position: item.jabatan,
-        level: item.kategori, // GANTI DI SINI: item.kategori_jenjang -> item.kategori
+        level: item.kategori_jenjang, // GANTI DI SINI: item.kategori_jenjang -> item.kategori
         photo: item.foto_url,
         education: '', 
         nip: '', 

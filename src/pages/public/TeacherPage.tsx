@@ -3,22 +3,26 @@ import { Users, Search, Award } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 import type { Teacher } from '../../types';
 
-const levelColors: Record<Teacher['level'], string> = {
+// 1. Ubah tipe datanya agar menerima string bebas (karena bisa saja data dari DB aneh)
+const levelColors: Record<string, string> = {
   SD:    'bg-pink-100 text-pink-700',
   SMP:   'bg-yellow-100 text-yellow-700',
   Staff: 'bg-teal-100 text-teal-700',
+  Umum:  'bg-gray-100 text-gray-700', // <-- JARING PENGAMAN
 };
 
-const levelTabColors: Record<Teacher['level'], string> = {
+const levelTabColors: Record<string, string> = {
   SD:    'bg-pink-500 text-white border-pink-500',
   SMP:   'bg-yellow-500 text-white border-yellow-500',
   Staff: 'bg-teal-500 text-white border-teal-500',
+  Umum:  'bg-gray-500 text-white border-gray-500', // <-- JARING PENGAMAN
 };
 
-const levelHeaderColors: Record<Teacher['level'], string> = {
+const levelHeaderColors: Record<string, string> = {
   SD:    'from-pink-600 to-pink-800',
   SMP:   'from-yellow-500 to-yellow-700',
   Staff: 'from-teal-600 to-teal-800',
+  Umum:  'from-gray-500 to-gray-700', // <-- JARING PENGAMAN
 };
 
 const TeacherPage: React.FC = () => {
