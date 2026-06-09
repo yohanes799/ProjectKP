@@ -212,26 +212,25 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  // 2. FUNGSI TAMBAH (Create)
+  // 2. FUNGSI TAMBAH (Create) - JARING PENGAMAN DICABUT
   const addNews = async (item: Omit<NewsItem, 'id'>) => {
     const payload = {
-      judul_berita: item.title, // SESUAI DATABASE: judul_berita
-      kategori: item.category || 'Pengumuman', // SESUAI DATABASE: kategori
+      judul_berita: item.title,
+      kategori: item.category || 'Pengumuman',
       tanggal: item.date,
       ringkasan: item.excerpt,
       isi: item.content,
       penulis: item.author || 'Admin Sekolah',
-      // PENGAMAN: Cegah crash karena gambar Base64 raksasa
-      foto_url: (item.image && item.image.length > 1000) 
-                ? 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800' 
-                : item.image,
+      // JARING PENGAMAN DICABUT: Kirim apa adanya (Base64 atau URL)
+      // Risiko: Error 'Payload Too Large' jika gambar terlalu besar
+      foto_url: item.image, 
     };
 
     const { error } = await supabase.from('berita').insert([payload]).select();
 
     if (error) {
       console.error('Gagal tambah berita:', error.message);
-      alert(`Gagal simpan berita! Alasan: ${error.message}`);
+      alert(`Gagal simpan berita! Alasan: ${error.message}. (Mungkin gambar terlalu besar)`);
       return;
     }
 
@@ -239,26 +238,24 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     await fetchNews();
   };
 
-  // 3. FUNGSI UPDATE (Edit)
+  // 3. FUNGSI UPDATE (Edit) - JARING PENGAMAN DICABUT
   const updateNews = async (id: string, item: NewsItem) => {
     const payload = {
-      judul_berita: item.title, // SESUAI DATABASE: judul_berita
-      kategori: item.category, // SESUAI DATABASE: kategori
+      judul_berita: item.title,
+      kategori: item.category,
       tanggal: item.date,
       ringkasan: item.excerpt,
       isi: item.content,
       penulis: item.author,
-      // PENGAMAN: Cegah crash karena gambar Base64 raksasa
-      foto_url: (item.image && item.image.length > 1000) 
-                ? 'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800' 
-                : item.image,
+      // JARING PENGAMAN DICABUT: Kirim apa adanya
+      foto_url: item.image,
     };
 
     const { error } = await supabase.from('berita').update(payload).eq('id', id);
 
     if (error) {
       console.error('Gagal update berita:', error.message);
-      alert(`Gagal update berita! Alasan: ${error.message}`);
+      alert(`Gagal update berita! Alasan: ${error.message}. (Mungkin gambar terlalu besar)`);
       return;
     }
 
