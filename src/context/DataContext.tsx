@@ -198,11 +198,10 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     if (data) {
-      // Mapping DB (Indonesia) -> Frontend Interface (Inggris)
-      const formattedData = data.map((item) => ({
+      const formattedData = data.map((item: any) => ({
         id: item.id,
-        title: item.judul_berita,
-        category: item.kategori_jenjang,
+        title: item.judul_berita, // SESUAI DATABASE: judul_berita
+        category: item.kategori,  // SESUAI DATABASE: kategori
         date: item.tanggal,
         excerpt: item.ringkasan,
         content: item.isi,
@@ -214,50 +213,56 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   // 2. FUNGSI TAMBAH (Create)
-  const addNews = async (item: NewsItem) => {
+  const addNews = async (item: Omit<NewsItem, 'id'>) => {
     const payload = {
-      judul_berita: item.title,
-      kategori_jenjang: item.category,
+      judul_berita: item.title, // SESUAI DATABASE: judul_berita
+      kategori: item.category || 'Pengumuman', // SESUAI DATABASE: kategori
       tanggal: item.date,
       ringkasan: item.excerpt,
       isi: item.content,
-      penulis: item.author,
-      foto_url: item.image,
+      penulis: item.author || 'Admin Sekolah',
+      // PENGAMAN: Cegah crash karena gambar Base64 raksasa
+      foto_url: (item.image && item.image.length > 1000) 
+                ? 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800' 
+                : item.image,
     };
 
     const { error } = await supabase.from('berita').insert([payload]).select();
 
     if (error) {
-      console.error('Gagal tambah berita:', error);
-      alert('Gagal simpan berita');
+      console.error('Gagal tambah berita:', error.message);
+      alert(`Gagal simpan berita! Alasan: ${error.message}`);
       return;
     }
 
+    alert('Berita berhasil ditambahkan!');
     await fetchNews();
   };
 
   // 3. FUNGSI UPDATE (Edit)
   const updateNews = async (id: string, item: NewsItem) => {
     const payload = {
-      judul_berita: item.title,
-      kategori_jenjang: item.category,
+      judul_berita: item.title, // SESUAI DATABASE: judul_berita
+      kategori: item.category, // SESUAI DATABASE: kategori
       tanggal: item.date,
       ringkasan: item.excerpt,
       isi: item.content,
       penulis: item.author,
-      foto_url: item.image,
+      // PENGAMAN: Cegah crash karena gambar Base64 raksasa
+      foto_url: (item.image && item.image.length > 1000) 
+                ? 'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=800' 
+                : item.image,
     };
 
-    const { error } = await supabase
-      .from('berita')
-      .update(payload)
-      .eq('id', id);
+    const { error } = await supabase.from('berita').update(payload).eq('id', id);
 
     if (error) {
-      console.error('Gagal update berita:', error);
+      console.error('Gagal update berita:', error.message);
+      alert(`Gagal update berita! Alasan: ${error.message}`);
       return;
     }
 
+    alert('Berita berhasil diupdate!');
     await fetchNews();
   };
 
@@ -267,6 +272,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
 
     if (error) {
       console.error('Gagal hapus berita:', error);
+      alert('Gagal menghapus berita!');
       return;
     }
 
