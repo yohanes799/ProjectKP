@@ -90,6 +90,7 @@ export interface SchoolProfile {
 export interface ContactInfo {
   address: string;
   phone: string;
+  phone2?: string;
   email: string;
   mapEmbed: string;
   socialMedia: {
