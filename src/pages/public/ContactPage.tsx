@@ -5,37 +5,44 @@ import { FaFacebook, FaWhatsapp, FaInstagram } from 'react-icons/fa';
 
 const ContactPage: React.FC = () => {
   const { contact, profile } = useData();
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  const { name, email, subject, message } = form;
-  if (!name || !message) return alert("Nama dan Pesan wajib diisi!");
-  const textWa = `Halo admin YAYASAN SERUNI PUTIH, saya ${name} (${email}).%0A%0ASubjek: ${subject}%0A%0A${message}`;
-  const noWaSekolah = "+6281282992568"; 
-  window.open(`https://wa.me/${noWaSekolah}?text=${textWa}`, '_blank');
-  setSubmitted(true);
-  setForm({ name: '', email: '', subject: '', message: '' });
-  setTimeout(() => setSubmitted(false), 4000);
-};
+    e.preventDefault();
+    const { name, email, subject, message } = form;
+    if (!name || !message) return alert('Nama dan Pesan wajib diisi!');
+    const textWa = `Halo admin YAYASAN SERUNI PUTIH, saya ${name} (${email}).%0A%0ASubjek: ${subject}%0A%0A${message}`;
+    const noWaSekolah = '+6281282992568';
+    window.open(`https://wa.me/${noWaSekolah}?text=${textWa}`, '_blank');
+    setSubmitted(true);
+    setForm({ name: '', email: '', subject: '', message: '' });
+    setTimeout(() => setSubmitted(false), 4000);
+  };
 
   const MAPS_URL =
-    'https://www.google.com/maps/dir/?api=1&destination=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia';
+    'https://www.google.com/maps/place/Sekolah+Menengah+Pertama+Seruni+Putih/@-6.3342423,106.6880956,15z/data=!4m6!3m5!1s0x2e69e569a5eed093:0x58430362744f0d96!8m2!3d-6.326501!4d106.7061888!16s%2Fg%2F1hm6jfy2d?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D';
 
   return (
     <div className="min-h-screen bg-gray-50">
-
       {/* ── Header ─────────────────────────────────────────── */}
       <div className="bg-gradient-to-r from-primary-800 to-primary-700 text-white py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Kontak Sekolah</h1>
-          <p className="text-primary-200 text-sm sm:text-base">Hubungi kami untuk informasi lebih lanjut</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+            Kontak Sekolah
+          </h1>
+          <p className="text-primary-200 text-sm sm:text-base">
+            Hubungi kami untuk informasi lebih lanjut
+          </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-
         {/* ── Info Kontak — 3 kolom di md, 1 kolom di mobile ── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           {/* Alamat */}
@@ -45,7 +52,9 @@ const ContactPage: React.FC = () => {
             </div>
             <div className="min-w-0">
               <p className="font-semibold text-gray-800 text-sm">Alamat</p>
-              <p className="text-gray-500 text-xs mt-1 leading-relaxed">{contact.address}</p>
+              <p className="text-gray-500 text-xs mt-1 leading-relaxed">
+                {contact.address}
+              </p>
             </div>
           </div>
 
@@ -61,6 +70,13 @@ const ContactPage: React.FC = () => {
                 className="text-primary-600 text-sm mt-1 hover:underline"
               >
                 {contact.phone}
+              </a>
+              <br />
+              <a
+                href={`tel:${contact.phone2}`}
+                className="text-primary-600 text-sm mt-1 hover:underline"
+              >
+                {contact.phone2}
               </a>
             </div>
           </div>
@@ -84,13 +100,13 @@ const ContactPage: React.FC = () => {
 
         {/* ── Main Grid: Form + Sidebar ─────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
-
           {/* Kolom Kiri: Media Sosial + Peta */}
           <div className="space-y-6 order-2 lg:order-1">
-
             {/* Media Sosial */}
             <div className="bg-white rounded-xl shadow-sm p-5 sm:p-6">
-              <h2 className="font-bold text-gray-800 text-lg mb-4">Media Sosial</h2>
+              <h2 className="font-bold text-gray-800 text-lg mb-4">
+                Media Sosial
+              </h2>
               <div className="flex flex-wrap gap-3">
                 {contact.socialMedia.facebook && (
                   <a
@@ -131,7 +147,9 @@ const ContactPage: React.FC = () => {
             {/* Peta */}
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
               <div className="p-4 border-b flex items-center justify-between">
-                <h2 className="font-bold text-gray-800 text-base">Lokasi Sekolah</h2>
+                <h2 className="font-bold text-gray-800 text-base">
+                  Lokasi Sekolah
+                </h2>
                 <a
                   href={MAPS_URL}
                   target="_blank"
@@ -173,8 +191,12 @@ const ContactPage: React.FC = () => {
                   className="h-56 bg-gray-100 flex flex-col items-center justify-center hover:bg-primary-50 transition-colors group"
                 >
                   <MapPin className="h-10 w-10 mb-2 text-primary-400 group-hover:text-primary-600 transition-colors" />
-                  <p className="text-sm font-medium text-gray-700 group-hover:text-primary-700">{profile.name}</p>
-                  <p className="text-xs text-gray-500 text-center px-6 mt-1">{contact.address}</p>
+                  <p className="text-sm font-medium text-gray-700 group-hover:text-primary-700">
+                    {profile.name}
+                  </p>
+                  <p className="text-xs text-gray-500 text-center px-6 mt-1">
+                    {contact.address}
+                  </p>
                   <span className="mt-3 text-xs text-primary-600 font-medium flex items-center space-x-1">
                     <ExternalLink className="h-3.5 w-3.5" />
                     <span>Klik untuk buka Google Maps</span>
@@ -186,12 +208,16 @@ const ContactPage: React.FC = () => {
 
           {/* Kolom Kanan: Form Kirim Pesan */}
           <div className="bg-white rounded-xl shadow-sm p-5 sm:p-6 order-1 lg:order-2">
-            <h2 className="font-bold text-gray-800 text-lg sm:text-xl mb-5">Kirim Pesan</h2>
+            <h2 className="font-bold text-gray-800 text-lg sm:text-xl mb-5">
+              Kirim Pesan
+            </h2>
 
             {submitted && (
               <div className="bg-green-50 border border-green-200 text-green-700 rounded-lg p-4 mb-4 flex items-start space-x-2 text-sm">
                 <Send className="h-4 w-4 flex-shrink-0 mt-0.5" />
-                <span>Pesan berhasil dikirim! Kami akan segera menghubungi Anda.</span>
+                <span>
+                  Pesan berhasil dikirim! Kami akan segera menghubungi Anda.
+                </span>
               </div>
             )}
 
@@ -199,7 +225,9 @@ const ContactPage: React.FC = () => {
               {/* Nama + Email — 2 kolom di sm ke atas, 1 kolom di mobile */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Lengkap
+                  </label>
                   <input
                     type="text"
                     required
@@ -210,12 +238,16 @@ const ContactPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
                   <input
                     type="email"
                     required
                     value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    onChange={(e) =>
+                      setForm({ ...form, email: e.target.value })
+                    }
                     className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                     placeholder="email@contoh.com"
                   />
@@ -223,24 +255,32 @@ const ContactPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Subjek</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Subjek
+                </label>
                 <input
                   type="text"
                   required
                   value={form.subject}
-                  onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, subject: e.target.value })
+                  }
                   className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
                   placeholder="Subjek pesan"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Pesan
+                </label>
                 <textarea
                   required
                   rows={5}
                   value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
                   className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm resize-none"
                   placeholder="Tulis pesan Anda di sini..."
                 />

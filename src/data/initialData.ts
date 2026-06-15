@@ -23,7 +23,7 @@ export const schoolProfile: SchoolProfile = {
   description:
     'Yayasan Seruni Putih adalah sekolah unggulan yang telah berdiri sejak tahun 1998. Dengan pengalaman lebih dari 28 tahun, kami berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berkarakter, dan berdaya saing global.',
   vision:
-    'Terlaksananya Proses Pendidikan Yang Memenuhi Standar Mutu, Berkarakter, Inovatif dan Berakar Pada Budaya Bangsa Sesusai Dengan Delapan Dimensi Profit Lulusan',
+    'Terlaksananya Proses Pendidikan Yang Memenuhi Standar Mutu, Berkarakter, Inovatif dan Berakar Pada Budaya Bangsa Sesusai Dengan Delapan Dimensi Profil Lulusan',
   mission: [
     'Meningkatkan Tata Kelola Managerial Satuan Pendidikan Yang Adaptif, Berkarakter Dan Menjamin Mutu.',
     'Memvasilitasi Pemebelajaran Yang Menarik Menyenangkan Dan Berkarakter Sesuai Bakat Dan Minat Murid.',
@@ -69,12 +69,13 @@ export const contactInfo: ContactInfo = {
   address:
     'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
   phone: '081282992568',
+  phone2:'085923342894',
   email: 'seruniputih01@gmail.com',
   mapEmbed:
-    'https://maps.google.com/maps?q=Jl.+Benda+Barat+13+No.D33,+RW.10,+Pd.+Benda,+Kec.+Pamulang,+Kota+Tangerang+Selatan,+Banten+15416,+Indonesia&output=embed',
+    'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d495.6901422782995!2d106.70609744624271!3d-6.326444000531101!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69e569a5eed093%3A0x58430362744f0d96!2sSekolah%20Menengah%20Pertama%20Seruni%20Putih!5e0!3m2!1sen!2sus!4v1781447398100!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade',
   socialMedia: {
-    facebook: 'https://www.facebook.com/Seruniputihedu',
+    facebook: 'https://www.facebook.com/share/18xFXMMY92/',
     whatsapp: 'https://wa.me/+6281282992568',
-    instagram: 'https://instagram.com/seruniputihedu',
+    instagram: 'https://www.instagram.com/yayasanseruniputih?igsh=enFmcXo1MGI0Z2dh',
   },
 };

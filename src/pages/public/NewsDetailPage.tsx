@@ -3,6 +3,30 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, User, Tag } from 'lucide-react';
 import { useData } from '../../context/DataContext';
 
+// Regex untuk mendeteksi URL dalam teks
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+// Render teks dengan URL yang diubah jadi link aktif
+const renderTextWithLinks = (text: string) => {
+  const parts = text.split(URL_REGEX);
+  return parts.map((part, i) => {
+    if (URL_REGEX.test(part)) {
+      return (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-600 underline hover:text-primary-800 break-all"
+        >
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+};
+
 const NewsDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { news } = useData();
@@ -73,7 +97,7 @@ const NewsDetailPage: React.FC = () => {
                       <div key={i} className="h-3" />
                     ) : (
                       <p key={i} className="text-gray-700 leading-relaxed text-base mb-4">
-                        {paragraph}
+                        {renderTextWithLinks(paragraph)}
                       </p>
                     )
                   )}
