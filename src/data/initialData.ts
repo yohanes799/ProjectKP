@@ -11,7 +11,7 @@ import type {
 export const schoolProfile: SchoolProfile = {
   name: 'YAYASAN SERUNI PUTIH',
   address:
-    'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
+    'Jl. Benda Barat 13 (Ujung) Pamulang II Pondok Benda Kota Tangerang Selatan 15416',
   phone: '085923342894',
   email: 'seruniputih01@gmail.com',
   website: 'www.smpseruniputih.sch.id',
@@ -26,10 +26,10 @@ export const schoolProfile: SchoolProfile = {
     'Terlaksananya Proses Pendidikan Yang Memenuhi Standar Mutu, Berkarakter, Inovatif dan Berakar Pada Budaya Bangsa Sesusai Dengan Delapan Dimensi Profil Lulusan',
   mission: [
     'Meningkatkan Tata Kelola Managerial Satuan Pendidikan Yang Adaptif, Berkarakter Dan Menjamin Mutu.',
-    'Memvasilitasi Pemebelajaran Yang Menarik Menyenangkan Dan Berkarakter Sesuai Bakat Dan Minat Murid.',
-    'Menciptakan Profil Lulusan Yang Bernalar Kritis Dan kreatif Sehingga Mampu Mengkreasi Ide Dan Keterampilan Yang Inovatif.',
-    'Menciptakan Lingkungan Sekolah Sebagai Tempat Perkembangan Intelektual, Sosial, Emosional, Keterampilan Dan Pengembangan Budaya Lokal Dalamm Kebhinekaan Global.',
-    'Menjalin kemitraaan Dengan Orang Tua Masyarakat Dan Pemerintah Dalam Keberagaman Yang Mewadahi Kreatifitas Murid Yang Berjiwa kompetitif.',
+    'Memfasilitasi Pemebelajaran Yang Menarik Menyenangkan Dan Berkarakter Sesuai Bakat Dan Minat Murid.',
+    'Menciptakan Profil Lulusan Yang Bernalar Kritis Dan Kreatif Sehingga Mampu Mengkreasi Ide Dan Keterampilan Yang Inovatif.',
+    'Menciptakan Lingkungan Sekolah Sebagai Tempat Perkembangan Intelektual, Sosial, Emosional, Keterampilan Dan Pengembangan Budaya Lokal Dalam Kebhinekaan Global.',
+    'Menjalin kemitraaan Dengan Orang Tua, Masyarakat Dan Pemerintah Dalam Keberagaman Yang Mewadahi Kreatifitas Murid Yang Berjiwa kompetitif.',
     'Meningkatkan kompetensi GTK Melalui Pelatihan Mandiri Atau Yang diselenggarakan Oleh Pihak - Pihak Lain.',
   ],
   logo: 'https://placehold.co/120x120/1e40af/ffffff?text=SMAN1',
@@ -67,7 +67,7 @@ export const ppdbInfo: PPDBInfo = {
 
 export const contactInfo: ContactInfo = {
   address:
-    'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
+    'Jl. Benda Barat 13 (Ujung) Pamulang II Pondok Benda Kota Tangerang Selatan 15416',
   phone: '085923342894',
   email: 'seruniputih01@gmail.com',
   mapEmbed:
