@@ -12,7 +12,7 @@ export const schoolProfile: SchoolProfile = {
   name: 'YAYASAN SERUNI PUTIH',
   address:
     'Jl. Benda Barat 13 No. D.33, RW.10, Pd.Benda, Kecamatan Pamulang, Kota Tangerang Selatan, Banten 15416',
-  phone: '081282992568',
+  phone: '085923342894',
   email: 'seruniputih01@gmail.com',
   website: 'www.smpseruniputih.sch.id',
   accreditation: 'A',
