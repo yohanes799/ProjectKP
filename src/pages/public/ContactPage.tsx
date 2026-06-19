@@ -71,13 +71,6 @@ const ContactPage: React.FC = () => {
               >
                 {contact.phone}
               </a>
-              <br />
-              <a
-                href={`tel:${contact.phone2}`}
-                className="text-primary-600 text-sm mt-1 hover:underline"
-              >
-                {contact.phone2}
-              </a>
             </div>
           </div>
 

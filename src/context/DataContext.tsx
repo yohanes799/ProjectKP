@@ -52,7 +52,10 @@ interface DataContextType {
   updateExtracurricular: (id: string, extra: Extracurricular) => void;
   deleteExtracurricular: (id: string) => void;
   addPPDBRegistration: (reg: PPDBRegistration) => Promise<boolean>;
-  updatePPDBRegistration: (id: string, updatedData: Partial<PPDBRegistration>) => Promise<void>;
+  updatePPDBRegistration: (
+    id: string,
+    updatedData: Partial<PPDBRegistration>
+  ) => Promise<void>;
   updatePPDBRegistrationStatus: (
     id: string,
     status: PPDBRegistration['status']
@@ -102,8 +105,8 @@ function loadItem<T>(key: string, fallback: T): T {
 const defaultUsers: User[] = [
   {
     id: '1',
-    username: 'admin',
-    password: 'admin123',
+    username: 'smpseruniputih',
+    password: 'admin1998',
     role: 'admin',
     name: 'Administrator',
   },
@@ -201,7 +204,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
       const formattedData = data.map((item: any) => ({
         id: item.id,
         title: item.judul_berita, // SESUAI DATABASE: judul_berita
-        category: item.kategori,  // SESUAI DATABASE: kategori
+        category: item.kategori, // SESUAI DATABASE: kategori
         date: item.tanggal,
         excerpt: item.ringkasan,
         content: item.isi,
@@ -223,14 +226,16 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
       penulis: item.author || 'Admin Sekolah',
       // JARING PENGAMAN DICABUT: Kirim apa adanya (Base64 atau URL)
       // Risiko: Error 'Payload Too Large' jika gambar terlalu besar
-      foto_url: item.image, 
+      foto_url: item.image,
     };
 
     const { error } = await supabase.from('berita').insert([payload]).select();
 
     if (error) {
       console.error('Gagal tambah berita:', error.message);
-      alert(`Gagal simpan berita! Alasan: ${error.message}. (Mungkin gambar terlalu besar)`);
+      alert(
+        `Gagal simpan berita! Alasan: ${error.message}. (Mungkin gambar terlalu besar)`
+      );
       return;
     }
 
@@ -251,11 +256,16 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
       foto_url: item.image,
     };
 
-    const { error } = await supabase.from('berita').update(payload).eq('id', id);
+    const { error } = await supabase
+      .from('berita')
+      .update(payload)
+      .eq('id', id);
 
     if (error) {
       console.error('Gagal update berita:', error.message);
-      alert(`Gagal update berita! Alasan: ${error.message}. (Mungkin gambar terlalu besar)`);
+      alert(
+        `Gagal update berita! Alasan: ${error.message}. (Mungkin gambar terlalu besar)`
+      );
       return;
     }
 
@@ -276,7 +286,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     setNews((prev) => prev.filter((n) => n.id !== id));
   };
 
- // Teachers
+  // Teachers
   // JALANKAN ASYNC UNTUK INSERSi BACKEND
   const addTeacher = async (teacher: Omit<Teacher, 'id'>) => {
     // 1. Mapping Skema untuk Tambah Data
@@ -289,7 +299,10 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     };
 
     // 2. Eksekusi ke Supabase
-    const { data, error } = await supabase.from('guru').insert([payload]).select();
+    const { data, error } = await supabase
+      .from('guru')
+      .insert([payload])
+      .select();
 
     if (error) {
       console.error('Gagal menambah data di server:', error);
@@ -323,7 +336,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     if (error) {
       console.error('Gagal memperbarui data di server:', error);
       alert('Gagal memperbarui data di database!');
-      return; 
+      return;
     }
 
     // 3. Eksekusi Frontend
@@ -336,7 +349,7 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
     if (error) {
       console.error('Gagal menghapus data di server:', error);
       alert('Gagal menghapus data dari database!');
-      return; 
+      return;
     }
 
     setTeachers((prev) => prev.filter((t) => t.id !== id));
@@ -359,8 +372,8 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
         position: item.jabatan,
         level: item.kategori_jenjang, // GANTI DI SINI: item.kategori_jenjang -> item.kategori
         photo: item.foto_url,
-        education: '', 
-        nip: '', 
+        education: '',
+        nip: '',
       }));
 
       setTeachers(formattedData);
@@ -549,7 +562,12 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
   ) => {
     try {
       // Buang properti id dan waktu agar tidak menabrak aturan database saat di-update
-      const { id: _id, registeredAt, created_at, ...payload } = updatedData as any;
+      const {
+        id: _id,
+        registeredAt,
+        created_at,
+        ...payload
+      } = updatedData as any;
 
       const { error } = await supabase
         .from('pendaftar_ppdb')
@@ -564,9 +582,11 @@ export const DataProvider: React.FC<{ children: ReactNode }> = ({
 
       // Update UI langsung tanpa refresh
       setPpdbRegistrations((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...updatedData } : item))
+        prev.map((item) =>
+          item.id === id ? { ...item, ...updatedData } : item
+        )
       );
-      
+
       alert('Data pendaftar berhasil diperbarui!');
     } catch (err) {
       console.error('Error sistem update:', err);
